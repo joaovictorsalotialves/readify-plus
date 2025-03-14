@@ -32,22 +32,22 @@ export const fonts = {
   body: {
     lg: {
       fontSize: 16,
-      lineHeight: '140%',
+      lineHeight: 16 * 1.4,
       fontFamily: 'Montserrat_400Regular',
     },
     md: {
       fontSize: 14,
-      lineHeight: '140%',
+      lineHeight: 14 * 1.4,
       fontFamily: 'Montserrat_400Regular',
     },
     sm: {
       fontSize: 12,
-      lineHeight: '140%',
+      lineHeight: 12 * 1.4,
       fontFamily: 'Montserrat_400Regular',
     },
     xs: {
       fontSize: 10,
-      lineHeight: '100%',
+      lineHeight: 10,
       fontFamily: 'Montserrat_400Regular',
     },
     button: {

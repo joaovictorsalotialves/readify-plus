@@ -4,6 +4,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native'
 
 import styles from './styles'
 
+import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 
 export default function Login() {
@@ -38,8 +39,8 @@ export default function Login() {
 
       <View style={styles.body}>
         <Text style={styles.title}>Login</Text>
-        <View style={styles.containerForm}>
-          <View style={styles.containerFields}>
+        <View style={styles.box}>
+          <View style={styles.box}>
             <Input
               icon="mail"
               placeholder="Email"
@@ -50,17 +51,19 @@ export default function Login() {
             />
             <Input
               icon="lock"
-              onChangeText={setPassword}
-              isFilled={!!password}
               placeholder="Senha"
+              onChangeText={changePassword}
+              isFilled={!!password}
+              messageError={passwordError}
               autoCapitalize="none"
             />
           </View>
-          <TouchableOpacity>
-            <Text>Esqueceu a senha?</Text>
+          <TouchableOpacity activeOpacity={0.5}>
+            <Text style={{ textAlign: 'right' }}>Esqueceu a senha?</Text>
           </TouchableOpacity>
-          <View>
-            <Text>Buttons</Text>
+          <View style={styles.box}>
+            <Button text="Login" type="confirm" />
+            <Button text="Cadastrar-se" type="redirect" />
           </View>
         </View>
       </View>

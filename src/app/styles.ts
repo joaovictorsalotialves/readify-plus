@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.blue,
   },
   header: {
-    height: '35%',
+    height: '30%',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -25,11 +25,7 @@ const styles = StyleSheet.create({
   title: {
     ...fonts.heading.hg,
   },
-  containerForm: {
-    width: '100%',
-    gap: 18,
-  },
-  containerFields: {
+  box: {
     width: '100%',
     gap: 18,
   },

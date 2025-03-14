@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native'
 
 import { colors } from '@/styles/colors'
+import { fonts } from '@/styles/fonts'
 
 export const styles = StyleSheet.create({
   input: {
@@ -35,6 +36,10 @@ export const styles = StyleSheet.create({
     color: colors.gray[800],
   },
   iconError: {
+    color: colors.danger,
+  },
+  messageError: {
+    ...fonts.body.sm,
     color: colors.danger,
   },
 })

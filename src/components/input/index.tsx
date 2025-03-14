@@ -43,7 +43,7 @@ export function Input({
           messageError && styles.iconError,
         ]}
       />
-      {messageError && <Text>{messageError}</Text>}
+      {messageError && <Text style={styles.messageError}>{messageError}</Text>}
     </View>
   )
 }
