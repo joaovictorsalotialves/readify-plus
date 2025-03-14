@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Text, View } from 'react-native'
 
 import styles from './styles'
 
@@ -14,20 +14,18 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-  function changeEmail(email: string) {
+  function validateEmail(email: string) {
     setEmail(email)
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) return setEmailError('Email inválido!')
-
+    if (!email) return setEmailError('Email vazio!')
+    if (!regex.emailRegex.test(email)) return setEmailError('Email inválido!')
     setEmailError('')
   }
 
-  function changePassword(password: string) {
+  function validatePassword(password: string) {
     setPassword(password)
 
     if (!password) return setPasswordError('Senha vazia!')
-
     setPasswordError('')
   }
 
@@ -44,7 +42,7 @@ export default function Login() {
             <Input
               icon="mail"
               placeholder="Email"
-              onChangeText={changeEmail}
+              onChangeText={validateEmail}
               isFilled={!!email}
               messageError={emailError}
               autoCapitalize="none"
@@ -52,15 +50,13 @@ export default function Login() {
             <Input
               icon="lock"
               placeholder="Senha"
-              onChangeText={changePassword}
+              onChangeText={validatePassword}
               isFilled={!!password}
               messageError={passwordError}
               autoCapitalize="none"
             />
           </View>
-          <TouchableOpacity activeOpacity={0.5}>
-            <Text style={{ textAlign: 'right' }}>Esqueceu a senha?</Text>
-          </TouchableOpacity>
+          <Text style={{ textAlign: 'right' }}>Esqueceu a senha?</Text>
           <View style={styles.box}>
             <Button text="Login" type="confirm" />
             <Button text="Cadastrar-se" type="redirect" />

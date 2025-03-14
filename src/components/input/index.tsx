@@ -26,7 +26,7 @@ export function Input({
         style={[
           styles.input,
           isFocused && styles.inputFocused,
-          messageError && styles.inputError,
+          messageError && !isFocused && styles.inputError,
         ]}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
@@ -40,10 +40,12 @@ export function Input({
           styles.icon,
           isFocused && styles.iconFocused,
           isFilled && styles.iconFilled,
-          messageError && styles.iconError,
+          messageError && !isFocused && styles.iconError,
         ]}
       />
-      {messageError && <Text style={styles.messageError}>{messageError}</Text>}
+      {messageError && !isFocused && (
+        <Text style={styles.messageError}>{messageError}</Text>
+      )}
     </View>
   )
 }
