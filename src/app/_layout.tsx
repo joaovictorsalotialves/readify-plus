@@ -35,6 +35,9 @@ export default function Layout() {
           backgroundColor,
         },
       }}
-    />
+    >
+      <Stack.Screen name="index" />
+      <Stack.Screen name="(auth)" />
+    </Stack>
   )
 }
