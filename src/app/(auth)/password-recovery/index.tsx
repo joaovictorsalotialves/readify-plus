@@ -1,12 +1,12 @@
 import { useState } from 'react'
 
 import { router } from 'expo-router'
-import { Text, View } from 'react-native'
+import { Keyboard, Text, View } from 'react-native'
 
 import authStyles from '../_styles/styles'
 import styles from './styles'
 
-import { regex } from '@/utils/regex'
+import { validateEmail } from '@/utils/validators/validate-email'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
@@ -16,12 +16,19 @@ export default function PasswordRecovery() {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState('')
 
-  function validateEmail(email: string) {
-    setEmail(email)
+  function handleEmailChange(value: string) {
+    setEmail(value)
+    validateEmail(value, setEmailError)
+  }
 
-    if (!email) return setEmailError('Email vazio!')
-    if (!regex.emailRegex.test(email)) return setEmailError('Email inválido!')
-    setEmailError('')
+  function handleSubmit() {
+    Keyboard.dismiss()
+
+    const isValidEmail = validateEmail(email, setEmailError)
+
+    if (isValidEmail) {
+      router.navigate('/password-confirmation')
+    }
   }
 
   return (
@@ -35,7 +42,7 @@ export default function PasswordRecovery() {
           <Input
             icon="mail"
             placeholder="E-mail"
-            onChangeText={validateEmail}
+            onChangeText={handleEmailChange}
             isFilled={!!email}
             messageError={emailError}
             autoCapitalize="none"
@@ -44,9 +51,7 @@ export default function PasswordRecovery() {
             <Button
               text="Recuperar senha"
               type="confirm"
-              onPress={() => {
-                router.navigate('/password-confirmation')
-              }}
+              onPress={handleSubmit}
             />
             <Button
               text="Fazer login"

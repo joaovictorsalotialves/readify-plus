@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 
 import { router } from 'expo-router'
-import { Text, View } from 'react-native'
+import { Keyboard, Text, View } from 'react-native'
 
 import authStyles from '../_styles/styles'
 import styles from './styles'
 
 import { regex } from '@/utils/regex'
+import { validateCode } from '@/utils/validators/validate-code'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
@@ -18,20 +19,21 @@ export default function PasswordConfirmation() {
 
   const [resendEmail, setResendEmail] = useState(false)
 
-  function validateCode(value: string) {
-    if (!value) return setCodeError('Código vazio!')
-
-    if (!regex.codeRegex.test(value))
-      return setCodeError('Formato do código inválido!')
-
-    setCodeError('')
-  }
-
-  function handleCode(value: string) {
-    const formattedCode = value.replace(regex.numberRegex, '')
+  function handleCodeChange(code: string) {
+    const formattedCode = code.replace(regex.numberRegex, '')
     setCode(formattedCode)
 
-    validateCode(formattedCode)
+    validateCode(formattedCode, setCodeError)
+  }
+
+  function handleSubmit() {
+    Keyboard.dismiss()
+
+    const isCodeValid = validateCode(code, setCodeError)
+
+    if (isCodeValid) {
+      console.log('Código válido')
+    }
   }
 
   useEffect(() => {
@@ -53,7 +55,7 @@ export default function PasswordConfirmation() {
           <Input
             icon="pin"
             placeholder="Código"
-            onChangeText={handleCode}
+            onChangeText={handleCodeChange}
             value={code}
             isFilled={!!code}
             messageError={codeError}
@@ -69,9 +71,7 @@ export default function PasswordConfirmation() {
             <Button
               text="Verificar código"
               type="confirm"
-              onPress={() => {
-                validateCode(code)
-              }}
+              onPress={handleSubmit}
             />
             <Button
               text="Reenviar e-mail"

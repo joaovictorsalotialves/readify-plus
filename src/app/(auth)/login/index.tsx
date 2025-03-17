@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { router } from 'expo-router'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { Image, Keyboard, Text, TouchableOpacity, View } from 'react-native'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
@@ -9,7 +9,8 @@ import { Input } from '@/components/input'
 import authStyles from '../_styles/styles'
 import styles from './styles'
 
-import { regex } from '@/utils/regex'
+import { validateEmail } from '@/utils/validators/validate-email'
+import { validatePassword } from '@/utils/validators/validate-password'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -18,19 +19,25 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-  function validateEmail(email: string) {
-    setEmail(email)
-
-    if (!email) return setEmailError('Email vazio!')
-    if (!regex.emailRegex.test(email)) return setEmailError('Email inválido!')
-    setEmailError('')
+  function handleEmailChange(value: string) {
+    setEmail(value)
+    validateEmail(value, setEmailError)
   }
 
-  function validatePassword(password: string) {
-    setPassword(password)
+  function handlePasswordChange(value: string) {
+    setPassword(value)
+    validatePassword(value, setPasswordError)
+  }
 
-    if (!password) return setPasswordError('Senha vazia!')
-    setPasswordError('')
+  function handleSubmit() {
+    Keyboard.dismiss()
+
+    const isValidEmail = validateEmail(email, setEmailError)
+    const isValidPassword = validatePassword(password, setPasswordError)
+
+    if (isValidEmail || isValidPassword) {
+      console.log('Login')
+    }
   }
 
   return (
@@ -46,7 +53,7 @@ export default function Login() {
             <Input
               icon="mail"
               placeholder="E-mail"
-              onChangeText={validateEmail}
+              onChangeText={handleEmailChange}
               isFilled={!!email}
               messageError={emailError}
               autoCapitalize="none"
@@ -54,7 +61,7 @@ export default function Login() {
             <Input
               icon="lock"
               placeholder="Senha"
-              onChangeText={validatePassword}
+              onChangeText={handlePasswordChange}
               isFilled={!!password}
               messageError={passwordError}
               autoCapitalize="none"
@@ -68,7 +75,7 @@ export default function Login() {
             <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
           </TouchableOpacity>
           <View style={authStyles.context}>
-            <Button text="Login" type="confirm" />
+            <Button text="Login" type="confirm" onPress={handleSubmit} />
             <Button text="Cadastrar-se" type="redirect" />
           </View>
         </View>
