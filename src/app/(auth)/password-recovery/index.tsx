@@ -1,16 +1,16 @@
 import { useState } from 'react'
 
-import { MaterialIcons } from '@expo/vector-icons'
 import { router } from 'expo-router'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { Text, View } from 'react-native'
 
-import { colors } from '@/styles/colors'
+import authStyles from '../_styles/styles'
 import styles from './styles'
 
 import { regex } from '@/utils/regex'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
+import { Header } from '../_components/header'
 
 export default function PasswordRecovery() {
   const [email, setEmail] = useState('')
@@ -25,23 +25,13 @@ export default function PasswordRecovery() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          activeOpacity={0.5}
-          onPress={() => {
-            router.navigate('/login')
-          }}
-        >
-          <MaterialIcons name="arrow-back" size={68} color={colors.gray[100]} />
-        </TouchableOpacity>
-        <Text style={styles.headerLogo}>Readify Plus</Text>
-      </View>
+    <View style={authStyles.container}>
+      <Header backRoute="/login" />
 
-      <View style={styles.body}>
-        <Text style={styles.title}>Recuperar Senha</Text>
+      <View style={authStyles.body}>
+        <Text style={authStyles.title}>Recuperar Senha</Text>
         <Text style={styles.subtitle}>Informe seu email:</Text>
-        <View style={styles.box}>
+        <View style={authStyles.context}>
           <Input
             icon="mail"
             placeholder="E-mail"
@@ -50,7 +40,7 @@ export default function PasswordRecovery() {
             messageError={emailError}
             autoCapitalize="none"
           />
-          <View style={styles.box}>
+          <View style={authStyles.context}>
             <Button text="Recuperar senha" type="confirm" />
             <Button
               text="Fazer login"

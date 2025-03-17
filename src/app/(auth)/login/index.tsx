@@ -6,6 +6,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 
+import authStyles from '../_styles/styles'
 import styles from './styles'
 
 import { regex } from '@/utils/regex'
@@ -33,15 +34,15 @@ export default function Login() {
   }
 
   return (
-    <View style={styles.container}>
+    <View style={authStyles.container}>
       <View style={styles.header}>
         <Image source={require('@/assets/logo_small.png')} />
       </View>
 
-      <View style={styles.body}>
-        <Text style={styles.title}>Login</Text>
-        <View style={styles.box}>
-          <View style={styles.box}>
+      <View style={authStyles.body}>
+        <Text style={authStyles.title}>Login</Text>
+        <View style={authStyles.context}>
+          <View style={authStyles.context}>
             <Input
               icon="mail"
               placeholder="E-mail"
@@ -57,15 +58,16 @@ export default function Login() {
               isFilled={!!password}
               messageError={passwordError}
               autoCapitalize="none"
+              secureTextEntry
             />
           </View>
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => router.navigate('/password-recovery')}
           >
-            <Text style={{ textAlign: 'right' }}>Esqueceu a senha?</Text>
+            <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
           </TouchableOpacity>
-          <View style={styles.box}>
+          <View style={authStyles.context}>
             <Button text="Login" type="confirm" />
             <Button text="Cadastrar-se" type="redirect" />
           </View>

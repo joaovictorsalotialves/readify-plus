@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 0.5,
     borderColor: colors.gray[400],
+    ...fonts.body.lg,
   },
   inputFocused: {
     borderWidth: 1,

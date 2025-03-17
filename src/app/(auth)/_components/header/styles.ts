@@ -4,15 +4,16 @@ import { colors } from '@/styles/colors'
 import { fonts } from '@/styles/fonts'
 
 const styles = StyleSheet.create({
-  header: {
-    height: '30%',
-    justifyContent: 'center',
+  container: {
+    height: '10%',
+    flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: 20,
   },
-  forgotPasswordText: {
-    ...fonts.body.sm,
-    color: colors.gray[900],
-    textAlign: 'right',
+  logo: {
+    ...fonts.heading.hg,
+    color: colors.gray[100],
   },
 })
 
