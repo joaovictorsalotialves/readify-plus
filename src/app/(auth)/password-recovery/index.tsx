@@ -3,22 +3,22 @@ import { useState } from 'react'
 import { router } from 'expo-router'
 import { Keyboard, Text, View } from 'react-native'
 
+import { Button } from '@/components/button'
+import { Input } from '@/components/input'
+import { Header } from '../_components/header'
+
 import authStyles from '../_styles/styles'
 import styles from './styles'
 
 import { validateEmail } from '@/utils/validators/validate-email'
 
-import { Button } from '@/components/button'
-import { Input } from '@/components/input'
-import { Header } from '../_components/header'
-
 export default function PasswordRecovery() {
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState('')
 
-  function handleEmailChange(value: string) {
-    setEmail(value)
-    validateEmail(value, setEmailError)
+  function handleEmailChange(email: string) {
+    setEmail(email)
+    validateEmail(email, setEmailError)
   }
 
   function handleSubmit() {

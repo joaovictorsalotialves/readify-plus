@@ -19,14 +19,14 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [passwordError, setPasswordError] = useState('')
 
-  function handleEmailChange(value: string) {
-    setEmail(value)
-    validateEmail(value, setEmailError)
+  function handleEmailChange(email: string) {
+    setEmail(email)
+    validateEmail(email, setEmailError)
   }
 
-  function handlePasswordChange(value: string) {
-    setPassword(value)
-    validatePassword(value, setPasswordError)
+  function handlePasswordChange(password: string) {
+    setPassword(password)
+    validatePassword(password, setPasswordError)
   }
 
   function handleSubmit() {

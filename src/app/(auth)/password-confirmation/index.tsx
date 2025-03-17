@@ -3,15 +3,15 @@ import { useEffect, useState } from 'react'
 import { router } from 'expo-router'
 import { Keyboard, Text, View } from 'react-native'
 
+import { Button } from '@/components/button'
+import { Input } from '@/components/input'
+import { Header } from '../_components/header'
+
 import authStyles from '../_styles/styles'
 import styles from './styles'
 
 import { regex } from '@/utils/regex'
 import { validateCode } from '@/utils/validators/validate-code'
-
-import { Button } from '@/components/button'
-import { Input } from '@/components/input'
-import { Header } from '../_components/header'
 
 export default function PasswordConfirmation() {
   const [code, setCode] = useState<string>('')
@@ -32,7 +32,7 @@ export default function PasswordConfirmation() {
     const isCodeValid = validateCode(code, setCodeError)
 
     if (isCodeValid) {
-      console.log('Código válido')
+      router.navigate('/password-reset')
     }
   }
 
