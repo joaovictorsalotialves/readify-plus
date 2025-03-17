@@ -8,6 +8,11 @@ const styles = StyleSheet.create({
     ...fonts.heading.subtitleMd,
     color: colors.gray[900],
   },
+  description: {
+    ...fonts.body.sm,
+    textAlign: 'justify',
+    color: colors.gray[900],
+  },
 })
 
 export default styles

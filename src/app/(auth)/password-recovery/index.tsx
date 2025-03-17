@@ -41,7 +41,13 @@ export default function PasswordRecovery() {
             autoCapitalize="none"
           />
           <View style={authStyles.context}>
-            <Button text="Recuperar senha" type="confirm" />
+            <Button
+              text="Recuperar senha"
+              type="confirm"
+              onPress={() => {
+                router.navigate('/password-confirmation')
+              }}
+            />
             <Button
               text="Fazer login"
               type="redirect"

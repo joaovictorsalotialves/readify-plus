@@ -18,11 +18,14 @@ export function Button({ text, type = 'confirm', ...rest }: ButtonProps) {
         type === 'confirm' && styles.confirm,
         type === 'redirect' && styles.redirect,
         type === 'cancel' && styles.cancel,
+        rest.disabled && styles.disable,
       ]}
       activeOpacity={0.5}
       {...rest}
     >
-      <Text style={styles.text}>{text}</Text>
+      <Text style={[styles.text, rest.disabled && styles.textDisable]}>
+        {text}
+      </Text>
     </TouchableOpacity>
   )
 }
