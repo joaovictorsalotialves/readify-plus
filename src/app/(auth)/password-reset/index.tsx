@@ -10,8 +10,8 @@ import { Header } from '../_components/header'
 import authStyles from '../_styles/styles'
 import styles from './styles'
 
-import validadeConfirmationPassword from '@/utils/validators/validade-confirmationPassword'
-import validadeNewPassword from '@/utils/validators/validade-newPassword'
+import validadeConfirmationPassword from '@/utils/validators/validate-confirmationPassword'
+import validadeNewPassword from '@/utils/validators/validate-newPassword'
 
 export default function PasswordReset() {
   const [newPassword, setNewPassword] = useState('')
@@ -52,7 +52,7 @@ export default function PasswordReset() {
       setConfirmationPasswordError
     )
 
-    if (isValidNewPassword || isValidConfirmationPassword) {
+    if (isValidNewPassword && isValidConfirmationPassword) {
       router.navigate('/login')
     }
   }

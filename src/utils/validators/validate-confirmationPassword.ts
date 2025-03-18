@@ -7,7 +7,6 @@ export default function validadeConfirmationPassword(
     setConfirmationPasswordError('Confirmação de senha é diferente da senha!')
     return false
   }
-
   setConfirmationPasswordError('')
   return true
 }

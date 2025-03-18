@@ -20,7 +20,7 @@ export default function PasswordConfirmation() {
   const [resendEmail, setResendEmail] = useState(false)
 
   function handleCodeChange(code: string) {
-    const formattedCode = code.replace(regex.numberRegex, '')
+    const formattedCode = code.replace(regex.removeNonDigitsRegex, '')
     setCode(formattedCode)
 
     validateCode(formattedCode, setCodeError)
