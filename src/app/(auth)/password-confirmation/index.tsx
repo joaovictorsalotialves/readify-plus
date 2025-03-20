@@ -7,8 +7,7 @@ import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { Header } from '../_components/header'
 
-import authStyles from '../_styles/styles'
-import styles from './styles'
+import { authStyles } from '../_styles/styles'
 
 import { regex } from '@/utils/regex'
 import { validateCode } from '@/utils/validators/validate-code'
@@ -48,7 +47,7 @@ export default function PasswordConfirmation() {
 
       <View style={authStyles.body}>
         <Text style={authStyles.title}>Recuperar Senha</Text>
-        <Text style={styles.subtitle}>
+        <Text style={authStyles.subtitle}>
           Informe o código enviado em seu e-mail:
         </Text>
         <View style={authStyles.context}>
@@ -63,7 +62,7 @@ export default function PasswordConfirmation() {
             inputMode="numeric"
             maxLength={6}
           />
-          <Text style={styles.description}>
+          <Text style={authStyles.description}>
             O e-mail pode levar 1 minuto para ser enviado. Caso não receba
             aperte o botão “reenviar e-mail”.
           </Text>

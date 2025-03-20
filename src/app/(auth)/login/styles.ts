@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { colors } from '@/styles/colors'
 import { fonts } from '@/styles/fonts'
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   header: {
     height: '30%',
     justifyContent: 'center',
@@ -15,5 +15,3 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
 })
-
-export default styles

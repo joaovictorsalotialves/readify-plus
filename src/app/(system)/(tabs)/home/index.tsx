@@ -1,9 +1,9 @@
 import { View } from 'react-native'
 
-import styles from './styles'
+import { styles } from './styles'
 
-import Card from '../_components/card'
-import Header from '../_components/header'
+import { Card } from '../_components/card'
+import { Header } from '../_components/header'
 
 export default function Home() {
   return (
@@ -18,7 +18,4 @@ export default function Home() {
       </View>
     </View>
   )
-}
-function createBottomTabNavigator() {
-  throw new Error('Function not implemented.')
 }

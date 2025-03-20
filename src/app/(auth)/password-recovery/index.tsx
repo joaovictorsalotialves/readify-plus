@@ -7,8 +7,7 @@ import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { Header } from '../_components/header'
 
-import authStyles from '../_styles/styles'
-import styles from './styles'
+import { authStyles } from '../_styles/styles'
 
 import { validateEmail } from '@/utils/validators/validate-email'
 
@@ -37,7 +36,7 @@ export default function PasswordRecovery() {
 
       <View style={authStyles.body}>
         <Text style={authStyles.title}>Recuperar Senha</Text>
-        <Text style={styles.subtitle}>Informe seu email:</Text>
+        <Text style={authStyles.subtitle}>Informe seu email:</Text>
         <View style={authStyles.context}>
           <Input
             icon="mail"

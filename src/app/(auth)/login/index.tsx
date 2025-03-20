@@ -6,8 +6,8 @@ import { Image, Keyboard, Text, TouchableOpacity, View } from 'react-native'
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 
-import authStyles from '../_styles/styles'
-import styles from './styles'
+import { authStyles } from '../_styles/styles'
+import { styles } from './styles'
 
 import { validateEmail } from '@/utils/validators/validate-email'
 import { validatePassword } from '@/utils/validators/validate-password'
@@ -36,7 +36,7 @@ export default function Login() {
     const isValidPassword = validatePassword(password, setPasswordError)
 
     if (isValidEmail || isValidPassword) {
-      console.log('Login')
+      router.navigate('/(system)/(tabs)/home')
     }
   }
 

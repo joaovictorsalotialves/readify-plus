@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { colors } from '@/styles/colors'
 import { fonts } from '@/styles/fonts'
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
@@ -21,5 +21,3 @@ const styles = StyleSheet.create({
     color: colors.gray[900],
   },
 })
-
-export default styles

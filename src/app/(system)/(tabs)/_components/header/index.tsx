@@ -2,9 +2,9 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { Pressable, Text, View } from 'react-native'
 
 import { colors } from '@/styles/colors'
-import styles from './styles'
+import { styles } from './styles'
 
-export default function Header() {
+export function Header() {
   return (
     <View style={styles.container}>
       <Text style={styles.logo}>Readify Plus</Text>

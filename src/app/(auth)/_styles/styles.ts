@@ -2,7 +2,7 @@ import { colors } from '@/styles/colors'
 import { fonts } from '@/styles/fonts'
 import { StyleSheet } from 'react-native'
 
-const authStyles = StyleSheet.create({
+export const authStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.blue,
@@ -20,10 +20,17 @@ const authStyles = StyleSheet.create({
     ...fonts.heading.hg,
     color: colors.gray[900],
   },
+  subtitle: {
+    ...fonts.heading.subtitleMd,
+    color: colors.gray[900],
+  },
+  description: {
+    ...fonts.body.sm,
+    textAlign: 'justify',
+    color: colors.gray[900],
+  },
   context: {
     width: '100%',
     gap: 18,
   },
 })
-
-export default authStyles

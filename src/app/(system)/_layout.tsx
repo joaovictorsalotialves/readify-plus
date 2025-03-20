@@ -13,7 +13,7 @@ export default function Layout() {
         },
       }}
     >
-      <Stack.Screen name="home/index" />
+      <Stack.Screen name="(tabs)" />
     </Stack>
   )
 }

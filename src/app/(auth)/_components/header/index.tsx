@@ -3,7 +3,7 @@ import { type RelativePathString, router } from 'expo-router'
 import { Text, TouchableOpacity, View } from 'react-native'
 
 import { colors } from '@/styles/colors'
-import styles from './styles'
+import { styles } from './styles'
 
 type HeaderProps = {
   backRoute: `/${string}`

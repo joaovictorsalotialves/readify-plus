@@ -14,7 +14,6 @@ export function validateEmail(
     setEmailError('')
     return true
   } catch (error) {
-    console.log(error)
     if (error instanceof z.ZodError) {
       setEmailError(error.errors[0].message)
     }

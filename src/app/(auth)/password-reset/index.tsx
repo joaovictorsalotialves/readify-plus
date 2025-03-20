@@ -7,8 +7,7 @@ import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { Header } from '../_components/header'
 
-import authStyles from '../_styles/styles'
-import styles from './styles'
+import { authStyles } from '../_styles/styles'
 
 import validadeConfirmationPassword from '@/utils/validators/validate-confirmationPassword'
 import validadeNewPassword from '@/utils/validators/validate-newPassword'
@@ -62,7 +61,7 @@ export default function PasswordReset() {
       <Header backRoute="/password-recovery" />
       <View style={authStyles.body}>
         <Text style={authStyles.title}>Recuperar Senha</Text>
-        <Text style={styles.subtitle}>Informe uma nova senha:</Text>
+        <Text style={authStyles.subtitle}>Informe uma nova senha:</Text>
         <View style={authStyles.context}>
           <Input
             icon="lock"

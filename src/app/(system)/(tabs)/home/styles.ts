@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native'
 
 import { colors } from '@/styles/colors'
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.gray[100],
@@ -16,5 +16,3 @@ const styles = StyleSheet.create({
     gap: 20,
   },
 })
-
-export default styles
