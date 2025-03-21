@@ -1,6 +1,7 @@
-import { colors } from '@/styles/colors'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Tabs } from 'expo-router'
+
+import { colors } from '@/styles/colors'
 
 export default function Layout() {
   return (
@@ -13,7 +14,6 @@ export default function Layout() {
         },
         tabBarActiveTintColor: colors.blue,
         tabBarInactiveTintColor: colors.gray[400],
-        // tabBarShowLabel: false,
         tabBarHideOnKeyboard: true,
       }}
     >
@@ -24,15 +24,6 @@ export default function Layout() {
             <MaterialIcons name="home" size={size} color={color} />
           ),
           title: 'Home',
-        }}
-      />
-      <Tabs.Screen
-        name="profile/index"
-        options={{
-          tabBarIcon: ({ color, size, focused }) => (
-            <MaterialIcons name="person" size={size} color={color} />
-          ),
-          title: 'Perfil',
         }}
       />
     </Tabs>

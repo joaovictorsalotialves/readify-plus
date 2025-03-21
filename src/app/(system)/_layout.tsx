@@ -1,5 +1,6 @@
-import { colors } from '@/styles/colors'
 import { Stack } from 'expo-router'
+
+import { colors } from '@/styles/colors'
 
 export default function Layout() {
   const backgroundColor = colors.gray[100]
@@ -14,6 +15,7 @@ export default function Layout() {
       }}
     >
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="notifications" />
     </Stack>
   )
 }

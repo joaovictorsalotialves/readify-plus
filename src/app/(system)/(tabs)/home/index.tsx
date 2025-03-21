@@ -1,17 +1,18 @@
 import { ScrollView, View } from 'react-native'
 
+import { Card } from '../../_components/card'
+import { FeaturedBooks } from '../../_components/featured-books'
+import { NavigationHeader } from '../../_components/navigation-header'
+
+import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'
 
 import { books } from '@/utils/mocks/books'
 
-import { Card } from '../_components/card'
-import { FeaturedBooks } from '../_components/featured-books'
-import { Header } from '../_components/header'
-
 export default function Home() {
   return (
-    <View style={styles.container}>
-      <Header />
+    <View style={systemStyles.container}>
+      <NavigationHeader />
 
       <View style={styles.body}>
         <View style={styles.context}>
