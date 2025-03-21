@@ -9,6 +9,7 @@ import { Header } from '../_components/header'
 
 import { authStyles } from '../_styles/styles'
 
+import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 import validadeConfirmationPassword from '@/utils/validators/validate-confirmationPassword'
 import validadeNewPassword from '@/utils/validators/validate-newPassword'
 
@@ -57,39 +58,41 @@ export default function PasswordReset() {
   }
 
   return (
-    <View style={authStyles.container}>
-      <Header backRoute="/password-recovery" />
-      <View style={authStyles.body}>
-        <Text style={authStyles.title}>Recuperar Senha</Text>
-        <Text style={authStyles.subtitle}>Informe uma nova senha:</Text>
-        <View style={authStyles.context}>
-          <Input
-            icon="lock"
-            placeholder="Nova senha"
-            onChangeText={handleNewPasswordChange}
-            isFilled={!!newPassword}
-            messageError={newPasswordError}
-            autoCapitalize="none"
-            secureTextEntry
-          />
-          <Input
-            icon="lock"
-            placeholder="Confirmar senha"
-            onChangeText={handleConfirmationPasswordChange}
-            isFilled={!!confirmationPassword}
-            messageError={confirmationPasswordError}
-            autoCapitalize="none"
-            secureTextEntry
-          />
-        </View>
-        <View style={authStyles.context}>
-          <Button
-            text="Redefinir senha"
-            type="confirm"
-            onPress={handleSubmit}
-          />
+    <KeyboardAwareContainer>
+      <View style={authStyles.container}>
+        <Header backRoute="/password-recovery" />
+        <View style={authStyles.body}>
+          <Text style={authStyles.title}>Recuperar Senha</Text>
+          <Text style={authStyles.subtitle}>Informe uma nova senha:</Text>
+          <View style={authStyles.context}>
+            <Input
+              icon="lock"
+              placeholder="Nova senha"
+              onChangeText={handleNewPasswordChange}
+              isFilled={!!newPassword}
+              messageError={newPasswordError}
+              autoCapitalize="none"
+              secureTextEntry
+            />
+            <Input
+              icon="lock"
+              placeholder="Confirmar senha"
+              onChangeText={handleConfirmationPasswordChange}
+              isFilled={!!confirmationPassword}
+              messageError={confirmationPasswordError}
+              autoCapitalize="none"
+              secureTextEntry
+            />
+          </View>
+          <View style={authStyles.context}>
+            <Button
+              text="Redefinir senha"
+              type="confirm"
+              onPress={handleSubmit}
+            />
+          </View>
         </View>
       </View>
-    </View>
+    </KeyboardAwareContainer>
   )
 }

@@ -5,12 +5,13 @@ import { Image, Keyboard, Text, TouchableOpacity, View } from 'react-native'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
+import { validatePassword } from '@/utils/validators/validate-password'
 
 import { authStyles } from '../_styles/styles'
 import { styles } from './styles'
 
+import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 import { validateEmail } from '@/utils/validators/validate-email'
-import { validatePassword } from '@/utils/validators/validate-password'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -41,45 +42,47 @@ export default function Login() {
   }
 
   return (
-    <View style={authStyles.container}>
-      <View style={styles.header}>
-        <Image source={require('@/assets/logo_small.png')} />
-      </View>
+    <KeyboardAwareContainer>
+      <View style={authStyles.container}>
+        <View style={styles.header}>
+          <Image source={require('@/assets/logo_small.png')} />
+        </View>
 
-      <View style={authStyles.body}>
-        <Text style={authStyles.title}>Login</Text>
-        <View style={authStyles.context}>
+        <View style={authStyles.body}>
+          <Text style={authStyles.title}>Login</Text>
           <View style={authStyles.context}>
-            <Input
-              icon="mail"
-              placeholder="E-mail"
-              onChangeText={handleEmailChange}
-              isFilled={!!email}
-              messageError={emailError}
-              autoCapitalize="none"
-            />
-            <Input
-              icon="lock"
-              placeholder="Senha"
-              onChangeText={handlePasswordChange}
-              isFilled={!!password}
-              messageError={passwordError}
-              autoCapitalize="none"
-              secureTextEntry
-            />
-          </View>
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={() => router.navigate('/password-recovery')}
-          >
-            <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
-          </TouchableOpacity>
-          <View style={authStyles.context}>
-            <Button text="Login" type="confirm" onPress={handleSubmit} />
-            <Button text="Cadastrar-se" type="redirect" />
+            <View style={authStyles.context}>
+              <Input
+                icon="mail"
+                placeholder="E-mail"
+                onChangeText={handleEmailChange}
+                isFilled={!!email}
+                messageError={emailError}
+                autoCapitalize="none"
+              />
+              <Input
+                icon="lock"
+                placeholder="Senha"
+                onChangeText={handlePasswordChange}
+                isFilled={!!password}
+                messageError={passwordError}
+                autoCapitalize="none"
+                secureTextEntry
+              />
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() => router.navigate('/password-recovery')}
+            >
+              <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
+            </TouchableOpacity>
+            <View style={authStyles.context}>
+              <Button text="Login" type="confirm" onPress={handleSubmit} />
+              <Button text="Cadastrar-se" type="redirect" />
+            </View>
           </View>
         </View>
       </View>
-    </View>
+    </KeyboardAwareContainer>
   )
 }
