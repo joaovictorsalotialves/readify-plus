@@ -4,7 +4,7 @@ import { styles } from './styles'
 
 import { Book } from '../book'
 
-import type { BookData } from '@/types/BookData'
+import type { BookData } from '@/utils/types/BookData'
 
 type FeaturedBooksProps = {
   title: string

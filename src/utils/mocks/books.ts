@@ -1,4 +1,4 @@
-import type { BookData } from '../../types/BookData'
+import type { BookData } from '../types/BookData'
 
 export const books: BookData[] = [
   {

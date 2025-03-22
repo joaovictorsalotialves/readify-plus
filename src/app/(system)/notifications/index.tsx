@@ -1,4 +1,5 @@
-import { View } from 'react-native'
+import type { MaterialIcons } from '@expo/vector-icons'
+import { FlatList, View } from 'react-native'
 
 import ResourceHeader from '../_components/resource-header'
 import { Notification } from './_components/notification'
@@ -6,26 +7,29 @@ import { Notification } from './_components/notification'
 import { systemStyles } from '../_styles/styles'
 import { styles } from './styles'
 
+import { notificationIconMap } from '@/utils/mappers/notificationIconMap'
+import { notifications } from '@/utils/mocks/notifications'
+
 export default function Notifications() {
   return (
     <View style={systemStyles.container}>
       <ResourceHeader title="Notificação" />
 
       <View style={styles.body}>
-        <Notification
-          title="(Username) curtiu o seu comentário"
-          date="27 de Fevereiro 2025"
-          icon="thumb-up"
-        />
-        <Notification
-          title="Sugestão de leitura - (Titulo do livro)"
-          date="27 de Fevereiro 2025"
-          icon="book"
-        />
-        <Notification
-          title="Novidade - (Titulo do livro)"
-          date="27 de Fevereiro 2025"
-          icon="book"
+        <FlatList
+          data={notifications}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => (
+            <Notification
+              title={item.title}
+              date={item.date}
+              icon={
+                notificationIconMap[
+                  item.type
+                ] as keyof typeof MaterialIcons.glyphMap
+              }
+            />
+          )}
         />
       </View>
     </View>
