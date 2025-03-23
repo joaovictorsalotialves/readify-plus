@@ -1,7 +1,7 @@
 import type { MaterialIcons } from '@expo/vector-icons'
 import { FlatList, View } from 'react-native'
 
-import ResourceHeader from '../_components/resource-header'
+import { ResourceHeader } from '../_components/resource-header'
 import { Notification } from './_components/notification'
 
 import { systemStyles } from '../_styles/styles'
@@ -13,7 +13,7 @@ import { notifications } from '@/utils/mocks/notifications'
 export default function Notifications() {
   return (
     <View style={systemStyles.container}>
-      <ResourceHeader title="Notificação" />
+      <ResourceHeader title="Notificação" icon="close" />
 
       <View style={styles.body}>
         <FlatList

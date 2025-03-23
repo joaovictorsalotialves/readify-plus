@@ -7,13 +7,14 @@ import { styles } from './styles'
 
 type ResourceHeaderProps = {
   title: string
+  icon: keyof typeof MaterialIcons.glyphMap
 }
 
-export default function ResourceHeader({ title }: ResourceHeaderProps) {
+export function ResourceHeader({ title, icon }: ResourceHeaderProps) {
   return (
     <View style={styles.header}>
       <Pressable onPress={() => router.back()}>
-        <MaterialIcons name="close" size={32} color={colors.gray[900]} />
+        <MaterialIcons name={icon} size={32} color={colors.gray[900]} />
       </Pressable>
       <Text style={styles.title}>{title}</Text>
     </View>

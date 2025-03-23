@@ -14,9 +14,7 @@ export default function Layout() {
         },
       }}
     >
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="(reading)" />
-      <Stack.Screen name="notifications" />
+      <Stack.Screen name="read/index" />
     </Stack>
   )
 }
