@@ -27,9 +27,9 @@ export default function Read() {
           step={1}
           value={page}
           onValueChange={value => setPage(value)}
-          minimumTrackTintColor="#000"
-          maximumTrackTintColor="#ccc"
-          thumbTintColor="#000"
+          minimumTrackTintColor={colors.gray[900]}
+          maximumTrackTintColor={colors.gray[400]}
+          thumbTintColor={colors.gray[900]}
         />
         <View style={styles.containerButtons}>
           <Pressable style={styles.button}>
