@@ -26,6 +26,15 @@ export default function Layout() {
           title: 'Home',
         }}
       />
+      <Tabs.Screen
+        name="profile/index"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="person" size={size} color={color} />
+          ),
+          title: 'Perfil',
+        }}
+      />
     </Tabs>
   )
 }
