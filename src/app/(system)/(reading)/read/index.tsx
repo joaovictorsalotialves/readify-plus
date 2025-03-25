@@ -37,7 +37,6 @@ export default function Read() {
               name="format-size"
               color={colors.gray[900]}
               size={32}
-              style={styles.button}
             />
           </Pressable>
           <Pressable style={styles.button}>
@@ -45,7 +44,6 @@ export default function Read() {
               name="play-arrow"
               color={colors.gray[900]}
               size={32}
-              style={styles.button}
             />
           </Pressable>
         </View>

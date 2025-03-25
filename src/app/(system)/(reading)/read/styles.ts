@@ -13,9 +13,13 @@ export const styles = StyleSheet.create({
   },
   containerButtons: {
     flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
   button: {
     flex: 1,
-    textAlign: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
   },
 })
