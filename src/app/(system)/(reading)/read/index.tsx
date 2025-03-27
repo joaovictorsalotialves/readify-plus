@@ -1,8 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
-import { MaterialIcons } from '@expo/vector-icons'
 import Slider from '@react-native-community/slider'
-import { Pressable, Text, View } from 'react-native'
+import { Text, TouchableWithoutFeedback, View } from 'react-native'
 
 import { ResourceHeader } from '../../_components/resource-header'
 
@@ -17,31 +16,44 @@ import { styles } from './styles'
 
 export default function Read() {
   const [page, setPage] = useState(20)
+  const [isVisible, setIsVisible] = useState(false)
+
+  const showControls = () => {
+    setIsVisible(true)
+    setTimeout(() => setIsVisible(false), 5000)
+  }
 
   return (
-    <View style={systemStyles.container}>
-      <ResourceHeader title="Título do Livro" icon="arrow-back" />
-      {/* TODO: Adicionar o componente para mostrar o pdf do livro */}
-      <View style={{ flex: 1, backgroundColor: '#ccc' }} />
+    <TouchableWithoutFeedback onPress={showControls}>
+      <View style={systemStyles.container}>
+        {isVisible && (
+          <ResourceHeader title="Título do Livro" icon="arrow-back" />
+        )}
 
-      <Asside>
-        <Text style={styles.pagination}>Página {page}/248</Text>
-        <Slider
-          style={styles.slider}
-          minimumValue={1}
-          maximumValue={248}
-          step={1}
-          value={page}
-          onValueChange={value => setPage(value)}
-          minimumTrackTintColor={colors.gray[900]}
-          maximumTrackTintColor={colors.gray[400]}
-          thumbTintColor={colors.gray[900]}
-        />
-        <ContainerAssideButtons>
-          <AssideButton icon="format-size" />
-          <AssideButton icon="play-arrow" />
-        </ContainerAssideButtons>
-      </Asside>
-    </View>
+        {/* TODO: Adicionar o componente para mostrar o pdf do livro */}
+        <View style={{ flex: 1 }} />
+
+        {isVisible && (
+          <Asside>
+            <Text style={styles.pagination}>Página {page}/248</Text>
+            <Slider
+              style={styles.slider}
+              minimumValue={1}
+              maximumValue={248}
+              step={1}
+              value={page}
+              onValueChange={value => setPage(value)}
+              minimumTrackTintColor={colors.gray[900]}
+              maximumTrackTintColor={colors.gray[400]}
+              thumbTintColor={colors.gray[900]}
+            />
+            <ContainerAssideButtons>
+              <AssideButton icon="format-size" />
+              <AssideButton icon="play-arrow" />
+            </ContainerAssideButtons>
+          </Asside>
+        )}
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
