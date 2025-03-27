@@ -8,6 +8,11 @@ import { ResourceHeader } from '../../_components/resource-header'
 
 import { colors } from '@/styles/colors'
 import { systemStyles } from '../../_styles/styles'
+import {
+  Asside,
+  AssideButton,
+  ContainerAssideButtons,
+} from '../_components/asside'
 import { styles } from './styles'
 
 export default function Read() {
@@ -18,7 +23,8 @@ export default function Read() {
       <ResourceHeader title="Título do Livro" icon="arrow-back" />
       {/* TODO: Adicionar o componente para mostrar o pdf do livro */}
       <View style={{ flex: 1, backgroundColor: '#ccc' }} />
-      <View style={styles.asside}>
+
+      <Asside>
         <Text style={styles.pagination}>Página {page}/248</Text>
         <Slider
           style={styles.slider}
@@ -31,23 +37,11 @@ export default function Read() {
           maximumTrackTintColor={colors.gray[400]}
           thumbTintColor={colors.gray[900]}
         />
-        <View style={styles.containerButtons}>
-          <Pressable style={styles.button}>
-            <MaterialIcons
-              name="format-size"
-              color={colors.gray[900]}
-              size={32}
-            />
-          </Pressable>
-          <Pressable style={styles.button}>
-            <MaterialIcons
-              name="play-arrow"
-              color={colors.gray[900]}
-              size={32}
-            />
-          </Pressable>
-        </View>
-      </View>
+        <ContainerAssideButtons>
+          <AssideButton icon="format-size" />
+          <AssideButton icon="play-arrow" />
+        </ContainerAssideButtons>
+      </Asside>
     </View>
   )
 }
