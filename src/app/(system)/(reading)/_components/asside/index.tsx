@@ -17,8 +17,8 @@ type AssideButtonProps = PressableProps & {
   icon: keyof typeof MaterialIcons.glyphMap
 }
 
-export function Asside({ children }: AssideProps) {
-  return <View style={styles.asside}>{children}</View>
+export function Asside({ children, style }: AssideProps) {
+  return <View style={[styles.asside, style]}>{children}</View>
 }
 
 export function ContainerAssideButtons({
