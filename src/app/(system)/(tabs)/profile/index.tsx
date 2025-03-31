@@ -1,21 +1,25 @@
-// biome-ignore
-import { useState } from 'react';
-import { ScrollView, View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'
+import { useState } from 'react'
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 
-import { NavigationHeader } from '../../_components/navigation-header';
+import { NavigationHeader } from '../../_components/navigation-header'
 
-import { systemStyles } from '../../_styles/styles';
-import { styles } from './styles';
+import { systemStyles } from '../../_styles/styles'
+import { styles } from './styles'
 
-import { comments as initialComments } from '@/utils/mocks/comments';
-import type { CommentData } from '@/utils/types/CommentData';
-import { colors } from '@/styles/colors';
-
-
+import { colors } from '@/styles/colors'
+import { comments as initialComments } from '@/utils/mocks/comments'
+import type { CommentData } from '@/utils/types/CommentData'
 
 export default function Profile() {
-  const [comments, setComments] = useState<CommentData[]>(initialComments);
+  const [comments, setComments] = useState<CommentData[]>(initialComments)
 
   return (
     <View style={systemStyles.container}>
@@ -25,13 +29,15 @@ export default function Profile() {
         <View style={styles.header}>
           {/* Imagem do perfil */}
           <View style={styles.profilePicture}>
-            <Image source={{ uri: 'https://via.placeholder.com/100' }} style={styles.image} />
-            <TouchableOpacity style={styles.settingsButton} accessibilityLabel="Abrir configurações">
-            <MaterialIcons
-              name="settings"
-              color={colors.blue}
-              size={32}
+            <Image
+              source={{ uri: 'https://via.placeholder.com/100' }}
+              style={styles.image}
             />
+            <TouchableOpacity
+              style={styles.settingsButton}
+              accessibilityLabel="Abrir configurações"
+            >
+              <MaterialIcons name="settings" color={colors.blue} size={32} />
             </TouchableOpacity>
           </View>
 
@@ -54,10 +60,10 @@ export default function Profile() {
         </View>
 
         {/* Lista de livros */}
-        
+
         <FlatList
           data={comments}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           scrollEnabled={false}
           initialNumToRender={5}
           getItemLayout={(_, index) => ({
@@ -79,35 +85,46 @@ export default function Profile() {
                   {/* Estrelas Clicáveis */}
                   <View style={styles.rating}>
                     {[...Array(5)].map((_, i) => (
-                      <MaterialIcons key={i}
-                      name="star"
-                      color={i < (item.rating ?? 0) ? colors.alert : colors.gray[300]}
-                      size={32}
-                    />
-
+                      <MaterialIcons
+                        key={i}
+                        name="star"
+                        color={
+                          i < (item.rating ?? 0)
+                            ? colors.alert
+                            : colors.gray[300]
+                        }
+                        size={32}
+                      />
                     ))}
                   </View>
 
                   {/* Botão de opções (três pontos) */}
-                  <TouchableOpacity style={styles.moreOptionsButton} accessibilityLabel="Mais opções">
-                  <MaterialIcons
-                    name="more-horiz"
-                    color={colors.gray[900]}
-                    size={32}
-            />
+                  <TouchableOpacity
+                    style={styles.moreOptionsButton}
+                    accessibilityLabel="Mais opções"
+                  >
+                    <MaterialIcons
+                      name="more-horiz"
+                      color={colors.gray[900]}
+                      size={32}
+                    />
                   </TouchableOpacity>
                 </View>
 
                 <Text style={styles.bookDate}>27 de Fevereiro 2025</Text>
                 <Text style={styles.bookDescription}>Why do we use it?</Text>
-                <Text style={styles.bookDescription}>Its a long established fact</Text>
+                <Text style={styles.bookDescription}>
+                  Its a long established fact
+                </Text>
                 <Text style={styles.bookDescription}>Why do we use it?</Text>
-                <Text style={styles.bookDescription}>Its a long established fact</Text>
+                <Text style={styles.bookDescription}>
+                  Its a long established fact
+                </Text>
               </View>
             </View>
           )}
         />
       </ScrollView>
     </View>
-  );
+  )
 }
