@@ -36,7 +36,8 @@
     "react-native-screens": "~4.4.0",
     "react-native-select-dropdown": "^4.0.1",
     "react-native-web": "~0.19.13",
-    "zod": "^3.24.2"
+    "zod": "^3.24.2",
+    "expo-brightness": "~13.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

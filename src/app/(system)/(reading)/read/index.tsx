@@ -1,7 +1,8 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import type BottomSheet from '@gorhom/bottom-sheet'
 import Slider from '@react-native-community/slider'
+import * as Brightness from 'expo-brightness'
 import { Text, TouchableWithoutFeedback, View } from 'react-native'
 
 import { Select } from '@/components/select'
@@ -34,6 +35,12 @@ export default function Read() {
   const [font, setFont] = useState(fonts[0])
   const [fontSize, setFontSize] = useState(fontSizes[0])
   const [lineSpacing, setLineSpacing] = useState(_lineSpacing[0])
+  const [brightness, setBrightness] = useState<number>()
+
+  async function handleBrightnessChange(value: number) {
+    setBrightness(value)
+    await Brightness.setBrightnessAsync(value)
+  }
 
   function toggleVisibleControls() {
     if (!isVisibleAudiobookSheet && !isVisibleSettingsSheet) {
@@ -41,13 +48,24 @@ export default function Read() {
     }
   }
 
+  useEffect(() => {
+    async function getSystemBrightness() {
+      const level = await Brightness.getSystemBrightnessAsync()
+      setBrightness(level)
+    }
+    getSystemBrightness()
+  }, [])
+
   return (
     <View style={systemStyles.container}>
       {isVisible && (
         <ResourceHeader title="Título do Livro" icon="arrow-back" />
       )}
 
-      <TouchableWithoutFeedback onPress={toggleVisibleControls}>
+      <TouchableWithoutFeedback
+        onPress={toggleVisibleControls}
+        accessible={false}
+      >
         {/* TODO: Adicionar o componente para mostrar o pdf do livro */}
         <View style={{ flex: 1 }} />
       </TouchableWithoutFeedback>
@@ -87,6 +105,8 @@ export default function Read() {
 
       {isVisibleSettingsSheet && (
         <Sheet
+          enableContentPanningGesture={false}
+          activeOffsetY={[-10, 10]} // Ignora pequenos movimentos verticais
           ref={bottomSheetSettingsRef}
           snapPoints={[500]}
           onChange={index => {
@@ -117,6 +137,23 @@ export default function Read() {
                 data={_lineSpacing}
                 onSelect={setLineSpacing}
                 value={lineSpacing}
+              />
+            </View>
+            <View style={styles.field}>
+              <Text style={styles.label}>Brilho da tela:</Text>
+              <Slider
+                style={styles.slider}
+                minimumValue={0}
+                maximumValue={1}
+                step={0.05}
+                value={brightness}
+                onValueChange={setBrightness}
+                onSlidingComplete={value =>
+                  Brightness.setBrightnessAsync(value)
+                }
+                minimumTrackTintColor={colors.gray[900]}
+                maximumTrackTintColor={colors.gray[400]}
+                thumbTintColor={colors.gray[900]}
               />
             </View>
           </View>
