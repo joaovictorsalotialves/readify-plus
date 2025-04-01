@@ -27,6 +27,15 @@ export default function Layout() {
         }}
       />
       <Tabs.Screen
+        name="bookshelf/index"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="menu-book" size={size} color={color} />
+          ),
+          title: 'Minha Estante',
+        }}
+      />
+      <Tabs.Screen
         name="profile/index"
         options={{
           tabBarIcon: ({ color, size }) => (
