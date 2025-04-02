@@ -14,6 +14,7 @@ export const styles = StyleSheet.create({
   containerSheetSettings: {
     paddingHorizontal: 48,
     paddingVertical: 8,
+    marginBottom: 8,
   },
   field: {
     gap: 4,

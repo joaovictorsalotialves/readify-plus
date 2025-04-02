@@ -5,7 +5,7 @@ import { colors } from '@/styles/colors'
 export const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.gray[100],
-    borderWidth: 0.2,
+    borderWidth: 0.5,
     borderColor: colors.gray[300],
   },
   indicator: {

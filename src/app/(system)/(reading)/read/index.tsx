@@ -5,6 +5,7 @@ import Slider from '@react-native-community/slider'
 import * as Brightness from 'expo-brightness'
 import { Text, TouchableWithoutFeedback, View } from 'react-native'
 
+import { InputRadioTheme } from '@/components/input-radio-theme'
 import { Select } from '@/components/select'
 import { ResourceHeader } from '../../_components/resource-header'
 import {
@@ -21,6 +22,7 @@ import { styles } from './styles'
 import { fontSizes } from '@/utils/mocks/fontSizes'
 import { fonts } from '@/utils/mocks/fonts'
 import { lineSpacing as _lineSpacing } from '@/utils/mocks/lineSpacing'
+import { themes } from '@/utils/mocks/theme'
 
 export default function Read() {
   const [page, setPage] = useState(20)
@@ -36,11 +38,7 @@ export default function Read() {
   const [fontSize, setFontSize] = useState(fontSizes[0])
   const [lineSpacing, setLineSpacing] = useState(_lineSpacing[0])
   const [brightness, setBrightness] = useState<number>()
-
-  async function handleBrightnessChange(value: number) {
-    setBrightness(value)
-    await Brightness.setBrightnessAsync(value)
-  }
+  const [theme, setTheme] = useState('light')
 
   function toggleVisibleControls() {
     if (!isVisibleAudiobookSheet && !isVisibleSettingsSheet) {
@@ -106,7 +104,7 @@ export default function Read() {
       {isVisibleSettingsSheet && (
         <Sheet
           enableContentPanningGesture={false}
-          activeOffsetY={[-10, 10]} // Ignora pequenos movimentos verticais
+          activeOffsetY={[-10, 10]}
           ref={bottomSheetSettingsRef}
           snapPoints={[500]}
           onChange={index => {
@@ -154,6 +152,14 @@ export default function Read() {
                 minimumTrackTintColor={colors.gray[900]}
                 maximumTrackTintColor={colors.gray[400]}
                 thumbTintColor={colors.gray[900]}
+              />
+            </View>
+            <View style={styles.field}>
+              <Text style={styles.label}>Cor da tela:</Text>
+              <InputRadioTheme
+                options={themes}
+                theme={theme}
+                setTheme={setTheme}
               />
             </View>
           </View>
