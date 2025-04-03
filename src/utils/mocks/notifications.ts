@@ -19,4 +19,11 @@ export const notifications: NotificationData[] = [
     date: '27 de Fevereiro 2025',
     type: 'novelty',
   },
+  {
+    id: '4',
+    title:
+      'Você parou na página 120 de (Titulo do livro). Continue sua leitura!',
+    date: '27 de Fevereiro 2025',
+    type: 'reminder',
+  },
 ]

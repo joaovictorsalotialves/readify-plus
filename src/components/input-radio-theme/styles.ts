@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: '50%',
     borderWidth: 0.5,
+    borderColor: colors.gray[900],
     height: 24,
     width: 24,
   },
