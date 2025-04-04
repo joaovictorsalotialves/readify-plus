@@ -21,7 +21,7 @@ export function Input({
   const [isFocused, setIsFocused] = useState(false)
 
   return (
-    <View>
+    <View style={styles.container}>
       <TextInput
         style={[
           styles.input,

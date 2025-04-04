@@ -20,7 +20,7 @@ export function KeyboardAwareContainer({ children }: Props) {
       style={styles.container}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={styles.context}>
+        <ScrollView contentContainerStyle={styles.context} showsVerticalScrollIndicator={false}>
           <View style={styles.container}>{children}</View>
         </ScrollView>
       </TouchableWithoutFeedback>

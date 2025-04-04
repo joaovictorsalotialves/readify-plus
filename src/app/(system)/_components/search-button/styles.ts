@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between', // Coloca o filtro ao lado
     marginBottom: 12,
+    width: '100%',
   },
   searchContainer: {
     flexDirection: 'row',

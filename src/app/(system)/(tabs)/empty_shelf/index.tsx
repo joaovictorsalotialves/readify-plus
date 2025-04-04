@@ -33,7 +33,7 @@ export default function EmptyBookshelf() {
         {/* Tela vazia */}
         <View style={styles.emptyContainer}>
           <Image
-            source={require('../../../../../assets/images/splash-icon.png')}
+            source={require('../../../../assets/logo_small.png')}
             style={styles.emptyImage}
             resizeMode="contain"
           />
