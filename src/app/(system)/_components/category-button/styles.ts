@@ -1,5 +1,7 @@
-import { StyleSheet } from 'react-native';
-import { fonts } from '@/styles/fonts';  // Importe as fontes de forma correta
+import { StyleSheet } from 'react-native'
+
+import { colors } from '@/styles/colors'
+import { fonts } from '@/styles/fonts'
 
 export const styles = StyleSheet.create({
   button: {
@@ -13,16 +15,15 @@ export const styles = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#333',
-    fontFamily: fonts.heading.md.fontFamily,  // Fonte de negrito
+    color: colors.gray[900],
+    fontFamily: fonts.heading.md.fontFamily,
   },
   selectedButton: {
     borderBottomWidth: 1,
-    borderBottomColor: '#2C56C9',
+    borderBottomColor: colors.blue,
     width: '50%',
   },
   selectedButtonText: {
-    color: '#2C56C9',
+    color: colors.blue,
   },
-  
-});
+})

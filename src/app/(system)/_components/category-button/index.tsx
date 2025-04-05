@@ -1,23 +1,32 @@
-import React from 'react';
-import { TouchableOpacity, Text, View } from 'react-native';
-import { styles } from './styles';  // Defina estilos específicos para o botão
+import {
+  Text,
+  TouchableOpacity,
+  type TouchableOpacityProps,
+} from 'react-native'
+import { styles } from './styles'
 
-interface CategoryButtonProps {
-  title: string;
-  isSelected: boolean;
-  onPress: () => void;
+type CategoryButtonProps = TouchableOpacityProps & {
+  title: string
+  isSelected: boolean
 }
 
-export const CategoryButton: React.FC<CategoryButtonProps> = ({ title, isSelected, onPress }) => {
+export function CategoryButton({
+  title,
+  isSelected,
+  onPress,
+  ...rest
+}: CategoryButtonProps) {
   return (
     <TouchableOpacity
       style={[styles.button, isSelected && styles.selectedButton]}
       onPress={onPress}
+      {...rest}
     >
-      <Text style={[styles.buttonText, isSelected && styles.selectedButtonText]}>
+      <Text
+        style={[styles.buttonText, isSelected && styles.selectedButtonText]}
+      >
         {title}
       </Text>
-
     </TouchableOpacity>
-  );
-};
+  )
+}

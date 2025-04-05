@@ -1,49 +1,48 @@
-import { StyleSheet } from 'react-native';
-import { fonts } from '@/styles/fonts';
+import { fonts } from '@/styles/fonts'
+import { StyleSheet } from 'react-native'
+import { colors } from '@/styles/colors'
 
 export const styles = StyleSheet.create({
   body: {
-    flexGrow: 1,
     paddingHorizontal: 20,
-    paddingTop: 12,
-    gap: 12, // Reduz o espaço entre os itens principais
+    gap: 12,
   },
   buttonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',  // Divide igualmente os botões Lidos e Favoritos
-    width: '100%',  // Garante que ocupe toda a largura da tela
-    marginBottom: 12,  // Ajusta o espaço entre os botões e a barra de pesquisa
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 12,
   },
   button: {
-    paddingVertical: 12,  // Aumenta o tamanho do botão
-    paddingHorizontal: 24,  // Aumenta o espaço horizontal para tornar o botão maior
+    paddingVertical: 12,
+    paddingHorizontal: 24,
     alignItems: 'center',
     justifyContent: 'center',
-    width: '50%',  // Faz com que cada botão ocupe metade da tela
+    width: '50%',
     textAlign: 'center',
   },
   buttonText: {
-    fontSize: 18,  // Aumenta o tamanho da fonte
-    fontWeight: 'bold',  // Aplica negrito
-    color: '#333',
-    fontFamily: fonts.heading.md.fontFamily,  // Aplica a fonte correta
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: colors.gray[600],
+    fontFamily: fonts.heading.md.fontFamily,
   },
   selectedButton: {
-    borderBottomWidth: 1,  // Linha abaixo do botão selecionado
-    borderBottomColor: '#2C56C9',  // Linha azul para o botão selecionado
-    width: '50%',  // Faz com que a linha ocupe toda a largura do botão
+    borderBottomWidth: 1,
+    borderBottomColor: colors.blue,
+    width: '50%',
   },
   selectedButtonText: {
-    color: '#2C56C9',  // Altera a cor do texto para azul quando o botão é selecionado
+    color: colors.blue,
   },
   searchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#DAE4F2',  // Cor de fundo para o search
+    backgroundColor: colors.gray[200],
     borderRadius: 20,
     paddingHorizontal: 10,
     paddingVertical: 6,
-    marginBottom: 12,  // Diminui o espaço entre o search e o próximo item
+    marginBottom: 12,
   },
   searchIcon: {
     marginRight: 8,
@@ -51,16 +50,33 @@ export const styles = StyleSheet.create({
   searchBar: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: colors.gray[600],
   },
   filterButton: {
     padding: 10,
   },
   contextGallery: {
-    gap: 12,  // Diminui o espaço entre as seções de livros
-    paddingBottom: 20, // Garante que haja espaço no final
+    gap: 12,
+    paddingBottom: 20,
   },
   slider: {
-    gap: 12,  // Define o espaçamento entre os itens da lista horizontal
+    gap: 12,
   },
-});
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  emptyImage: {
+    width: 250,
+    height: 250,
+    marginBottom: 25,
+  },
+  emptyText: {
+    fontSize: 20,
+    color: colors.gray[900],
+    textAlign: 'center',
+    fontFamily: fonts.body.button.fontFamily,
+  },
+})

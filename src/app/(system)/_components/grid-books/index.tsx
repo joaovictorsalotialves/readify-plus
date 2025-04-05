@@ -12,7 +12,11 @@ type GridBooksProps = {
   scrollEnabled?: boolean
 }
 
-export function GridBooks({ title, data, scrollEnabled = false }: GridBooksProps) {
+export function GridBooks({
+  title,
+  data,
+  scrollEnabled = false,
+}: GridBooksProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -24,7 +28,7 @@ export function GridBooks({ title, data, scrollEnabled = false }: GridBooksProps
             <Book title={item.title} />
           </View>
         )}
-        contentContainerStyle={styles.slider}
+        contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
         numColumns={3}
         scrollEnabled={scrollEnabled}
