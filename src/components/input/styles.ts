@@ -46,4 +46,16 @@ export const styles = StyleSheet.create({
     ...fonts.body.sm,
     color: colors.danger,
   },
+
+rightIcon: {
+  position: 'absolute',
+  right: 10,
+  top: 10,
+  backgroundColor: colors.gray[800],
+  padding: 6,
+  borderRadius: 8,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+
 })

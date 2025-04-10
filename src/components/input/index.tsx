@@ -10,12 +10,14 @@ type InputProps = TextInputProps & {
   icon: keyof typeof MaterialIcons.glyphMap
   isFilled: boolean
   messageError?: string
+  rightIcon?: React.ReactNode;
 }
 
 export function Input({
   icon,
   isFilled = false,
   messageError,
+  rightIcon,
   ...rest
 }: InputProps) {
   const [isFocused, setIsFocused] = useState(false)
@@ -33,6 +35,7 @@ export function Input({
         placeholderTextColor={colors.gray[400]}
         {...rest}
       />
+      {/* Ícone à esquerda do input */}
       <MaterialIcons
         name={icon}
         size={20}
@@ -43,6 +46,12 @@ export function Input({
           messageError && !isFocused && styles.iconError,
         ]}
       />
+      {/* Ícone à direita do input */}
+      {rightIcon && (
+        <View style={styles.rightIcon}>
+          {rightIcon}
+        </View>
+      )}
       {messageError && !isFocused && (
         <Text style={styles.messageError}>{messageError}</Text>
       )}

@@ -35,6 +35,7 @@ export default function Layout() {
           title: 'Minha Estante',
         }}
       />
+      
       <Tabs.Screen
         name="profile/index"
         options={{
@@ -44,6 +45,16 @@ export default function Layout() {
           title: 'Perfil',
         }}
       />
+      <Tabs.Screen
+        name="detailsbook/index"
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialIcons name="search" size={size} color={color} />
+          ),
+          title: 'Pesquisar',
+        }}
+      />
     </Tabs>
+    
   )
 }
