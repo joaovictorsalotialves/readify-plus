@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import { colors } from '@/styles/colors';
 import { fonts } from '@/styles/fonts';
 
-export default StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.gray[100],
@@ -179,6 +179,36 @@ statsGrid: {
   justifyContent: 'space-between',
   paddingHorizontal: 7,
   marginTop: 8,
+},
+header: {
+  alignItems: 'center',
+  paddingVertical: 20,
+},
+contextGallery: {
+  gap: 24,
+},
+paginationContainer: {
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: 8,
+  marginTop: 16,
+},
+
+pageButton: {
+  backgroundColor: colors.gray[400],
+  borderRadius: 8,
+  paddingVertical: 6,
+  paddingHorizontal: 12,
+},
+
+activePageButton: {
+  backgroundColor: colors.blue,
+},
+
+pageButtonText: {
+  color: colors.gray[100],
+  fontWeight: 'bold',
 },
 
 });

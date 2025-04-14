@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image,} from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StarRating } from '../../_components/star-rating';
 import { StatItem } from '../../_components/stat-item';
 import { ReviewCard } from '../../_components/review-card';
 import { NavigationHeader } from '../../_components/navigation-header';
-import styles from './styles';
+import { styles } from '@/app/(system)/(tabs)/detailsbook/styles';
 import { colors } from '@/styles/colors';
 import type { CommentData } from '@/utils/types/CommentData';
 import { books } from '@/utils/mocks/books';
 import { Input } from '@/components/input';
+import { FeaturedBooks } from '../../_components/featured-books';
 
 const book = {
   id: '1',
@@ -49,16 +50,39 @@ const reviews: CommentData[] = [
     cover: book.coverImage,
     rating: 4.8,
     avatar: 'https://exemplo.com/avatar2.jpg'
+  },
+  {
+    id: '3',
+    username: 'MariaLuz',
+    date: '10 de março 2023',
+    comment: 'Muito interessante, mas um pouco longo pra mim.',
+    title: book.title,
+    cover: book.coverImage,
+    rating: 4.0,
+    avatar: 'https://exemplo.com/avatar3.jpg'
+  },
+  {
+    id: '4',
+    username: 'JoãoCultura',
+    date: '21 de abril 2023',
+    comment: 'Simplesmente genial! Leitura obrigatória.',
+    title: book.title,
+    cover: book.coverImage,
+    rating: 5.0,
+    avatar: 'https://exemplo.com/avatar4.jpg'
   }
 ];
 
 export default function BookDetailsScreen() {
   const [link, setLink] = useState('');
+  const [currentReviewPage, setCurrentReviewPage] = useState(2);
+  const reviewsPerPage = 1;
+  const maxPages = Math.ceil(reviews.length / reviewsPerPage);
 
   const handleEnviarLink = () => {
     console.log('Link enviado:', link);
-    // aqui você pode adicionar lógica para processar o link
   };
+
   return (
     <View style={styles.container}>
       <NavigationHeader />
@@ -101,25 +125,23 @@ export default function BookDetailsScreen() {
 
         {/* Seção Ler Livro */}
         <View style={styles.readSection}>
-        <TouchableOpacity style={styles.readButton}>
-          <Text style={styles.readButtonText}>Ler Livro</Text>
-        </TouchableOpacity>
-        <View style={styles.linkButton}>
-          <Input
-            icon="link"
-            isFilled
-            placeholder="Link do Livro"
-            value={link}
-            onChangeText={setLink}
-            rightIcon={
-              <TouchableOpacity onPress={handleEnviarLink}>
-                <MaterialIcons name="arrow-forward" size={20} color={colors.gray[100]} />
-              </TouchableOpacity>
-            }
-          />
-        </View>
-
-  
+          <TouchableOpacity style={styles.readButton}>
+            <Text style={styles.readButtonText}>Ler Livro</Text>
+          </TouchableOpacity>
+          <View style={styles.linkButton}>
+            <Input
+              icon="link"
+              isFilled
+              placeholder="Link do Livro"
+              value={link}
+              onChangeText={setLink}
+              rightIcon={
+                <TouchableOpacity onPress={handleEnviarLink}>
+                  <MaterialIcons name="arrow-forward" size={20} color={colors.gray[100]} />
+                </TouchableOpacity>
+              }
+            />
+          </View>
         </View>
 
         {/* Estatísticas */}
@@ -130,7 +152,6 @@ export default function BookDetailsScreen() {
           <StatItem label="Nº Compartilhamentos" value={book.shares} />
         </View>
 
-
         {/* Informações do Livro */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Informações sobre o Livro</Text>
@@ -138,56 +159,57 @@ export default function BookDetailsScreen() {
           <Text style={styles.bookDescription}>{book.description}</Text>
 
           <View style={styles.detailsContainer}>
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Gênero: </Text>
-              {book.genre}
-            </Text>
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Editora: </Text>
-              {book.publisher}
-            </Text>
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Nº Páginas: </Text>
-              {book.pages}
-            </Text>
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>Idiomas: </Text>
-              {book.language}
-            </Text>
-            <Text style={styles.detailText}>
-              <Text style={styles.detailLabel}>ISBN: </Text>
-              {book.isbn}
-            </Text>
+            <Text style={styles.detailText}><Text style={styles.detailLabel}>Gênero: </Text>{book.genre}</Text>
+            <Text style={styles.detailText}><Text style={styles.detailLabel}>Editora: </Text>{book.publisher}</Text>
+            <Text style={styles.detailText}><Text style={styles.detailLabel}>Nº Páginas: </Text>{book.pages}</Text>
+            <Text style={styles.detailText}><Text style={styles.detailLabel}>Idiomas: </Text>{book.language}</Text>
+            <Text style={styles.detailText}><Text style={styles.detailLabel}>ISBN: </Text>{book.isbn}</Text>
           </View>
         </View>
 
-        {/* Avaliações */}
+        {/* Avaliações com Paginação */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Avaliações ({book.reviews})</Text>
-          {reviews.map((review) => (
-            <ReviewCard key={review.id} review={review} />
-          ))}
+
+          {reviews
+            .slice((currentReviewPage - 1) * reviewsPerPage, currentReviewPage * reviewsPerPage)
+            .map((review) => (
+              <ReviewCard key={review.id} review={review} />
+            ))}
+
+          <View style={{ flexDirection: 'row', justifyContent: 'center', marginTop: 12 }}>
+            {Array.from({ length: maxPages }).map((_, index) => {
+              const pageNumber = index + 1;
+              const isActive = currentReviewPage === pageNumber;
+
+              return (
+                <TouchableOpacity
+                  key={`page-${pageNumber}`}
+                  onPress={() => setCurrentReviewPage(pageNumber)}
+                  style={{
+                    paddingHorizontal: 12,
+                    paddingVertical: 6,
+                    marginHorizontal: 4,
+                    borderRadius: 8,
+                    backgroundColor: isActive ? colors.orange[500] : colors.gray[300],
+                  }}
+                >
+                  <Text style={{ color: isActive ? 'black' : colors.gray[800], fontWeight: 'bold' }}>
+                    {pageNumber}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
         </View>
 
         {/* Livros Recomendados */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Recomendados para você</Text>
-          <ScrollView 
-            horizontal 
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={styles.recommendationsContainer}
-          >
-            {books.slice(0, 6).map((item) => (
-              <TouchableOpacity key={item.id} style={styles.recommendedBook}>
-                <Image
-                  source={{ uri: `https://placehold.co/100x140?text=${encodeURIComponent(item.title.substring(0, 15))}` }}
-                  style={styles.bookCover}
-                />
-                <Text style={styles.bookSubTitle} numberOfLines={2}>
-                  {item.title}
-                </Text>
-              </TouchableOpacity>
-            ))}
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <View style={styles.contextGallery}>
+              <FeaturedBooks title="Recomendados para você" data={books.slice(0, 3)} />
+              <FeaturedBooks title="Títulos Semelhantes" data={books} />
+            </View>
           </ScrollView>
         </View>
       </ScrollView>
