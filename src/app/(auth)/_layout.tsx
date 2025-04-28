@@ -17,6 +17,8 @@ export default function Layout() {
       <Stack.Screen name="password-recovery/index" />
       <Stack.Screen name="password-confirmation/index" />
       <Stack.Screen name="password-reset/index" />
+      <Stack.Screen name="register-user/index" />
+      <Stack.Screen name="register-preferences/index" />
     </Stack>
   )
 }
