@@ -77,7 +77,7 @@ export default function Login() {
               <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
             </TouchableOpacity>
             <View style={authStyles.context}>
-              <Button text="Login" type="confirm" onPress={handleSubmit} />
+              <Button text="Logar" type="confirm" onPress={handleSubmit} />
               <Button text="Cadastrar-se" type="redirect" />
             </View>
           </View>

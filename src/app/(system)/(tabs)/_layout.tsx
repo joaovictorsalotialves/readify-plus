@@ -53,6 +53,11 @@ export default function Layout() {
           ),
           title: 'Pesquisar',
         }}
+        
+      />
+      <Tabs.Screen
+        name="search/index"
+        options={{href: null}}
       />
     </Tabs>
     
