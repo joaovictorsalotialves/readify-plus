@@ -5,13 +5,19 @@ import { Image, Keyboard, Text, TouchableOpacity, View } from 'react-native'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
-import { validatePassword } from '@/utils/validators/validate-password'
+import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 
 import { authStyles } from '../_styles/styles'
 import { styles } from './styles'
 
-import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 import { validateEmail } from '@/utils/validators/validate-email'
+import { validatePassword } from '@/utils/validators/validate-password'
+
+import { authenticateService } from '@/services/authenticateService'
+import { getUserProfileService } from '@/services/getUserProfileService'
+import { storageAuthTokenSave } from '@/storage/storageAuthToken'
+import { storageUserGet, storageUserSave } from '@/storage/storageUser'
+import axios from 'axios'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -30,14 +36,29 @@ export default function Login() {
     validatePassword(password, setPasswordError)
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     Keyboard.dismiss()
 
     const isValidEmail = validateEmail(email, setEmailError)
     const isValidPassword = validatePassword(password, setPasswordError)
 
-    if (isValidEmail || isValidPassword) {
-      router.navigate('/(system)/(tabs)/home')
+    if (isValidEmail && isValidPassword) {
+      try {
+        const { token, refreshToken } = await authenticateService({
+          email,
+          password,
+        })
+        await storageAuthTokenSave({ token, refreshToken })
+
+        const { user } = await getUserProfileService({ token })
+        await storageUserSave(user)
+
+        router.navigate('/(system)/(tabs)/home')
+      } catch (err) {
+        if (axios.isAxiosError(err)) {
+          console.log(err.response?.data.message)
+        }
+      }
     }
   }
 
