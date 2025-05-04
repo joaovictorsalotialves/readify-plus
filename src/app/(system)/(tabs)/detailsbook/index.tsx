@@ -9,7 +9,6 @@ import { styles } from '@/app/(system)/(tabs)/detailsbook/styles';
 import { colors } from '@/styles/colors';
 import type { CommentData } from '@/utils/types/CommentData';
 import { books } from '@/utils/mocks/books';
-import { Input } from '@/components/input';
 import { FeaturedBooks } from '../../_components/featured-books';
 
 const book = {
@@ -74,14 +73,10 @@ const reviews: CommentData[] = [
 ];
 
 export default function BookDetailsScreen() {
-  const [link, setLink] = useState('');
   const [currentReviewPage, setCurrentReviewPage] = useState(2);
   const reviewsPerPage = 1;
   const maxPages = Math.ceil(reviews.length / reviewsPerPage);
 
-  const handleEnviarLink = () => {
-    console.log('Link enviado:', link);
-  };
 
   return (
     <View style={styles.container}>
@@ -128,20 +123,7 @@ export default function BookDetailsScreen() {
           <TouchableOpacity style={styles.readButton}>
             <Text style={styles.readButtonText}>Ler Livro</Text>
           </TouchableOpacity>
-          <View style={styles.linkButton}>
-            <Input
-              icon="link"
-              isFilled
-              placeholder="Link do Livro"
-              value={link}
-              onChangeText={setLink}
-              rightIcon={
-                <TouchableOpacity onPress={handleEnviarLink}>
-                  <MaterialIcons name="arrow-forward" size={20} color={colors.gray[100]} />
-                </TouchableOpacity>
-              }
-            />
-          </View>
+          
         </View>
 
         {/* Estatísticas */}
@@ -205,12 +187,12 @@ export default function BookDetailsScreen() {
 
         {/* Livros Recomendados */}
         <View style={styles.section}>
-          <ScrollView showsVerticalScrollIndicator={false}>
+ 
             <View style={styles.contextGallery}>
               <FeaturedBooks title="Recomendados para você" data={books.slice(0, 3)} />
               <FeaturedBooks title="Títulos Semelhantes" data={books} />
             </View>
-          </ScrollView>
+
         </View>
       </ScrollView>
     </View>

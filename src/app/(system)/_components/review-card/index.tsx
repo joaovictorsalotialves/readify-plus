@@ -39,11 +39,6 @@ export function ReviewCard({ review }: Props) {
 
       {/* BOTÃO DE COMPARTILHAR E LIKE */}
       <View style={styles.buttonContainer}>
-        {/* Botão Compartilhar */}
-        <TouchableOpacity style={styles.shareButton} activeOpacity={0.7}>
-          <MaterialIcons name="share" size={16} style={styles.shareIcon} />
-          <Text style={styles.shareText}>Compartilhar</Text>
-        </TouchableOpacity>
 
         {/* Botão Like */}
         <TouchableOpacity style={styles.likeButton} activeOpacity={0.7}>

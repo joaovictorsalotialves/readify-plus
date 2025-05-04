@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { colors } from '@/styles/colors';
-import { fonts } from '@/styles/fonts';
+import { StyleSheet } from 'react-native'
+import { colors } from '@/styles/colors'
+import { fonts } from '@/styles/fonts'
 
 export const styles = StyleSheet.create({
   header: {
@@ -21,18 +21,6 @@ export const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 50,
   },
-  editIcon: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 50,
-    backgroundColor: colors.gray[300],
-  },
-  editIconInner: {
-    backgroundColor: 'transparent',
-  },
   userInfo: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -41,7 +29,7 @@ export const styles = StyleSheet.create({
   },
   username: {
     fontWeight: 'bold',
-    ...fonts.heading.hg
+    ...fonts.heading.hg,
   },
   settingsButton: {
     position: 'absolute',
@@ -52,60 +40,6 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 5,
     marginTop: 20,
-  },
-  bookItem: {
-    flexDirection: 'row',
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.gray[300],
-    alignItems: 'center',
-  },
-  bookCoverContainer: {
-    alignItems: 'center',
-  },
-  bookCover: {
-    width: 100,
-    height: 150,
-    backgroundColor: colors.gray[200],
-    borderRadius: 5,
-  },
-  bookTitle: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 5,
-  },
-  bookInfo: {
-    marginLeft: 15,
-    flex: 1,
-    justifyContent: 'center',
-  },
-  rating: {
-    flexDirection: 'row',
-    marginBottom: 10,
-    alignSelf: 'flex-start',
-  },
-  bookDate: {
-    fontSize: 12,
-    color: colors.gray[500],
-    marginBottom: 5,
-  },
-  bookDescription: {
-    fontSize: 14,
-    color: colors.gray[700],
-  },
-  bookInfoHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  moreOptionsButton: {
-    padding: 1,
-    borderRadius: 50,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
   },
   statItem: {
     alignItems: 'center',
@@ -125,12 +59,63 @@ export const styles = StyleSheet.create({
     color: colors.gray[900],
     textAlign: 'center',
   },
+  bookItem: {
+    flexDirection: 'row',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.gray[300],
+    alignItems: 'flex-start', // Corrigido para alinhar ao topo
+    gap: 16,
+  },
+  bookCoverContainer: {
+    width: 100, // Largura fixa para alinhamento consistente
+    alignItems: 'center',
+  },
+  bookCover: {
+    width: 100,
+    height: 150,
+    backgroundColor: colors.gray[200],
+    borderRadius: 5,
+  },
+  bookTitle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 5,
+  },
+  bookInfo: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  bookInfoHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 4,
+  },
+  bookDate: {
+    fontSize: 12,
+    color: colors.gray[500],
+    marginBottom: 5,
+  },
+  bookDescription: {
+    fontSize: 14,
+    color: colors.gray[700],
+    marginBottom: 2,
+  },
+  moreOptionsButton: {
+    padding: 1,
+    borderRadius: 50,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+  },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
-    marginTop: 32, // Dá um respiro no topo
+    marginTop: 32,
   },
   emptyImage: {
     width: 200,
@@ -143,5 +128,4 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: fonts.body.button.fontFamily,
   },
-
-});
+})
