@@ -9,9 +9,9 @@ export function NavigationHeader() {
   return (
     <View style={styles.container}>
       <Text style={styles.logo}>Readify Plus</Text>
-      <Pressable onPress={() => router.navigate('../../notifications')}>
+      <Pressable onPress={() => {}}>
         <MaterialIcons
-          name="notifications"
+          name="settings"
           size={32}
           color={colors.gray[100]}
         />

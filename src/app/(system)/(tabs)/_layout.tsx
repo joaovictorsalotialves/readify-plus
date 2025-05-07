@@ -36,30 +36,26 @@ export default function Layout() {
         }}
       />
       
-      <Tabs.Screen
-        name="profile/index"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialIcons name="person" size={size} color={color} />
-          ),
-          title: 'Perfil',
-        }}
-      />
+
       <Tabs.Screen
         name="detailsbook/index"
+        options={{ href: null }} 
+      />
+
+      <Tabs.Screen
+        name="search/index"
         options={{
           tabBarIcon: ({ color, size }) => (
             <MaterialIcons name="search" size={size} color={color} />
           ),
-          title: 'Pesquisar',
+          title: 'Pesquisa',
         }}
         
+        
       />
-      <Tabs.Screen
-        name="search/index"
-        options={{href: null}}
-      />
+
     </Tabs>
+
     
   )
 }
