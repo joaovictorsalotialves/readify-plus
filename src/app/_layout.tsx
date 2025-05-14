@@ -10,6 +10,8 @@ import {
 } from '@expo-google-fonts/oxanium'
 
 import { Loading } from '@/components/loading'
+import { AuthContextProvider } from '@/contexts/AuthContext'
+import { useAuth } from '@/hooks/useAuth'
 import { colors } from '@/styles/colors'
 import { Stack } from 'expo-router'
 
@@ -21,24 +23,28 @@ export default function Layout() {
     Montserrat_400Regular,
     Montserrat_600SemiBold,
   })
+
+  const { isLoading } = useAuth()
   const backgroundColor = colors.gray[100]
 
-  if (!fontsLoaded) {
+  if (!fontsLoaded || isLoading) {
     return <Loading />
   }
 
   return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-        contentStyle: {
-          backgroundColor,
-        },
-      }}
-    >
-      <Stack.Screen name="index" />
-      <Stack.Screen name="(auth)" />
-      <Stack.Screen name="(system)" />
-    </Stack>
+    <AuthContextProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+          contentStyle: {
+            backgroundColor,
+          },
+        }}
+      >
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(system)" />
+      </Stack>
+    </AuthContextProvider>
   )
 }

@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   Text,
   TouchableOpacity,
   type TouchableOpacityProps,
@@ -8,9 +9,15 @@ import { styles } from './styles'
 type ButtonProps = TouchableOpacityProps & {
   text: string
   type?: 'confirm' | 'redirect' | 'cancel'
+  isLoading?: boolean
 }
 
-export function Button({ text, type = 'confirm', ...rest }: ButtonProps) {
+export function Button({
+  text,
+  type = 'confirm',
+  isLoading,
+  ...rest
+}: ButtonProps) {
   return (
     <TouchableOpacity
       style={[
@@ -21,11 +28,16 @@ export function Button({ text, type = 'confirm', ...rest }: ButtonProps) {
         rest.disabled && styles.disable,
       ]}
       activeOpacity={0.5}
+      disabled={isLoading}
       {...rest}
     >
-      <Text style={[styles.text, rest.disabled && styles.textDisable]}>
-        {text}
-      </Text>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <Text style={[styles.text, rest.disabled && styles.textDisable]}>
+          {text}
+        </Text>
+      )}
     </TouchableOpacity>
   )
 }

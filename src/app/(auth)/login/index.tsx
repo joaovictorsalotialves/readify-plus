@@ -1,7 +1,14 @@
 import { useState } from 'react'
 
 import { router } from 'expo-router'
-import { Image, Keyboard, Text, TouchableOpacity, View } from 'react-native'
+import {
+  Alert,
+  Image,
+  Keyboard,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
@@ -13,13 +20,13 @@ import { styles } from './styles'
 import { validateEmail } from '@/utils/validators/validate-email'
 import { validatePassword } from '@/utils/validators/validate-password'
 
-import { authenticateService } from '@/services/authenticateService'
-import { getUserProfileService } from '@/services/getUserProfileService'
-import { storageAuthTokenSave } from '@/storage/storageAuthToken'
-import { storageUserGet, storageUserSave } from '@/storage/storageUser'
-import axios from 'axios'
+import { useAuth } from '@/hooks/useAuth'
+import { AxiosError } from 'axios'
 
 export default function Login() {
+  const { login } = useAuth()
+  const [isLoadingLogin, setIsLoadingLogin] = useState<boolean>(false)
+
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState('')
 
@@ -44,20 +51,18 @@ export default function Login() {
 
     if (isValidEmail && isValidPassword) {
       try {
-        const { token, refreshToken } = await authenticateService({
-          email,
-          password,
-        })
-        await storageAuthTokenSave({ token, refreshToken })
-
-        const { user } = await getUserProfileService({ token })
-        await storageUserSave(user)
-
-        router.navigate('/(system)/(tabs)/home')
+        setIsLoadingLogin(true)
+        await login(email, password)
       } catch (err) {
-        if (axios.isAxiosError(err)) {
-          console.log(err.response?.data.message)
-        }
+        const isAppError = err instanceof AxiosError
+        const title = isAppError
+          ? err.response?.data.message
+          : 'Não foi possivel entrar. Tente novamente'
+
+        Alert.alert(title)
+        setIsLoadingLogin(false)
+      } finally {
+        setIsLoadingLogin(false)
       }
     }
   }
@@ -98,7 +103,12 @@ export default function Login() {
               <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
             </TouchableOpacity>
             <View style={authStyles.context}>
-              <Button text="Logar" type="confirm" onPress={handleSubmit} />
+              <Button
+                text="Logar"
+                type="confirm"
+                onPress={handleSubmit}
+                isLoading={isLoadingLogin}
+              />
               <Button text="Cadastrar-se" type="redirect" />
             </View>
           </View>
