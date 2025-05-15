@@ -19,12 +19,16 @@ export async function storageAuthTokenSave({
 
 export async function storageAuthTokenGet() {
   const response = await AsyncStorage.getItem(AUTH_STORAGE)
+  if (!response) {
+    return { token: '', refreshToken: '' }
+  }
 
-  const { token, refreshToken }: StorageAuthTokenProps = response
-    ? JSON.parse(response)
-    : {}
+  const { token, refreshToken }: StorageAuthTokenProps = JSON.parse(response)
 
-  return { token, refreshToken }
+  return {
+    token: token ?? '',
+    refreshToken: refreshToken ?? '',
+  }
 }
 
 export async function storageAuthTokenRemove() {

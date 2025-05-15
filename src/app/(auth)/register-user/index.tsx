@@ -28,68 +28,68 @@ export default function PasswordRecovery() {
     }
   }
 
-  const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [nameError, setNameError] = useState('');
-  const [surnameError, setSurnameError] = useState('');
+  const [name, setName] = useState('')
+  const [surname, setSurname] = useState('')
+  const [nameError, setNameError] = useState('')
+  const [surnameError, setSurnameError] = useState('')
 
   // Função para atualizar o nome
 
   const handleNameChange = (text: string) => {
-    setName(text);
-    
+    setName(text)
+
     // Adicione validação, se necessário
 
     if (text.trim() === '') {
-      setNameError('Nome é obrigatório');
+      setNameError('Nome é obrigatório')
     } else {
-      setNameError('');
+      setNameError('')
     }
-  };
+  }
 
   // Função para atualizar o sobrenome
 
   const handleSurnameChange = (text: string) => {
-    setSurname(text);
+    setSurname(text)
 
     // Adicione validação, se necessário
 
     if (text.trim() === '') {
-      setSurnameError('Sobrenome é obrigatório');
+      setSurnameError('Sobrenome é obrigatório')
     } else {
-      setSurnameError('');
+      setSurnameError('')
     }
-  };
+  }
 
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [confirmPasswordError, setConfirmPasswordError] = useState('');
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [confirmPasswordError, setConfirmPasswordError] = useState('')
 
   // Função para atualizar a senha
 
   const handlePasswordChange = (text: string) => {
-    setPassword(text);
+    setPassword(text)
     if (text.trim() === '') {
-      setPasswordError('Senha é obrigatória');
+      setPasswordError('Senha é obrigatória')
     } else {
-      setPasswordError('');
+      setPasswordError('')
     }
-  };
+  }
 
   // Função para atualizar a confirmação da senha
 
   const handleConfirmPasswordChange = (text: string) => {
-    setConfirmPassword(text);
+    setConfirmPassword(text)
 
     // Verificar se as senhas são iguais
 
     if (text !== password) {
-      setConfirmPasswordError('As senhas não coincidem');
+      setConfirmPasswordError('As senhas não coincidem')
     } else {
-      setConfirmPasswordError('');
+      setConfirmPasswordError('')
     }
-  };
+  }
 
   return (
     <KeyboardAwareContainer>
@@ -108,58 +108,45 @@ export default function PasswordRecovery() {
               isFilled={!!name}
               messageError={nameError}
               autoCapitalize="none"
-              
             />
             <Input
               icon="person"
               placeholder="Sobrenome"
               onChangeText={handleSurnameChange}
               isFilled={!!surname}
-              messageError={surnameError && "Sobrenome é obrigatório"} // Mostra erro só se necessário }
+              messageError={surnameError && 'Sobrenome é obrigatório'} // Mostra erro só se necessário }
               autoCapitalize="words"
-              
             />
             <Input
               icon="mail"
               placeholder="Email"
               onChangeText={handleEmailChange}
               isFilled={!!email}
-              messageError={emailError } // Mostra erro se o email estiver errado }
+              messageError={emailError} // Mostra erro se o email estiver errado }
               autoCapitalize="none"
+            />
+            <Input
+              icon="lock"
+              placeholder="Senha"
+              onChangeText={handlePasswordChange}
+              isFilled={!!password}
+              messageError={passwordError} // Mostra erro se a senha estiver vazia
+              secureTextEntry={true} // Oculta o texto para campo de senha
+            />
 
-              />
-               <Input
-        icon="lock"
-        placeholder="Senha"
-        onChangeText={handlePasswordChange}
-        isFilled={!!password}
-        messageError={passwordError} // Mostra erro se a senha estiver vazia
-        secureTextEntry={true} // Oculta o texto para campo de senha
-      />
-      
-      {/* Campo de Confirmar Senha */}
-      
-      <Input
-        icon="lock"
-        placeholder="Confirmar Senha"
-        onChangeText={handleConfirmPasswordChange}
-        isFilled={!!confirmPassword}
-        messageError={confirmPasswordError} // Mostra erro se as senhas não coincidirem
-        secureTextEntry={true} // Oculta o texto para confirmar senha
-      />
+            {/* Campo de Confirmar Senha */}
 
+            <Input
+              icon="lock"
+              placeholder="Confirmar Senha"
+              onChangeText={handleConfirmPasswordChange}
+              isFilled={!!confirmPassword}
+              messageError={confirmPasswordError} // Mostra erro se as senhas não coincidirem
+              secureTextEntry={true} // Oculta o texto para confirmar senha
+            />
 
-
-
-
-
-
-          <View style={authStyles.context}>
-              <Button
-                text="Continuar"
-                type="confirm"
-                onPress={handleSubmit}
-              />
+            <View style={authStyles.context}>
+              <Button text="Continuar" type="confirm" onPress={handleSubmit} />
               <Button
                 text="Ja tenho conta"
                 type="redirect"

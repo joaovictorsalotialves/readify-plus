@@ -7,9 +7,14 @@ import { NavigationHeader } from '../../_components/navigation-header'
 import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'
 
+import { useAuth } from '@/hooks/useAuth'
 import { books } from '@/utils/mocks/books'
 
 export default function Home() {
+  const { user } = useAuth()
+
+  console.log(user)
+
   return (
     <View style={systemStyles.container}>
       <NavigationHeader />

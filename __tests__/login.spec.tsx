@@ -1,24 +1,78 @@
-import { fireEvent, render } from '@testing-library/react-native'
-
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native'
 import { router } from 'expo-router'
-import Login from '../src/app/(auth)/login/index'
+import { Alert } from 'react-native'
 
-jest.mock('expo-font', () => ({
-  loadAsync: () => Promise.resolve(),
-  isLoaded: () => true,
+import Login from '@/app/(auth)/login/index'
+import * as useAuthModule from '@/hooks/useAuth'
+
+import { AuthContext } from '@/contexts/AuthContext'
+import { AxiosError, AxiosHeaders } from 'axios'
+
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  setItem: jest.fn(),
+  getItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
 }))
 
 jest.mock('expo-router', () => ({
   router: {
     navigate: jest.fn(),
+    replace: jest.fn(),
   },
 }))
 
-describe('<Login />', () => {
-  it('should able renders login screen correctly', () => {
-    const { getByText, getByPlaceholderText } = render(<Login />)
+const mockLogin = jest.fn()
+const mockAuth = jest.fn()
 
-    expect(getByText('Login')).toBeTruthy()
+jest.mock('@/hooks/useAuth', () => ({
+  useAuth: () => ({
+    user: null,
+    login: mockLogin,
+    auth: mockAuth,
+    isLoading: false,
+  }),
+}))
+
+jest.mock('@expo/vector-icons', () => {
+  const React = require('react')
+  const { Text } = require('react-native')
+
+  return {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    MaterialIcons: (props: any) => <Text>{props.name}</Text>,
+  }
+})
+
+describe('Login Screen', () => {
+  const renderWithContext = (isLoading = false) =>
+    render(
+      <AuthContext.Provider
+        value={{
+          user: null,
+          login: mockLogin,
+          auth: mockAuth,
+          isLoading,
+        }}
+      >
+        <Login />
+      </AuthContext.Provider>
+    )
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+
+    jest.spyOn(useAuthModule, 'useAuth').mockReturnValue({
+      login: mockLogin,
+      auth: mockAuth,
+      user: null,
+      isLoading: false,
+    })
+  })
+
+  it('should render inputs and buttons correctly', () => {
+    const { getByPlaceholderText, getByText } = renderWithContext()
+
     expect(getByPlaceholderText('E-mail')).toBeTruthy()
     expect(getByPlaceholderText('Senha')).toBeTruthy()
     expect(getByText('Logar')).toBeTruthy()
@@ -26,60 +80,108 @@ describe('<Login />', () => {
     expect(getByText('Esqueceu a senha?')).toBeTruthy()
   })
 
-  it('should able navigates to home on valid form submission', () => {
-    const { getByPlaceholderText, getByText } = render(<Login />)
+  it('should call handleEmailChange and handlePasswordChange when typing', async () => {
+    const { getByPlaceholderText } = renderWithContext()
 
     const emailInput = getByPlaceholderText('E-mail')
     const passwordInput = getByPlaceholderText('Senha')
-    const loginButton = getByText('Logar')
 
-    fireEvent.changeText(emailInput, 'valid@email.com')
-    fireEvent.changeText(passwordInput, 'Senha#1234')
-    fireEvent.press(loginButton)
+    await act(async () => {
+      fireEvent.changeText(emailInput, 'test@example.com')
+      fireEvent.changeText(passwordInput, 'password123')
+    })
 
-    expect(router.navigate).toHaveBeenCalledWith('/(system)/(tabs)/home')
+    expect(emailInput.props.value).toBe('test@example.com')
+    expect(passwordInput.props.value).toBe('password123')
   })
 
-  it('should able navigates to password recovery on press', () => {
-    const { getByText } = render(<Login />)
+  it('should navigate to password recovery screen when clicking "Esqueceu a senha?"', async () => {
+    const { getByText } = renderWithContext()
 
-    const forgotPassword = getByText('Esqueceu a senha?')
-    fireEvent.press(forgotPassword)
+    await act(async () => {
+      fireEvent.press(getByText('Esqueceu a senha?'))
+    })
 
     expect(router.navigate).toHaveBeenCalledWith('/password-recovery')
   })
 
-  it('should able navigates to password recovery on press', () => {
-    const { getByText } = render(<Login />)
+  it('should navigate to register user screen when clicking "Cadastrar-se"', async () => {
+    const { getByText } = renderWithContext()
 
-    const forgotPassword = getByText('Esqueceu a senha?')
-    fireEvent.press(forgotPassword)
+    await act(async () => {
+      fireEvent.press(getByText('Cadastrar-se'))
+    })
 
-    expect(router.navigate).toHaveBeenCalledWith('/password-recovery')
+    expect(router.navigate).toHaveBeenCalledWith('/register-user')
   })
 
-  it('should show required field errors if email and password are empty', () => {
-    const { getByText } = render(<Login />)
+  it('should show error when email wrong', () => {
+    const { getByText, getByPlaceholderText } = renderWithContext()
 
-    const loginButton = getByText('Logar')
+    fireEvent.changeText(getByPlaceholderText('E-mail'), 'invalidexample')
 
-    fireEvent.press(loginButton)
+    fireEvent.press(getByText('Logar'))
+
+    expect(getByText('E-mail inválido!')).toBeTruthy()
+  })
+
+  it('should show error when inputs are empty', () => {
+    const { getByText } = renderWithContext()
+
+    fireEvent.press(getByText('Logar'))
 
     expect(getByText('E-mail obrigatório!')).toBeTruthy()
     expect(getByText('Senha obrigatória!')).toBeTruthy()
   })
 
-  it('should show error message for invalid email format', () => {
-    const { getByText, getByPlaceholderText } = render(<Login />)
+  it('should show an alert if authentication fails', async () => {
+    jest.spyOn(Alert, 'alert')
+    const mockError = new AxiosError(
+      'Unauthorized',
+      '401',
+      { headers: new AxiosHeaders() },
+      {},
+      {
+        data: {
+          message: 'Invalid Credentials.',
+        },
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      } as any
+    )
 
-    const emailInput = getByPlaceholderText('E-mail')
-    const passwordInput = getByPlaceholderText('Senha')
-    const loginButton = getByText('Logar')
+    mockLogin.mockRejectedValue(mockError)
 
-    fireEvent.changeText(emailInput, 'usuario@teste')
-    fireEvent.changeText(passwordInput, '123456')
-    fireEvent.press(loginButton)
+    const { getByText, getByPlaceholderText } = renderWithContext()
 
-    expect(getByText('E-mail inválido!')).toBeTruthy()
+    fireEvent.changeText(getByPlaceholderText('E-mail'), 'invalid@example.com')
+    fireEvent.changeText(getByPlaceholderText('Senha'), 'invalidpassword')
+
+    await act(async () => {
+      fireEvent.press(getByText('Logar'))
+    })
+
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith('Invalid Credentials.')
+    })
+  })
+
+  it('should call login and navigate on successful authentication', async () => {
+    mockLogin.mockResolvedValue({
+      token: 'token',
+      refreshToken: 'refreshToken',
+    })
+
+    const { getByText, getByPlaceholderText } = renderWithContext()
+
+    fireEvent.changeText(getByPlaceholderText('E-mail'), 'test@example.com')
+    fireEvent.changeText(getByPlaceholderText('Senha'), 'password123')
+
+    await act(async () => {
+      fireEvent.press(getByText('Logar'))
+    })
+
+    await waitFor(() => {
+      expect(mockLogin).toHaveBeenCalledWith('test@example.com', 'password123')
+    })
   })
 })

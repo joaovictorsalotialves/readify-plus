@@ -85,6 +85,7 @@ export default function Login() {
                 isFilled={!!email}
                 messageError={emailError}
                 autoCapitalize="none"
+                value={email}
               />
               <Input
                 icon="lock"
@@ -93,6 +94,7 @@ export default function Login() {
                 isFilled={!!password}
                 messageError={passwordError}
                 autoCapitalize="none"
+                value={password}
                 secureTextEntry
               />
             </View>
@@ -109,7 +111,13 @@ export default function Login() {
                 onPress={handleSubmit}
                 isLoading={isLoadingLogin}
               />
-              <Button text="Cadastrar-se" type="redirect" />
+              <Button
+                text="Cadastrar-se"
+                type="redirect"
+                onPress={() => {
+                  router.navigate('/register-user')
+                }}
+              />
             </View>
           </View>
         </View>

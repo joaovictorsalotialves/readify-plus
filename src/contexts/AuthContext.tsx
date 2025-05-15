@@ -15,6 +15,7 @@ import { router } from 'expo-router'
 export type AuthContextDataProps = {
   user: UserDTO | null
   login: (email: string, password: string) => Promise<void>
+  auth: () => Promise<void>
   isLoading: boolean
 }
 
@@ -66,7 +67,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, login, isLoading }}>
+    <AuthContext.Provider value={{ user, login, auth, isLoading }}>
       {children}
     </AuthContext.Provider>
   )
