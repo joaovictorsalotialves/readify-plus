@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { router } from 'expo-router'
-import { Keyboard, Text, View } from 'react-native'
+import { Alert, Keyboard, Text, View } from 'react-native'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
@@ -10,14 +10,35 @@ import { Header } from '../_components/header'
 
 import { authStyles } from '../_styles/styles'
 
+import { ValidateRecoverPasswordCodeService } from '@/services/validateRecoveryPasswordCodeService'
+import { storageRecoveryPasswordTokenGet } from '@/storage/storageRecoveryPasswordToken'
+import { storageResetPasswordTokenSave } from '@/storage/storageResetPasswordToken'
 import { regex } from '@/utils/regex'
 import { validateCode } from '@/utils/validators/validate-code'
+import { AxiosError } from 'axios'
 
 export default function PasswordConfirmation() {
+  const [isLoadingPasswordConfirmation, setIsLoadingPasswordConfirmation] =
+    useState(false)
+
   const [code, setCode] = useState<string>('')
   const [codeError, setCodeError] = useState('')
 
   const [resendEmail, setResendEmail] = useState(false)
+  const [recoveryPasswordToken, setRecoveryPasswordToken] = useState('')
+
+  async function checkPasswordRecoveryToken() {
+    try {
+      const { recoveryPasswordToken } = await storageRecoveryPasswordTokenGet()
+
+      if (!recoveryPasswordToken) {
+        return router.navigate('/password-recovery')
+      }
+      setRecoveryPasswordToken(recoveryPasswordToken)
+    } catch (err) {
+      Alert.alert('Falha com o token de recuperação de senha!')
+    }
+  }
 
   function handleCodeChange(code: string) {
     const formattedCode = code.replace(regex.removeNonDigitsRegex, '')
@@ -26,15 +47,38 @@ export default function PasswordConfirmation() {
     validateCode(formattedCode, setCodeError)
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     Keyboard.dismiss()
 
     const isCodeValid = validateCode(code, setCodeError)
 
     if (isCodeValid) {
-      router.navigate('/password-reset')
+      try {
+        setIsLoadingPasswordConfirmation(true)
+        const { resetPasswordToken } = await ValidateRecoverPasswordCodeService(
+          { passwordRecoveryCode: code, recoveryPasswordToken }
+        )
+
+        if (resetPasswordToken) {
+          storageResetPasswordTokenSave({ resetPasswordToken })
+          router.navigate('/password-reset')
+        }
+      } catch (err) {
+        const isAppError = err instanceof AxiosError
+        const title = isAppError
+          ? err.response?.data.message
+          : 'Falha ao confirmar o código de recuperação de senha. Tente novamente'
+
+        Alert.alert(title)
+      } finally {
+        setIsLoadingPasswordConfirmation(false)
+      }
     }
   }
+
+  useEffect(() => {
+    checkPasswordRecoveryToken()
+  })
 
   useEffect(() => {
     setTimeout(() => {
@@ -73,6 +117,7 @@ export default function PasswordConfirmation() {
                 text="Verificar código"
                 type="confirm"
                 onPress={handleSubmit}
+                isLoading={isLoadingPasswordConfirmation}
               />
               <Button
                 text="Reenviar e-mail"

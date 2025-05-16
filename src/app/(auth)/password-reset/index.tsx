@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { router } from 'expo-router'
-import { Keyboard, Text, View } from 'react-native'
+import { Alert, Keyboard, Text, View } from 'react-native'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
@@ -10,15 +10,39 @@ import { Header } from '../_components/header'
 import { authStyles } from '../_styles/styles'
 
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
+import { useAuth } from '@/hooks/useAuth'
+import { ResetPasswordService } from '@/services/resetPasswordServece'
+import { storageAuthTokenSave } from '@/storage/storageAuthToken'
+import { storageResetPasswordTokenGet } from '@/storage/storageResetPasswordToken'
 import validadeConfirmationPassword from '@/utils/validators/validate-confirmationPassword'
 import validadeNewPassword from '@/utils/validators/validate-newPassword'
+import { AxiosError } from 'axios'
 
 export default function PasswordReset() {
+  const { auth } = useAuth()
+
+  const [isLoadingPasswordReset, setIsLoadingPasswordReset] = useState(false)
+
   const [newPassword, setNewPassword] = useState('')
   const [newPasswordError, setNewPasswordError] = useState('')
 
   const [confirmationPassword, setConfirmationPassword] = useState('')
   const [confirmationPasswordError, setConfirmationPasswordError] = useState('')
+
+  const [resetPasswordToken, setResetPasswordToken] = useState('')
+
+  async function checkPasswordRecoveryToken() {
+    try {
+      const { resetPasswordToken } = await storageResetPasswordTokenGet()
+
+      if (!resetPasswordToken) {
+        return router.navigate('/password-recovery')
+      }
+      setResetPasswordToken(resetPasswordToken)
+    } catch (err) {
+      Alert.alert('Falha com o token de resetar a senha!')
+    }
+  }
 
   function handleNewPasswordChange(newPassword: string) {
     setNewPassword(newPassword)
@@ -39,7 +63,7 @@ export default function PasswordReset() {
     )
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     Keyboard.dismiss()
 
     const isValidNewPassword = validadeNewPassword(
@@ -53,9 +77,31 @@ export default function PasswordReset() {
     )
 
     if (isValidNewPassword && isValidConfirmationPassword) {
-      router.navigate('/login')
+      try {
+        setIsLoadingPasswordReset(true)
+        const { token, refreshToken } = await ResetPasswordService({
+          password: newPassword,
+          passwordConfirmation: confirmationPassword,
+          resetPasswordToken,
+        })
+        await storageAuthTokenSave({ token, refreshToken })
+        await auth()
+      } catch (err) {
+        const isAppError = err instanceof AxiosError
+        const title = isAppError
+          ? err.response?.data.message
+          : 'Não foi alterar a senha! Tente novamente'
+
+        Alert.alert(title)
+      } finally {
+        setIsLoadingPasswordReset(false)
+      }
     }
   }
+
+  useEffect(() => {
+    checkPasswordRecoveryToken()
+  })
 
   return (
     <KeyboardAwareContainer>
@@ -72,6 +118,7 @@ export default function PasswordReset() {
               isFilled={!!newPassword}
               messageError={newPasswordError}
               autoCapitalize="none"
+              value={newPassword}
               secureTextEntry
             />
             <Input
@@ -81,6 +128,7 @@ export default function PasswordReset() {
               isFilled={!!confirmationPassword}
               messageError={confirmationPasswordError}
               autoCapitalize="none"
+              value={confirmationPassword}
               secureTextEntry
             />
           </View>
@@ -89,6 +137,7 @@ export default function PasswordReset() {
               text="Redefinir senha"
               type="confirm"
               onPress={handleSubmit}
+              isLoading={isLoadingPasswordReset}
             />
           </View>
         </View>

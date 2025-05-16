@@ -1,16 +1,22 @@
 import { router } from 'expo-router'
 import { useState } from 'react'
-import { Keyboard, Text, View } from 'react-native'
+import { Alert, Keyboard, Text, View } from 'react-native'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 import { Header } from '../_components/header'
 
+import { SendEmailToRecoverPasswordService } from '@/services/sendEmailToRecoverPasswordService'
+import { storageRecoveryPasswordTokenSave } from '@/storage/storageRecoveryPasswordToken'
 import { validateEmail } from '@/utils/validators/validate-email'
+import { AxiosError } from 'axios'
 import { authStyles } from '../_styles/styles'
 
 export default function PasswordRecovery() {
+  const [isLoadingPasswordRecovery, setIsLoadingPasswordRecovery] =
+    useState(false)
+
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState('')
 
@@ -19,12 +25,30 @@ export default function PasswordRecovery() {
     validateEmail(email, setEmailError)
   }
 
-  function handleSubmit() {
+  async function handleSubmit() {
     Keyboard.dismiss()
     const isValidEmail = validateEmail(email, setEmailError)
 
     if (isValidEmail) {
-      router.navigate('/password-confirmation')
+      try {
+        setIsLoadingPasswordRecovery(true)
+        const { recoveryPasswordToken } =
+          await SendEmailToRecoverPasswordService({ email })
+
+        if (recoveryPasswordToken) {
+          storageRecoveryPasswordTokenSave({ recoveryPasswordToken })
+          router.navigate('/password-confirmation')
+        }
+      } catch (err) {
+        const isAppError = err instanceof AxiosError
+        const title = isAppError
+          ? err.response?.data.message
+          : 'Não foi possivel enviar o email. Tente novamente'
+
+        Alert.alert(title)
+      } finally {
+        setIsLoadingPasswordRecovery(false)
+      }
     }
   }
 
@@ -44,6 +68,7 @@ export default function PasswordRecovery() {
               onChangeText={handleEmailChange}
               isFilled={!!email}
               messageError={emailError}
+              value={email}
               autoCapitalize="none"
             />
             <View style={authStyles.context}>
@@ -51,6 +76,7 @@ export default function PasswordRecovery() {
                 text="Recuperar senha"
                 type="confirm"
                 onPress={handleSubmit}
+                isLoading={isLoadingPasswordRecovery}
               />
               <Button
                 text="Fazer login"

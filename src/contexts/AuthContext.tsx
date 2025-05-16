@@ -9,7 +9,7 @@ import {
   storageAuthTokenGet,
   storageAuthTokenSave,
 } from '@/storage/storageAuthToken'
-import { storageUserSave } from '@/storage/storageUser'
+
 import { router } from 'expo-router'
 
 export type AuthContextDataProps = {
@@ -37,9 +37,9 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       if (token) {
         const { user } = await getUserProfileService({ token })
         if (user) {
-          await storageUserSave(user)
           setUser(user)
           setIsLoading(false)
+          router.replace('/(system)/(tabs)/home')
         }
       }
     } catch (error) {
@@ -57,14 +57,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
     await storageAuthTokenSave({ token, refreshToken })
     await auth()
-
-    router.replace('/(system)/(tabs)/home')
   }
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    auth()
-  }, [])
 
   return (
     <AuthContext.Provider value={{ user, login, auth, isLoading }}>

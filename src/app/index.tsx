@@ -2,9 +2,14 @@ import { Redirect } from 'expo-router'
 
 import { Loading } from '@/components/loading'
 import { useAuth } from '@/hooks/useAuth'
+import { useEffect } from 'react'
 
 export default function Index() {
-  const { user, isLoading } = useAuth()
+  const { user, auth, isLoading } = useAuth()
+
+  useEffect(() => {
+    auth()
+  })
 
   if (isLoading) {
     return <Loading />
