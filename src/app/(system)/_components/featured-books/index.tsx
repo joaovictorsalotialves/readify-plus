@@ -13,16 +13,18 @@ type FeaturedBooksProps = {
 
 export function FeaturedBooks({ title, data }: FeaturedBooksProps) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
-      <FlatList
-        data={data}
-        keyExtractor={item => item.id}
-        renderItem={({ item }) => <Book title={item.title} />}
-        contentContainerStyle={styles.slider}
-        showsHorizontalScrollIndicator={false}
-        horizontal
-      />
-    </View>
+    data.length > 0 && (
+      <View style={styles.container}>
+        <Text style={styles.title}>{title}</Text>
+        <FlatList
+          data={data}
+          keyExtractor={item => item.id}
+          renderItem={({ item }) => <Book title={item.title} />}
+          contentContainerStyle={styles.slider}
+          showsHorizontalScrollIndicator={false}
+          horizontal
+        />
+      </View>
+    )
   )
 }

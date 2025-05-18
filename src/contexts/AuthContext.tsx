@@ -14,9 +14,9 @@ import { router } from 'expo-router'
 
 export type AuthContextDataProps = {
   user: UserDTO | null
+  isLoading: boolean
   login: (email: string, password: string) => Promise<void>
   auth: () => Promise<void>
-  isLoading: boolean
 }
 
 type AuthContextProviderProps = {
@@ -39,8 +39,9 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         if (user) {
           setUser(user)
           setIsLoading(false)
-          router.replace('/(system)/(tabs)/home')
+          return router.replace('/(system)/(tabs)/home')
         }
+        return router.replace('/(auth)/login')
       }
     } catch (error) {
       setUser(null)
@@ -60,7 +61,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, auth, isLoading }}>
+    <AuthContext.Provider value={{ user, isLoading, login, auth }}>
       {children}
     </AuthContext.Provider>
   )

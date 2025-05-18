@@ -35,12 +35,8 @@ export default function Layout() {
           title: 'Minha Estante',
         }}
       />
-      
 
-      <Tabs.Screen
-        name="detailsbook/index"
-        options={{ href: null }} 
-      />
+      <Tabs.Screen name="detailsbook/index" options={{ href: null }} />
 
       <Tabs.Screen
         name="search/index"
@@ -50,12 +46,7 @@ export default function Layout() {
           ),
           title: 'Pesquisa',
         }}
-        
-        
       />
-
     </Tabs>
-
-    
   )
 }

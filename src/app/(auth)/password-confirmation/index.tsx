@@ -76,9 +76,10 @@ export default function PasswordConfirmation() {
     }
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     checkPasswordRecoveryToken()
-  })
+  }, [])
 
   useEffect(() => {
     setTimeout(() => {

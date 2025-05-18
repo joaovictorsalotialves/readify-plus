@@ -99,9 +99,10 @@ export default function PasswordReset() {
     }
   }
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     checkPasswordRecoveryToken()
-  })
+  }, [])
 
   return (
     <KeyboardAwareContainer>
