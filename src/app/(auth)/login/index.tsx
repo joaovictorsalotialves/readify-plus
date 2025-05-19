@@ -26,7 +26,7 @@ import { AxiosError } from 'axios'
 
 export default function Login() {
   const { login } = useAuth()
-  const [isLoadingLogin, setIsLoadingLogin] = useState<boolean>(false)
+  const [isLoadingLogin, setIsLoadingLogin] = useState(false)
 
   const [email, setEmail] = useState('')
   const [emailError, setEmailError] = useState('')

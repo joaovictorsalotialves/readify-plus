@@ -47,7 +47,7 @@ describe('PasswordRecovery Screen', () => {
     expect(getByText('Fazer login')).toBeTruthy()
   })
 
-  it('should handle email change and validate input', async () => {
+  it('should call handleEmailChange when typing', async () => {
     const { getByPlaceholderText } = render(<PasswordRecovery />)
 
     const emailInput = getByPlaceholderText('E-mail')
@@ -57,6 +57,24 @@ describe('PasswordRecovery Screen', () => {
     })
 
     expect(emailInput.props.value).toBe('test@example.com')
+  })
+
+  it('should show error when email wrong', () => {
+    const { getByText, getByPlaceholderText } = render(<PasswordRecovery />)
+
+    fireEvent.changeText(getByPlaceholderText('E-mail'), 'invalidexample')
+
+    fireEvent.press(getByText('Recuperar senha'))
+
+    expect(getByText('E-mail inválido!')).toBeTruthy()
+  })
+
+  it('should show error when inputs are empty', () => {
+    const { getByText } = render(<PasswordRecovery />)
+
+    fireEvent.press(getByText('Recuperar senha'))
+
+    expect(getByText('E-mail obrigatório!')).toBeTruthy()
   })
 
   it('should navigate to login screen when clicking "Fazer login"', async () => {

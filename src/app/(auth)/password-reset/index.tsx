@@ -10,8 +10,7 @@ import { Header } from '../_components/header'
 import { authStyles } from '../_styles/styles'
 
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
-import { useAuth } from '@/hooks/useAuth'
-import { ResetPasswordService } from '@/services/resetPasswordServece'
+import { ResetPasswordService } from '@/services/resetPasswordService'
 import { storageAuthTokenSave } from '@/storage/storageAuthToken'
 import { storageResetPasswordTokenGet } from '@/storage/storageResetPasswordToken'
 import validadeConfirmationPassword from '@/utils/validators/validate-confirmationPassword'
@@ -19,8 +18,6 @@ import validadeNewPassword from '@/utils/validators/validate-newPassword'
 import { AxiosError } from 'axios'
 
 export default function PasswordReset() {
-  const { auth } = useAuth()
-
   const [isLoadingPasswordReset, setIsLoadingPasswordReset] = useState(false)
 
   const [newPassword, setNewPassword] = useState('')
@@ -85,12 +82,12 @@ export default function PasswordReset() {
           resetPasswordToken,
         })
         await storageAuthTokenSave({ token, refreshToken })
-        await auth()
+        router.replace('/(system)/(tabs)/home')
       } catch (err) {
         const isAppError = err instanceof AxiosError
         const title = isAppError
           ? err.response?.data.message
-          : 'Não foi alterar a senha! Tente novamente'
+          : 'Não foi possível alterar a senha! Tente novamente'
 
         Alert.alert(title)
       } finally {

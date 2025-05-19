@@ -48,6 +48,43 @@ describe('PasswordConfirmation Screen', () => {
     expect(getByText('Verificar código')).toBeTruthy()
   })
 
+  it('should call handleCodigoChange when typing', async () => {
+    const { getByPlaceholderText } = render(<PasswordConfirmation />)
+
+    const codigoInput = getByPlaceholderText('Código')
+
+    await act(async () => {
+      fireEvent.changeText(
+        getByPlaceholderText('Código'),
+        '1283 - apenas números são permitido - 32'
+      )
+    })
+
+    expect(codigoInput.props.value).toBe('128332')
+  })
+
+  it('should show error when codigo wrong', () => {
+    const { getByText, getByPlaceholderText } = render(<PasswordConfirmation />)
+
+    fireEvent.changeText(getByPlaceholderText('Código'), 'codigo invalido')
+
+    fireEvent.press(getByText('Verificar código'))
+
+    expect(
+      getByText('Formato inválido. O código deve ter exatamente 6 números.')
+    ).toBeTruthy()
+  })
+
+  it('should show error when input are empty', () => {
+    const { getByText } = render(<PasswordConfirmation />)
+
+    fireEvent.press(getByText('Verificar código'))
+
+    expect(
+      getByText('Formato inválido. O código deve ter exatamente 6 números.')
+    ).toBeTruthy()
+  })
+
   it('should navigate to password recovery if token is not found', async () => {
     ;(storageRecoveryPasswordTokenGet as jest.Mock).mockResolvedValueOnce({
       recoveryPasswordToken: '',
@@ -96,13 +133,13 @@ describe('PasswordConfirmation Screen', () => {
   it('should show alert if code validation fails', async () => {
     jest.spyOn(Alert, 'alert')
     const error = new AxiosError(
-      'Unauthorized',
-      '401',
+      'Bad Request',
+      '400',
       { headers: new AxiosHeaders() },
       {},
       {
         data: {
-          message: 'Código inválido.',
+          message: 'Invalid Password Recovery Code.',
         },
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       } as any
@@ -120,7 +157,9 @@ describe('PasswordConfirmation Screen', () => {
     })
 
     await waitFor(() => {
-      expect(Alert.alert).toHaveBeenCalledWith('Código inválido.')
+      expect(Alert.alert).toHaveBeenCalledWith(
+        'Invalid Password Recovery Code.'
+      )
     })
   })
 })
