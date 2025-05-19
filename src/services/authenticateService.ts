@@ -5,7 +5,7 @@ type AuthenticateServiceRequest = {
   password: string
 }
 
-type AuthenticateServiceResponse = {
+export type AuthenticateServiceResponse = {
   token: string
   refreshToken: string
 }

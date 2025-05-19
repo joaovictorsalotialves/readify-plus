@@ -20,6 +20,7 @@ import { styles } from './styles'
 import { validateEmail } from '@/utils/validators/validate-email'
 import { validatePassword } from '@/utils/validators/validate-password'
 
+import { Loading } from '@/components/loading'
 import { useAuth } from '@/hooks/useAuth'
 import { AxiosError } from 'axios'
 
@@ -53,18 +54,24 @@ export default function Login() {
       try {
         setIsLoadingLogin(true)
         await login(email, password)
+
+        router.replace('/(system)/(tabs)/home')
       } catch (err) {
         const isAppError = err instanceof AxiosError
-        const title = isAppError
-          ? err.response?.data.message
-          : 'Não foi possivel entrar. Tente novamente'
+        const title =
+          isAppError && err.response?.data.message
+            ? err.response.data.message
+            : 'Não foi possivel entrar. Tente novamente'
 
         Alert.alert(title)
-        setIsLoadingLogin(false)
       } finally {
         setIsLoadingLogin(false)
       }
     }
+  }
+
+  if (isLoadingLogin) {
+    return <Loading />
   }
 
   return (

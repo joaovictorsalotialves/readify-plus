@@ -41,8 +41,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
           setIsLoading(false)
           return router.replace('/(system)/(tabs)/home')
         }
-        return router.replace('/(auth)/login')
       }
+      return router.replace('/(auth)/login')
     } catch (error) {
       setUser(null)
     } finally {
@@ -57,7 +57,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     })
 
     await storageAuthTokenSave({ token, refreshToken })
-    await auth()
   }
 
   return (

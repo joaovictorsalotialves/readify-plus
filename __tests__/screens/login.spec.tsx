@@ -5,6 +5,7 @@ import { Alert } from 'react-native'
 import Login from '@/app/(auth)/login/index'
 import * as useAuthModule from '@/hooks/useAuth'
 
+import { mockAuthenticationResponse } from '@/../__mocks__/api/mockAuthenticationApiResponse'
 import { AuthContext } from '@/contexts/AuthContext'
 import { AxiosError, AxiosHeaders } from 'axios'
 
@@ -136,6 +137,7 @@ describe('Login Screen', () => {
 
   it('should show an alert if authentication fails', async () => {
     jest.spyOn(Alert, 'alert')
+
     const mockError = new AxiosError(
       'Unauthorized',
       '401',
@@ -149,7 +151,7 @@ describe('Login Screen', () => {
       } as any
     )
 
-    mockLogin.mockRejectedValue(mockError)
+    mockLogin.mockRejectedValueOnce(mockError)
 
     const { getByText, getByPlaceholderText } = renderWithContext()
 
@@ -161,15 +163,16 @@ describe('Login Screen', () => {
     })
 
     await waitFor(() => {
+      expect(mockLogin).toHaveBeenCalledWith(
+        'invalid@example.com',
+        'invalidpassword'
+      )
       expect(Alert.alert).toHaveBeenCalledWith('Invalid Credentials.')
     })
   })
 
   it('should call login and navigate on successful authentication', async () => {
-    mockLogin.mockResolvedValue({
-      token: 'token',
-      refreshToken: 'refreshToken',
-    })
+    mockLogin.mockResolvedValue(mockAuthenticationResponse)
 
     const { getByText, getByPlaceholderText } = renderWithContext()
 
@@ -182,6 +185,27 @@ describe('Login Screen', () => {
 
     await waitFor(() => {
       expect(mockLogin).toHaveBeenCalledWith('test@example.com', 'password123')
+      expect(router.replace).toHaveBeenCalledWith('/(system)/(tabs)/home')
+    })
+  })
+
+  it('should call login show loading indicator', async () => {
+    mockLogin.mockImplementation(
+      () => new Promise(resolve => setTimeout(resolve, 1000))
+    )
+
+    const { getByText, getByPlaceholderText, queryByTestId } =
+      renderWithContext()
+
+    fireEvent.changeText(getByPlaceholderText('E-mail'), 'test@example.com')
+    fireEvent.changeText(getByPlaceholderText('Senha'), 'password123')
+
+    await act(async () => {
+      fireEvent.press(getByText('Logar'))
+    })
+
+    await waitFor(() => {
+      expect(queryByTestId('loading-indicator')).toBeTruthy()
     })
   })
 })

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 import { ScrollView, View } from 'react-native'
 
@@ -30,7 +30,7 @@ export default function Home() {
     getCountBooksRead()
   }, [])
 
-  if (isLoading && isLoadingBooksIsReading) {
+  if (isLoading && isLoadingBooksIsReading && isLoadingCountBooksRead) {
     return <Loading />
   }
 
