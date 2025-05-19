@@ -13,7 +13,6 @@ export async function ValidateRecoverPasswordCodeService({
   passwordRecoveryCode,
   recoveryPasswordToken,
 }: ValidateRecoverPasswordCodeServiceRequest): Promise<ValidateRecoverPasswordCodeServiceResponse> {
-  console.log(passwordRecoveryCode)
   const { data } = await api.post(
     '/recovery-password/validate-code',
     {

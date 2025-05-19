@@ -24,7 +24,6 @@ export default function PasswordConfirmation() {
   const [code, setCode] = useState<string>('')
   const [codeError, setCodeError] = useState('')
 
-  const [resendEmail, setResendEmail] = useState(false)
   const [recoveryPasswordToken, setRecoveryPasswordToken] = useState('')
 
   async function checkPasswordRecoveryToken() {
@@ -81,12 +80,6 @@ export default function PasswordConfirmation() {
     checkPasswordRecoveryToken()
   }, [])
 
-  useEffect(() => {
-    setTimeout(() => {
-      setResendEmail(true)
-    }, 60000)
-  }, [])
-
   return (
     <KeyboardAwareContainer>
       <View style={authStyles.container}>
@@ -109,24 +102,12 @@ export default function PasswordConfirmation() {
               inputMode="numeric"
               maxLength={6}
             />
-            <Text style={authStyles.description}>
-              O e-mail pode levar 1 minuto para ser enviado. Caso não receba
-              aperte o botão “reenviar e-mail”.
-            </Text>
             <View style={authStyles.context}>
               <Button
                 text="Verificar código"
                 type="confirm"
                 onPress={handleSubmit}
                 isLoading={isLoadingPasswordConfirmation}
-              />
-              <Button
-                text="Reenviar e-mail"
-                type="redirect"
-                onPress={() => {
-                  router.replace('/password-confirmation')
-                }}
-                disabled={!resendEmail}
               />
             </View>
           </View>
