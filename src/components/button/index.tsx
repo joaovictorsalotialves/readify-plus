@@ -32,7 +32,7 @@ export function Button({
       {...rest}
     >
       {isLoading ? (
-        <ActivityIndicator />
+        <ActivityIndicator testID="loading-indicator" />
       ) : (
         <Text style={[styles.text, rest.disabled && styles.textDisable]}>
           {text}

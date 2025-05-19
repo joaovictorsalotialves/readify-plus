@@ -27,6 +27,7 @@ export default function PasswordRecovery() {
 
   async function handleSubmit() {
     Keyboard.dismiss()
+
     const isValidEmail = validateEmail(email, setEmailError)
 
     if (isValidEmail) {
