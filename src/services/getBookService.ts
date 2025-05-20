@@ -1,5 +1,5 @@
-import { api } from '@/lib/axios'
 import type { BooksDTO } from '@/dtos/book-dto'
+import { api } from '@/lib/axios'
 
 type GetBookRequest = {
   bookId: string
@@ -10,7 +10,7 @@ type GetBookResponse = {
   book: BooksDTO
 }
 
-export async function getBookById({
+export async function getBookService({
   bookId,
   token,
 }: GetBookRequest): Promise<GetBookResponse> {

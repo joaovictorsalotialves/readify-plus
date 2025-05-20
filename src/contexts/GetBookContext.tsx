@@ -20,7 +20,7 @@ export const GetBookContext =
     {} as GetBookContextDataProps
   )
 
-export function GetBooksIsReadingContextProvider({
+export function GetBookContextProvider({
   children,
 }: GetBookContextProviderProps) {
   const [book, setBook] = useState<BooksDTO>({} as BooksDTO)
