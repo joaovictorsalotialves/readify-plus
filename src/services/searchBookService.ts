@@ -20,7 +20,8 @@ export async function searchBooksService({
   token,
 }: searchBooksRequest): Promise<searchBooksResponse> {
   const { data } = await api.get(
-    `/books?title=${title}&categoryId=${categoryId}&writerId=${writerId}`,
+    // `/books?title=${title}&categoryId=${categoryId}&writerId=${writerId}`,
+    '/books',
     {
       headers: { Authorization: `Bearer ${token}` },
     }

@@ -6,29 +6,32 @@ import { CountBookReviewContextProvider } from '@/contexts/CountBookReviewContex
 import { CountBooksReadContextProvider } from '@/contexts/CountBooksReadContext'
 import { GetBookContextProvider } from '@/contexts/GetBookContext'
 import { GetBooksIsReadingContextProvider } from '@/contexts/GetBooksIsReadingContext'
+import { SearchBooksContextProvider } from '@/contexts/SearchBooksContext'
 
 export default function Layout() {
   const backgroundColor = colors.gray[100]
 
   return (
-    <GetBookContextProvider>
-    <CountBookReviewContextProvider>
-        <CountBooksReadContextProvider>
-          <GetBooksIsReadingContextProvider>
-            <Stack
-              screenOptions={{
-                headerShown: false,
-                contentStyle: {
-                  backgroundColor,
-                },
-              }}
-            >
-              <Stack.Screen name="(tabs)" />
-              <Stack.Screen name="(reading)" />
-            </Stack>
-          </GetBooksIsReadingContextProvider>
-        </CountBooksReadContextProvider>
-      </CountBookReviewContextProvider>
-    </GetBookContextProvider>
+    <SearchBooksContextProvider>
+      <GetBookContextProvider>
+        <CountBookReviewContextProvider>
+          <CountBooksReadContextProvider>
+            <GetBooksIsReadingContextProvider>
+              <Stack
+                screenOptions={{
+                  headerShown: false,
+                  contentStyle: {
+                    backgroundColor,
+                  },
+                }}
+              >
+                <Stack.Screen name="(tabs)" />
+                <Stack.Screen name="(reading)" />
+              </Stack>
+            </GetBooksIsReadingContextProvider>
+          </CountBooksReadContextProvider>
+        </CountBookReviewContextProvider>
+      </GetBookContextProvider>
+    </SearchBooksContextProvider>
   )
 }
