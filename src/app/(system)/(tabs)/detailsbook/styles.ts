@@ -110,4 +110,5 @@ export const styles = StyleSheet.create({
   contextGallery: {
     gap: 24,
   },
+  
 });
