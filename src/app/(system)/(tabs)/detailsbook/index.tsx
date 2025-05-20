@@ -1,158 +1,177 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { StarRating } from '../../_components/star-rating';
-import { StatItem } from '../../_components/stat-item';
-import { ReviewCard } from '../../_components/review-card';
-import { NavigationHeader } from '../../_components/navigation-header';
 import { styles } from '@/app/(system)/(tabs)/detailsbook/styles';
 import { colors } from '@/styles/colors';
-import type { CommentData } from '@/utils/types/CommentData';
 import { books } from '@/utils/mocks/books';
+import type { CommentData } from '@/utils/types/CommentData';
+import { MaterialIcons } from '@expo/vector-icons';
+import React, { useEffect, useState } from 'react';
+import { Alert, Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { FeaturedBooks } from '../../_components/featured-books';
+import { NavigationHeader } from '../../_components/navigation-header';
+import { ReviewCard } from '../../_components/review-card';
+import { StarRating } from '../../_components/star-rating';
+import { StatItem } from '../../_components/stat-item';
 
-const book = {
-  id: '1',
-  title: 'Dom Quixote',
-  author: 'Miguel de Cervantes',
-  rating: 4.7,
-  reads: 325,
-  visits: 1024,
-  shares: 89,
-  reviews: 156,
-  genre: 'Romance',
-  publisher: 'Editora Fantástica',
-  pages: 863,
-  language: 'Português',
-  isbn: '978-85-123-4567-0',
-  description: 'A clássica história do cavaleiro sonhador e seu fiel escudeiro...',
-  coverImage: 'https://exemplo.com/capa.jpg'
+
+import { Loading } from '@/components/loading';
+import { useBook } from '@/hooks/useBook';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type RootStackParamList = {
+  Leitor: { bookId: string };
 };
 
-const reviews: CommentData[] = [
-  {
-    id: '1',
-    username: 'LeitorAssíduo',
-    date: '27 de novembro 2022',
-    comment: 'Uma obra-prima da literatura mundial!',
-    title: book.title,
-    cover: book.coverImage,
-    rating: 4.5,
-    avatar: 'https://exemplo.com/avatar1.jpg'
-  },
-  {
-    id: '2',
-    username: 'CríticoLiterário',
-    date: '15 de janeiro 2023',
-    comment: 'Narrativa rica e personagens inesquecíveis.',
-    title: book.title,
-    cover: book.coverImage,
-    rating: 4.8,
-    avatar: 'https://exemplo.com/avatar2.jpg'
-  },
-  {
-    id: '3',
-    username: 'MariaLuz',
-    date: '10 de março 2023',
-    comment: 'Muito interessante, mas um pouco longo pra mim.',
-    title: book.title,
-    cover: book.coverImage,
-    rating: 4.0,
-    avatar: 'https://exemplo.com/avatar3.jpg'
-  },
-  {
-    id: '4',
-    username: 'JoãoCultura',
-    date: '21 de abril 2023',
-    comment: 'Simplesmente genial! Leitura obrigatória.',
-    title: book.title,
-    cover: book.coverImage,
-    rating: 5.0,
-    avatar: 'https://exemplo.com/avatar4.jpg'
-  }
-];
+type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Leitor'>;
 
 export default function BookDetailsScreen() {
-  const [currentReviewPage, setCurrentReviewPage] = useState(2);
+  const { isLoadingBook, book, getBook } = useBook();
+  const navigation = useNavigation<NavigationProp>();
+  const [currentReviewPage, setCurrentReviewPage] = useState(1);
   const reviewsPerPage = 1;
-  const maxPages = Math.ceil(reviews.length / reviewsPerPage);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    getBook('d7b20311-663f-4bca-bb17-47bc7f20ff82');
+  }, []);
+
+  if (isLoadingBook) return <Loading />;
+
+  if (!book) {
+    return (
+      <View style={[styles.container, { justifyContent: 'center', alignItems: 'center' }]}>
+        <Text style={{ fontSize: 16 }}>Livro não encontrado.</Text>
+        <TouchableOpacity style={styles.readButton} onPress={() => navigation.goBack()}>
+          <Text style={styles.readButtonText}>Voltar</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  const handleReadPress = () => {
+    navigation.navigate('Leitor', { bookId: book.id });
+  };
+
+  const handleLikePress = () => {
+    Alert.alert('Curtir', 'Você curtiu este livro!');
+  };
+
+  const reviews: CommentData[] = [
+    {
+      id: '1',
+      username: 'LeitorAssíduo',
+      date: '27 de novembro 2022',
+      comment: 'Uma obra-prima da literatura mundial!',
+      title: book.title,
+      cover: book.urlCover,
+      rating: 4.5,
+      avatar: 'https://via.placeholder.com/50.png?text=A1',
+    },
+    {
+      id: '2',
+      username: 'CríticoLiterário',
+      date: '15 de janeiro 2023',
+      comment: 'Narrativa rica e personagens inesquecíveis.',
+      title: book.title,
+      cover: book.urlCover,
+      rating: 4.8,
+      avatar: 'https://via.placeholder.com/50.png?text=A2',
+    },
+    {
+      id: '3',
+      username: 'MariaLuz',
+      date: '10 de março 2023',
+      comment: 'Muito interessante, mas um pouco longo pra mim.',
+      title: book.title,
+      cover: book.urlCover,
+      rating: 4.0,
+      avatar: 'https://via.placeholder.com/50.png?text=A3',
+    },
+    {
+      id: '4',
+      username: 'JoãoCultura',
+      date: '21 de abril 2023',
+      comment: 'Simplesmente genial! Leitura obrigatória.',
+      title: book.title,
+      cover: book.urlCover,
+      rating: 5.0,
+      avatar: 'https://via.placeholder.com/50.png?text=A4',
+    },
+  ];
+
+  const maxPages = Math.ceil(reviews.length / reviewsPerPage);
 
   return (
     <View style={styles.container}>
       <NavigationHeader />
 
-      {/* Header Personalizado */}
       <View style={styles.customHeader}>
-        <TouchableOpacity style={styles.backButton}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
           <MaterialIcons name="arrow-back" size={24} color={colors.gray[800]} />
         </TouchableOpacity>
-        
+
         <Text style={styles.headerTitle} numberOfLines={1}>{book.title}</Text>
-        
-        <TouchableOpacity style={styles.likeButton}>
+
+        <TouchableOpacity
+          testID="favorite-button"
+          style={styles.likeButton}
+          onPress={handleLikePress}
+          accessibilityLabel="favorite-button"
+        >
           <MaterialIcons name="favorite-border" size={24} color={colors.gray[800]} />
         </TouchableOpacity>
       </View>
 
-      <ScrollView 
-        contentContainerStyle={styles.scrollContent} 
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Seção Capa e Informações */}
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={styles.coverContainer}>
-          <Image 
-            source={{ uri: book.coverImage }} 
-            style={styles.bookCover} 
-            resizeMode="cover"
-          />
+          {!!book.urlCover && (
+            <Image
+              source={{ uri: book.urlCover }}
+              style={styles.bookCover}
+              resizeMode="cover"
+            />
+          )}
+
           <View style={styles.bookInfo}>
             <Text style={styles.label}>Título Livro</Text>
             <Text style={styles.value}>{book.title}</Text>
-            
+
             <Text style={styles.label}>Nome Escritor</Text>
-            <Text style={styles.value}>{book.author}</Text>
-            
+            <Text style={styles.value}>{book.writer}</Text>
+
             <Text style={styles.label}>Avaliação</Text>
-            <StarRating rating={book.rating} />
+            <StarRating rating={4} />
           </View>
         </View>
 
-        {/* Seção Ler Livro */}
         <View style={styles.readSection}>
-          <TouchableOpacity style={styles.readButton}>
+          <TouchableOpacity style={styles.readButton} onPress={handleReadPress}>
             <Text style={styles.readButtonText}>Ler Livro</Text>
           </TouchableOpacity>
-          
         </View>
 
-        {/* Estatísticas */}
         <View style={styles.statsGrid}>
-          <StatItem label="Nº Leituras" value={book.reads} />
-          <StatItem label="Nº Avaliações" value={book.reviews} />
+          <StatItem label="Nº Leituras" value={100} />
+          <StatItem label="Nº Avaliações" value={100} />
           <StatItem label="Nº Visitas" value={book.visits} />
-          <StatItem label="Nº Compartilhamentos" value={book.shares} />
         </View>
 
-        {/* Informações do Livro */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Informações sobre o Livro</Text>
           <Text style={styles.label}>Sinopse</Text>
-          <Text style={styles.bookDescription}>{book.description}</Text>
+          <Text style={styles.bookDescription}>{book.synopsis}</Text>
 
           <View style={styles.detailsContainer}>
-            <Text style={styles.detailText}><Text style={styles.detailLabel}>Gênero: </Text>{book.genre}</Text>
+            <Text style={styles.detailText}><Text style={styles.detailLabel}>Gênero: </Text>{book.bookCategory}</Text>
             <Text style={styles.detailText}><Text style={styles.detailLabel}>Editora: </Text>{book.publisher}</Text>
-            <Text style={styles.detailText}><Text style={styles.detailLabel}>Nº Páginas: </Text>{book.pages}</Text>
+            <Text style={styles.detailText}><Text style={styles.detailLabel}>Nº Páginas: </Text>{book.numberPage}</Text>
             <Text style={styles.detailText}><Text style={styles.detailLabel}>Idiomas: </Text>{book.language}</Text>
-            <Text style={styles.detailText}><Text style={styles.detailLabel}>ISBN: </Text>{book.isbn}</Text>
+            <Text style={styles.detailText}><Text style={styles.detailLabel}>ISBN: </Text>{book.ISBN}</Text>
           </View>
         </View>
 
-        {/* Avaliações com Paginação */}
+    
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Avaliações ({book.reviews})</Text>
-
+          <Text style={styles.sectionTitle}>Avaliações (100)</Text>
           {reviews
             .slice((currentReviewPage - 1) * reviewsPerPage, currentReviewPage * reviewsPerPage)
             .map((review) => (
@@ -184,15 +203,13 @@ export default function BookDetailsScreen() {
             })}
           </View>
         </View>
+        
 
-        {/* Livros Recomendados */}
         <View style={styles.section}>
- 
-            <View style={styles.contextGallery}>
-              <FeaturedBooks title="Recomendados para você" data={books.slice(0, 3)} />
-              <FeaturedBooks title="Títulos Semelhantes" data={books} />
-            </View>
-
+          <View style={styles.contextGallery}>
+            <FeaturedBooks title="Recomendados para você" data={books.slice(0, 3)} />
+            <FeaturedBooks title="Títulos Semelhantes" data={books} />
+          </View>
         </View>
       </ScrollView>
     </View>

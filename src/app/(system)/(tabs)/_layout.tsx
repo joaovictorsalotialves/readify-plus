@@ -36,7 +36,7 @@ export default function Layout() {
         }}
       />
 
-      <Tabs.Screen name="detailsbook/index" options={{ href: null }} />
+      <Tabs.Screen name="detailsbook/index"  />
 
       <Tabs.Screen
         name="search/index"
