@@ -7,21 +7,18 @@ import { useEffect } from 'react'
 export default function Index() {
   const { user, auth, isLoading } = useAuth()
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     auth()
-  })
+  }, [])
 
   if (isLoading) {
     return <Loading />
   }
 
-  return (
-    <>
-      {!user ? (
-        <Redirect href="/(auth)/login" />
-      ) : (
-        <Redirect href="/(system)/(tabs)/home" />
-      )}
-    </>
-  )
+  if (!user) {
+    return <Redirect href="/(auth)/login" />
+  }
+
+  return <Redirect href="/(system)/(tabs)/home" />
 }

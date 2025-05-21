@@ -9,6 +9,12 @@ export type BooksDTO = {
   language: string
   ISBN: string
   visits: number
-  writer: string
-  bookCategory: string
+  writer: {
+    id: string
+    name: string
+  }
+  category: {
+    id: string
+    name: string
+  }
 }

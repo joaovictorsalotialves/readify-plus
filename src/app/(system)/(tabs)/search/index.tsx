@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { View } from 'react-native'
+import { Image, Text, View } from 'react-native'
 
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 import { GridBooks } from '../../_components/grid-books'
@@ -19,18 +19,17 @@ export default function Catalog() {
   const { isLoadingBooks, books, searchBooks } = useSearchBooks()
 
   const [title, setTitle] = useState('')
-  const [categoryId, setCategoryId] = useState('')
-  const [writerId, setWriterId] = useState('')
+
+  async function handleSearchChange(title: string) {
+    setTitle(title)
+    await searchBooks(title)
+  }
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     auth()
+    searchBooks()
   }, [])
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    searchBooks(title, categoryId, writerId)
-  }, [title, categoryId, writerId])
 
   if (isLoading && isLoadingBooks) {
     return <Loading />
@@ -42,9 +41,20 @@ export default function Catalog() {
         <NavigationHeader />
 
         <View style={styles.body}>
-          <SearchButton />
+          <SearchButton onChangeText={handleSearchChange} />
 
-          {<GridBooks title="Livros" data={books} />}
+          {books.length > 0 ? (
+            <GridBooks title="Livros" data={books} />
+          ) : (
+            <View style={styles.emptyContainer}>
+              <Image
+                source={require('../../../../assets/logo_large.png')}
+                style={styles.emptyImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.emptyText}>Nenhum livro encontrado</Text>
+            </View>
+          )}
         </View>
       </View>
     </KeyboardAwareContainer>

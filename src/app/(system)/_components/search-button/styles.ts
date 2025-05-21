@@ -1,12 +1,12 @@
-import { StyleSheet } from 'react-native';
-import { colors } from '@/styles/colors'; // Ajuste o caminho conforme necessário
+import { colors } from '@/styles/colors' // Ajuste o caminho conforme necessário
+import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
   searchFilterContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between', // Coloca o filtro ao lado
-    marginBottom: 12,
+    justifyContent: 'space-between',
+    marginTop: 20,
     width: '100%',
   },
   searchContainer: {
@@ -33,4 +33,4 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.gray[100], // Azul para o filtro
     borderRadius: 8,
   },
-});
+})

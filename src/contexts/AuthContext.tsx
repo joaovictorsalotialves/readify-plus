@@ -38,11 +38,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         const { user } = await getUserProfileService({ token })
         if (user) {
           setUser(user)
-          setIsLoading(false)
-          return router.replace('/(system)/(tabs)/home')
+        } else {
+          setUser(null)
         }
+      } else {
+        setUser(null)
       }
-      return router.replace('/(auth)/login')
     } catch (error) {
       setUser(null)
     } finally {
@@ -57,6 +58,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     })
 
     await storageAuthTokenSave({ token, refreshToken })
+    await auth()
   }
 
   return (

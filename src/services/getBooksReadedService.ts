@@ -13,7 +13,7 @@ type GetBooksReadedResponse = {
 export async function getBooksReadedService({
   token,
 }: GetBooksReadedRequest): Promise<GetBooksReadedResponse> {
-  const { data } = await api.get('/readed-books', {
+  const { data } = await api.get('/read-books', {
     headers: {
       Authorization: `Bearer ${token}`,
     },

@@ -1,23 +1,21 @@
 import { useState } from 'react'
 
 import { MaterialIcons } from '@expo/vector-icons'
-import { Text, TextInput, type TextInputProps, View } from 'react-native'
+import { TextInput, type TextInputProps, View } from 'react-native'
 
 import { colors } from '@/styles/colors'
 import { styles } from './styles'
 
 type InputProps = TextInputProps & {
   icon: keyof typeof MaterialIcons.glyphMap
-  isFilled: boolean
+  isFilled?: boolean
   messageError?: string
-  rightIcon?: React.ReactNode;
 }
 
 export function Input({
   icon,
   isFilled = false,
   messageError,
-  rightIcon,
   ...rest
 }: InputProps) {
   const [isFocused, setIsFocused] = useState(false)
@@ -46,15 +44,6 @@ export function Input({
           messageError && !isFocused && styles.iconError,
         ]}
       />
-      {/* Ícone à direita do input */}
-      {rightIcon && (
-        <View style={styles.rightIcon}>
-          {rightIcon}
-        </View>
-      )}
-      {messageError && !isFocused && (
-        <Text style={styles.messageError}>{messageError}</Text>
-      )}
     </View>
   )
 }

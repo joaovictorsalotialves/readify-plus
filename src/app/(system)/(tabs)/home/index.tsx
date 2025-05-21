@@ -16,9 +16,10 @@ import { useCountBooksRead } from '@/hooks/useCountBooksRead'
 
 import { useCountBookReview } from '@/hooks/useCountBookReview'
 import { books } from '@/utils/mocks/books'
+import { Redirect } from 'expo-router'
 
 export default function Home() {
-  const { isLoading, auth } = useAuth()
+  const { isLoading, user, auth } = useAuth()
   const { isLoadingBooksIsReading, booksIsReading, getBooksIsReading } =
     useBooksIsReading()
   const { isLoadingCountBooksRead, countBooksRead, getCountBooksRead } =
@@ -41,6 +42,10 @@ export default function Home() {
     isLoadingCountBookReview
   ) {
     return <Loading />
+  }
+
+  if (!user) {
+    return <Redirect href="/(auth)/login" />
   }
 
   return (

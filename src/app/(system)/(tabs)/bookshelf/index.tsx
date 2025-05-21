@@ -11,24 +11,18 @@ import { SearchButton } from '../../_components/search-button'
 import { useBooksIsReading } from '@/hooks/useBooksIsReading'
 import { useBooksReaded } from '@/hooks/useBooksReaded'
 
-
 import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'
 
 export default function Bookshelf() {
-  const [selectedCategory, setSelectedCategory] = useState<'lidos' | 'favoritos'>('lidos')
+  const [selectedCategory, setSelectedCategory] = useState<
+    'lidos' | 'favoritos'
+  >('lidos')
 
-  const {
-    booksIsReading,
-    isLoadingBooksIsReading,
-    getBooksIsReading,
-  } = useBooksIsReading()
+  const { booksIsReading, isLoadingBooksIsReading, getBooksIsReading } =
+    useBooksIsReading()
 
-  const {
-    booksReaded,
-    isLoadingBooksReaded,
-    getBooksReaded,
-  } = useBooksReaded()
+  const { booksReaded, isLoadingBooksReaded, getBooksReaded } = useBooksReaded()
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -67,7 +61,7 @@ export default function Bookshelf() {
         <View style={styles.body}>
           <SearchButton />
 
-          {booksIsReading?.length > 0 && (
+          {selectedCategory === 'lidos' && booksIsReading?.length > 0 && (
             <FeaturedBooks title="Continuar lendo" data={booksIsReading} />
           )}
 

@@ -1,18 +1,19 @@
-import React from 'react';
-import { TouchableOpacity, Text, TextInput, View } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { colors } from '@/styles/colors';
-import { styles } from './styles';
-import { Input } from '@/components/input';
+import { Input } from '@/components/input'
+import { colors } from '@/styles/colors'
+import { MaterialIcons } from '@expo/vector-icons'
+import React from 'react'
+import { type TextInputProps, TouchableOpacity, View } from 'react-native'
+import { styles } from './styles'
 
-export function SearchButton() {
+type SearchButtonProps = TextInputProps
+
+export function SearchButton({ onChangeText }: SearchButtonProps) {
   return (
     <View style={styles.searchFilterContainer}>
-      <Input icon='search' isFilled placeholder='Search' />
+      <Input icon="search" onChangeText={onChangeText} placeholder="Search" />
       <TouchableOpacity style={styles.filterButton}>
         <MaterialIcons name="filter-list" size={34} color={colors.blue} />
       </TouchableOpacity>
     </View>
-  );
-};
-
+  )
+}

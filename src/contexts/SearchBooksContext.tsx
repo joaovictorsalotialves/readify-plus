@@ -3,16 +3,16 @@ import { type ReactNode, createContext, useState } from 'react'
 import { storageAuthTokenGet } from '@/storage/storageAuthToken'
 
 import type { BooksDTO } from '@/dtos/book-dto'
-import { searchBooksService } from '@/services/searchBookService'
+import {
+  type getBooksResponse,
+  getBooksService,
+} from '@/services/getBooksService'
+import { searchBooksService } from '@/services/searchBooksService'
 
 export type SearchBooksContextDataProps = {
   books: BooksDTO[]
   isLoadingBooks: boolean
-  searchBooks: (
-    title: string,
-    categoryId: string,
-    writerId: string
-  ) => Promise<void>
+  searchBooks: (title?: string) => Promise<void>
 }
 
 type SearchBooksContextProviderProps = {
@@ -29,24 +29,28 @@ export function SearchBooksContextProvider({
   const [books, setBooks] = useState<BooksDTO[]>([])
   const [isLoadingBooks, setIsLoadingBooks] = useState(true)
 
-  async function searchBooks(
-    title: string,
-    categoryId: string,
-    writerId: string
-  ) {
-    const { token } = await storageAuthTokenGet()
+  async function searchBooks(title?: string) {
+    setIsLoadingBooks(true)
 
-    if (token) {
-      const { books } = await searchBooksService({
-        token,
-        title,
-        categoryId,
-        writerId,
-      })
-      setBooks(books)
+    try {
+      const { token } = await storageAuthTokenGet()
+
+      if (token) {
+        let result: getBooksResponse
+
+        if (!title) {
+          result = await getBooksService({ token })
+        } else {
+          result = await searchBooksService({ token, title })
+        }
+
+        setBooks(result.books)
+      }
+    } catch (error) {
+      setBooks([])
+    } finally {
+      setIsLoadingBooks(false)
     }
-
-    setIsLoadingBooks(false)
   }
 
   return (

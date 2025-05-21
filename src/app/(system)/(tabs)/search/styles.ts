@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { colors } from '@/styles/colors';
-
+import { colors } from '@/styles/colors'
+import { fonts } from '@/styles/fonts'
+import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
   container: {
@@ -14,4 +14,21 @@ export const styles = StyleSheet.create({
   contextGallery: {
     gap: 24,
   },
-});
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  emptyImage: {
+    width: 250,
+    height: 250,
+    marginBottom: 25,
+  },
+  emptyText: {
+    fontSize: 20,
+    color: colors.gray[900],
+    textAlign: 'center',
+    fontFamily: fonts.body.button.fontFamily,
+  },
+})
