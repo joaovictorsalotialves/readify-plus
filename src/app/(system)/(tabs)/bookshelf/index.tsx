@@ -8,7 +8,9 @@ import { GridBooks } from '../../_components/grid-books'
 import { NavigationHeader } from '../../_components/navigation-header'
 import { SearchButton } from '../../_components/search-button'
 
-import { useBookshelfBooks } from '@/hooks/useBookshelfBooks'
+import { useBooksIsReading } from '@/hooks/useBooksIsReading'
+import { useBooksReaded } from '@/hooks/useBooksReaded'
+
 
 import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'
@@ -17,18 +19,28 @@ export default function Bookshelf() {
   const [selectedCategory, setSelectedCategory] = useState<'lidos' | 'favoritos'>('lidos')
 
   const {
-    booksReading,
+    booksIsReading,
+    isLoadingBooksIsReading,
+    getBooksIsReading,
+  } = useBooksIsReading()
+
+  const {
     booksReaded,
-    isLoadingBookshelf,
-    getBookshelfBooks,
-  } = useBookshelfBooks()
+    isLoadingBooksReaded,
+    getBooksReaded,
+  } = useBooksReaded()
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    getBookshelfBooks()
+    getBooksIsReading()
+    getBooksReaded()
   }, [])
 
-  const isEmpty = !booksReading?.length && !booksReaded?.length && !isLoadingBookshelf
+  const isEmpty =
+    !booksIsReading?.length &&
+    !booksReaded?.length &&
+    !isLoadingBooksIsReading &&
+    !isLoadingBooksReaded
 
   const handleCategoryPress = (category: 'lidos' | 'favoritos') => {
     setSelectedCategory(category)
@@ -55,11 +67,11 @@ export default function Bookshelf() {
         <View style={styles.body}>
           <SearchButton />
 
-          {booksReading?.length > 0 && (
-            <FeaturedBooks title="Continuar lendo" data={booksReading} />
+          {booksIsReading?.length > 0 && (
+            <FeaturedBooks title="Continuar lendo" data={booksIsReading} />
           )}
 
-          {booksReaded?.length > 0 && (
+          {selectedCategory === 'lidos' && booksReaded?.length > 0 && (
             <GridBooks title="Livros lidos" data={booksReaded} />
           )}
 
