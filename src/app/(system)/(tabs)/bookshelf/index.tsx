@@ -9,19 +9,17 @@ import { NavigationHeader } from '../../_components/navigation-header'
 
 import { useBooksIsReading } from '@/hooks/useBooksIsReading'
 import { useBooksReaded } from '@/hooks/useBooksReaded'
+import { useBooksFavorites } from '@/hooks/useBooksFavorites'
 
 import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'
 
 export default function Bookshelf() {
-  const [selectedCategory, setSelectedCategory] = useState<
-    'lidos' | 'favoritos'
-  >('lidos')
+  const [selectedCategory, setSelectedCategory] = useState<'lidos' | 'favoritos'>('lidos')
 
-  const { booksIsReading, isLoadingBooksIsReading, getBooksIsReading } =
-    useBooksIsReading()
-
+  const { booksIsReading, isLoadingBooksIsReading, getBooksIsReading } = useBooksIsReading()
   const { booksReaded, isLoadingBooksReaded, getBooksReaded } = useBooksReaded()
+  const { booksFavorites, isLoadingFavorites, getFavorites } = useBooksFavorites()
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -67,11 +65,18 @@ export default function Bookshelf() {
   }
 
   function FavoriteBooks() {
-    const favorites = []
-    const isEmpty = favorites.length === 0
+    useEffect(() => {
+      getFavorites()
+    }, [])
+
+    const isEmpty = !booksFavorites?.length && !isLoadingFavorites
 
     return (
       <>
+        {booksFavorites?.length > 0 && (
+          <GridBooks title="Favoritos" data={booksFavorites} />
+        )}
+
         {isEmpty && (
           <View style={styles.emptyContainer}>
             <Image
