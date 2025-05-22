@@ -33,6 +33,7 @@ export default function BookDetailsScreen() {
   const { isLoadingBook, book, getBook } = useBook()
   const navigation = useNavigation<NavigationProp>()
   const [currentReviewPage, setCurrentReviewPage] = useState(1)
+  const [isLiked, setIsLiked] = useState(false)
   const reviewsPerPage = 1
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -66,7 +67,7 @@ export default function BookDetailsScreen() {
   }
 
   const handleLikePress = () => {
-    Alert.alert('Curtir', 'Você curtiu este livro!')
+    setIsLiked(prev => !prev)
   }
 
   const reviews: CommentData[] = [
@@ -137,9 +138,9 @@ export default function BookDetailsScreen() {
           accessibilityLabel="favorite-button"
         >
           <MaterialIcons
-            name="favorite-border"
+            name={isLiked ? 'favorite' : 'favorite-border'}
             size={24}
-            color={colors.gray[800]}
+            color={isLiked ? colors.alert : colors.gray[800]}
           />
         </TouchableOpacity>
       </View>
