@@ -9,85 +9,74 @@ import { Header } from '../_components/header'
 
 import { validateEmail } from '@/utils/validators/validate-email'
 import { authStyles } from '../_styles/styles'
+import { useRegister } from '@/hooks/useRegister'
+import validadeNewPassword from '@/utils/validators/validate-newPassword'
+import validadeConfirmationPassword from '@/utils/validators/validate-confirmationPassword'
 
-export default function PasswordRecovery() {
+export default function RegisterUser() {
+  const { setRegisterData } = useRegister()
+
+  const [name, setName] = useState('')
+  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
-  const [emailError, setEmailError] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
-  function handleEmailChange(email: string) {
-    setEmail(email)
-    validateEmail(email, setEmailError)
+  const [nameError, setNameError] = useState('')
+  const [usernameError, setUsernameError] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [passwordError, setPasswordError] = useState('')
+  const [confirmPasswordError, setConfirmPasswordError] = useState('')
+
+  function handleNameChange(text: string) {
+    setName(text)
+    setNameError(text.trim() === '' ? 'Nome é obrigatório' : '')
+  }
+
+  function handleUsernameChange(text: string) {
+    setUsername(text)
+    setUsernameError(text.trim() === '' ? 'Sobrenome é obrigatório' : '')
+  }
+
+  function handleEmailChange(text: string) {
+    setEmail(text)
+    validateEmail(text, setEmailError)
+  }
+
+  function handlePasswordChange(text: string) {
+    setPassword(text)
+    validadeNewPassword(password, setPasswordError)
+    validadeConfirmationPassword(confirmPassword, password, setConfirmPasswordError)
+  }
+
+  function handleConfirmPasswordChange(text: string) {
+    setConfirmPassword(text)
+    validadeConfirmationPassword(confirmPassword, password, setConfirmPasswordError)
   }
 
   function handleSubmit() {
     Keyboard.dismiss()
+
     const isValidEmail = validateEmail(email, setEmailError)
+    const isNameValid = name.trim() !== ''
+    const isUsernameValid = username.trim() !== ''
+    const isPasswordValid = validadeNewPassword(password, setPasswordError)
+    const isConfirmPasswordValid = confirmPassword === password
 
-    if (isValidEmail) {
-      router.navigate('/password-confirmation')
-    }
-  }
-
-  const [name, setName] = useState('')
-  const [surname, setSurname] = useState('')
-  const [nameError, setNameError] = useState('')
-  const [surnameError, setSurnameError] = useState('')
-
-  // Função para atualizar o nome
-
-  const handleNameChange = (text: string) => {
-    setName(text)
-
-    // Adicione validação, se necessário
-
-    if (text.trim() === '') {
-      setNameError('Nome é obrigatório')
-    } else {
-      setNameError('')
-    }
-  }
-
-  // Função para atualizar o sobrenome
-
-  const handleSurnameChange = (text: string) => {
-    setSurname(text)
-
-    // Adicione validação, se necessário
-
-    if (text.trim() === '') {
-      setSurnameError('Sobrenome é obrigatório')
-    } else {
-      setSurnameError('')
-    }
-  }
-
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [passwordError, setPasswordError] = useState('')
-  const [confirmPasswordError, setConfirmPasswordError] = useState('')
-
-  // Função para atualizar a senha
-
-  const handlePasswordChange = (text: string) => {
-    setPassword(text)
-    if (text.trim() === '') {
-      setPasswordError('Senha é obrigatória')
-    } else {
-      setPasswordError('')
-    }
-  }
-
-  // Função para atualizar a confirmação da senha
-
-  const handleConfirmPasswordChange = (text: string) => {
-    setConfirmPassword(text)
-
-    // Verificar se as senhas são iguais
-
-    if (text !== password) {
-      setConfirmPasswordError('As senhas não coincidem')
-    } else {
-      setConfirmPasswordError('')
+    if (
+      isValidEmail &&
+      isNameValid &&
+      isUsernameValid &&
+      isPasswordValid &&
+      isConfirmPasswordValid
+    ) {
+      setRegisterData({
+        name,
+        username,
+        email,
+        password,
+        passwordConfirmation: confirmPassword,
+      })
     }
   }
 
@@ -98,7 +87,7 @@ export default function PasswordRecovery() {
 
         <View style={authStyles.body}>
           <Text style={authStyles.title}>Cadastrar-se</Text>
-          <Text style={authStyles.subtitle}>Informaçoes do usuario:</Text>
+          <Text style={authStyles.subtitle}>Informações do usuário:</Text>
 
           <View style={authStyles.context}>
             <Input
@@ -107,48 +96,53 @@ export default function PasswordRecovery() {
               onChangeText={handleNameChange}
               isFilled={!!name}
               messageError={nameError}
-              autoCapitalize="none"
-            />
-            <Input
-              icon="person"
-              placeholder="Sobrenome"
-              onChangeText={handleSurnameChange}
-              isFilled={!!surname}
-              messageError={surnameError && 'Sobrenome é obrigatório'} // Mostra erro só se necessário }
               autoCapitalize="words"
             />
+
+            <Input
+              icon="person"
+              placeholder="Username"
+              onChangeText={handleUsernameChange}
+              isFilled={!!username}
+              messageError={usernameError}
+              autoCapitalize="words"
+            />
+
             <Input
               icon="mail"
               placeholder="Email"
               onChangeText={handleEmailChange}
               isFilled={!!email}
-              messageError={emailError} // Mostra erro se o email estiver errado }
+              messageError={emailError}
               autoCapitalize="none"
             />
+
             <Input
               icon="lock"
               placeholder="Senha"
               onChangeText={handlePasswordChange}
               isFilled={!!password}
-              messageError={passwordError} // Mostra erro se a senha estiver vazia
-              secureTextEntry={true} // Oculta o texto para campo de senha
+              messageError={passwordError}
+              secureTextEntry
             />
-
-            {/* Campo de Confirmar Senha */}
 
             <Input
               icon="lock"
               placeholder="Confirmar Senha"
               onChangeText={handleConfirmPasswordChange}
               isFilled={!!confirmPassword}
-              messageError={confirmPasswordError} // Mostra erro se as senhas não coincidirem
-              secureTextEntry={true} // Oculta o texto para confirmar senha
+              messageError={confirmPasswordError}
+              secureTextEntry
             />
 
             <View style={authStyles.context}>
-              <Button text="Continuar" type="confirm" onPress={handleSubmit} />
               <Button
-                text="Ja tenho conta"
+                text='Continuar'
+                type="confirm"
+                onPress={handleSubmit}
+              />
+              <Button
+                text="Já tenho conta"
                 type="redirect"
                 onPress={() => router.navigate('/login')}
               />
