@@ -15,10 +15,9 @@ type GetBookContextProviderProps = {
   children: ReactNode
 }
 
-export const GetBookContext =
-  createContext<GetBookContextDataProps>(
-    {} as GetBookContextDataProps
-  )
+export const GetBookContext = createContext<GetBookContextDataProps>(
+  {} as GetBookContextDataProps
+)
 
 export function GetBookContextProvider({
   children,
@@ -38,9 +37,7 @@ export function GetBookContextProvider({
   }
 
   return (
-    <GetBookContext.Provider
-      value={{ book, isLoadingBook, getBook }}
-    >
+    <GetBookContext.Provider value={{ book, isLoadingBook, getBook }}>
       {children}
     </GetBookContext.Provider>
   )

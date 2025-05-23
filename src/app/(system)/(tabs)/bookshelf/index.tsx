@@ -7,24 +7,29 @@ import { FeaturedBooks } from '../../_components/featured-books'
 import { GridBooks } from '../../_components/grid-books'
 import { NavigationHeader } from '../../_components/navigation-header'
 
+import { useBooksFavorites } from '@/hooks/useBooksFavorites'
 import { useBooksIsReading } from '@/hooks/useBooksIsReading'
 import { useBooksReaded } from '@/hooks/useBooksReaded'
-import { useBooksFavorites } from '@/hooks/useBooksFavorites'
 
 import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'
 
 export default function Bookshelf() {
-  const [selectedCategory, setSelectedCategory] = useState<'lidos' | 'favoritos'>('lidos')
+  const [selectedCategory, setSelectedCategory] = useState<
+    'lidos' | 'favoritos'
+  >('lidos')
 
-  const { booksIsReading, isLoadingBooksIsReading, getBooksIsReading } = useBooksIsReading()
+  const { booksIsReading, isLoadingBooksIsReading, getBooksIsReading } =
+    useBooksIsReading()
   const { booksReaded, isLoadingBooksReaded, getBooksReaded } = useBooksReaded()
-  const { booksFavorites, isLoadingFavorites, getFavorites } = useBooksFavorites()
+  const { favoriteBooks, isLoadingFavoriteBooks, getFavoriteBooks } =
+    useBooksFavorites()
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     getBooksIsReading()
     getBooksReaded()
+    getFavoriteBooks()
   }, [])
 
   const handleCategoryPress = (category: 'lidos' | 'favoritos') => {
@@ -65,16 +70,12 @@ export default function Bookshelf() {
   }
 
   function FavoriteBooks() {
-    useEffect(() => {
-      getFavorites()
-    }, [])
-
-    const isEmpty = !booksFavorites?.length && !isLoadingFavorites
+    const isEmpty = !favoriteBooks?.length && !isLoadingFavoriteBooks
 
     return (
       <>
-        {booksFavorites?.length > 0 && (
-          <GridBooks title="Favoritos" data={booksFavorites} />
+        {favoriteBooks?.length > 0 && (
+          <GridBooks title="Favoritos" data={favoriteBooks} />
         )}
 
         {isEmpty && (

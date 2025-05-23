@@ -38,7 +38,7 @@ export default function BookDetailsScreen() {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    getBook('d7b20311-663f-4bca-bb17-47bc7f20ff82')
+    getBook('354980e5-c848-4c8c-b47f-52451b60d144')
   }, [])
 
   if (isLoadingBook) return <Loading />

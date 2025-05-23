@@ -15,6 +15,7 @@ import { useBooksIsReading } from '@/hooks/useBooksIsReading'
 import { useCountBooksRead } from '@/hooks/useCountBooksRead'
 
 import { useCountBookReview } from '@/hooks/useCountBookReview'
+import { useRecommendBooks } from '@/hooks/useRecommendBooks'
 import { books } from '@/utils/mocks/books'
 import { Redirect } from 'expo-router'
 
@@ -22,6 +23,8 @@ export default function Home() {
   const { isLoading, user, auth } = useAuth()
   const { isLoadingBooksIsReading, booksIsReading, getBooksIsReading } =
     useBooksIsReading()
+  const { isLoadingRecommendBooks, recommendBooks, getRecommendBooks } =
+    useRecommendBooks()
   const { isLoadingCountBooksRead, countBooksRead, getCountBooksRead } =
     useCountBooksRead()
   const { isLoadingCountBookReview, countBookReview, getCountBookReview } =
@@ -31,6 +34,7 @@ export default function Home() {
   useEffect(() => {
     auth()
     getBooksIsReading()
+    getRecommendBooks()
     getCountBooksRead()
     getCountBookReview()
   }, [])
@@ -39,7 +43,8 @@ export default function Home() {
     isLoading &&
     isLoadingBooksIsReading &&
     isLoadingCountBooksRead &&
-    isLoadingCountBookReview
+    isLoadingCountBookReview &&
+    isLoadingRecommendBooks
   ) {
     return <Loading />
   }
@@ -67,7 +72,7 @@ export default function Home() {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.contextGallery}>
             <FeaturedBooks title="Continuar lendo" data={booksIsReading} />
-            <FeaturedBooks title="Sugestões de leitura" data={books} />
+            <FeaturedBooks title="Sugestões de leitura" data={recommendBooks} />
           </View>
         </ScrollView>
       </View>

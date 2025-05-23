@@ -1,5 +1,6 @@
-import { createContext, type ReactNode, useState } from 'react'
-import { getFavoriteBooks } from '@/services/getFavoriteBooks'
+import { getFavoriteBooksService } from '@/services/getFavoriteBooks'
+import { storageAuthTokenGet } from '@/storage/storageAuthToken'
+import { type ReactNode, createContext, useState } from 'react'
 
 interface Book {
   id: string
@@ -8,30 +9,40 @@ interface Book {
 }
 
 interface GetFavoriteBooksContextProps {
-  booksFavorites: Book[]
-  isLoadingFavorites: boolean
-  getFavorites: () => Promise<void>
+  favoriteBooks: Book[]
+  isLoadingFavoriteBooks: boolean
+  getFavoriteBooks: () => Promise<void>
 }
 
-export const GetFavoriteBooksContext = createContext({} as GetFavoriteBooksContextProps)
+export const GetFavoriteBooksContext = createContext(
+  {} as GetFavoriteBooksContextProps
+)
 
-export function GetFavoriteBooksProvider({ children }: { children: ReactNode }) {
-  const [booksFavorites, setBooksFavorites] = useState<Book[]>([])
-  const [isLoadingFavorites, setIsLoadingFavorites] = useState(false)
+export function GetFavoriteBooksContextProvider({
+  children,
+}: { children: ReactNode }) {
+  const [favoriteBooks, setFavoriteBooks] = useState<Book[]>([])
+  const [isLoadingFavoriteBooks, setIsLoadingFavoriteBooks] = useState(false)
 
-  async function getFavorites() {
+  async function getFavoriteBooks() {
+    const { token } = await storageAuthTokenGet()
+
     try {
-      setIsLoadingFavorites(true)
-      const data = await getFavoriteBooks()
-      setBooksFavorites(data)
+      setIsLoadingFavoriteBooks(true)
+      const { books } = await getFavoriteBooksService({ token })
+      setFavoriteBooks(books)
     } finally {
-      setIsLoadingFavorites(false)
+      setIsLoadingFavoriteBooks(false)
     }
   }
 
   return (
     <GetFavoriteBooksContext.Provider
-      value={{ booksFavorites, isLoadingFavorites, getFavorites }}
+      value={{
+        favoriteBooks,
+        isLoadingFavoriteBooks,
+        getFavoriteBooks,
+      }}
     >
       {children}
     </GetFavoriteBooksContext.Provider>
