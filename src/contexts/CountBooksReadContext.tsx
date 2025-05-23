@@ -25,14 +25,18 @@ export function CountBooksReadContextProvider({
   const [isLoadingCountBooksRead, setIsLoadingCountBooksRead] = useState(true)
 
   async function getCountBooksRead() {
-    const { token } = await storageAuthTokenGet()
+    try {
+      setIsLoadingCountBooksRead(true)
 
-    if (token) {
-      const { count } = await countBooksReadService({ token })
-      setCountBooksRead(count)
+      const { token } = await storageAuthTokenGet()
+
+      if (token) {
+        const { count } = await countBooksReadService({ token })
+        setCountBooksRead(count)
+      }
+    } finally {
+      setIsLoadingCountBooksRead(false)
     }
-
-    setIsLoadingCountBooksRead(false)
   }
 
   return (

@@ -31,6 +31,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   async function auth() {
     try {
+      setIsLoading(true)
+
       const { token } = await storageAuthTokenGet()
       if (token) {
         const { user } = await getUserProfileService({ token })
@@ -50,6 +52,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   async function login(email: string, password: string) {
+    setIsLoading(true)
+
     const { token, refreshToken } = await authenticateService({
       email,
       password,

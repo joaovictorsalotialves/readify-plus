@@ -27,14 +27,18 @@ export function GetBooksIsReadingContextProvider({
   const [isLoadingBooksIsReading, setIsLoadingBooksIsReading] = useState(true)
 
   async function getBooksIsReading() {
-    const { token } = await storageAuthTokenGet()
+    try {
+      setIsLoadingBooksIsReading(true)
 
-    if (token) {
-      const { books } = await getBooksIsReadingService({ token })
-      setBooksIsReading(books)
+      const { token } = await storageAuthTokenGet()
+
+      if (token) {
+        const { books } = await getBooksIsReadingService({ token })
+        setBooksIsReading(books)
+      }
+    } finally {
+      setIsLoadingBooksIsReading(false)
     }
-
-    setIsLoadingBooksIsReading(false)
   }
 
   return (

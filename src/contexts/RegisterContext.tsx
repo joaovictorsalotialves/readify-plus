@@ -1,7 +1,7 @@
-import { createContext, useContext, useState } from 'react'
+import type { RegisterBodyDTO } from '@/dtos/register-user-dto'
 import { registerUserService } from '@/services/registerUserService'
-import { RegisterBodyDTO } from '@/dtos/register-user-dto'
 import { storageAuthTokenSave } from '@/storage/storageAuthToken'
+import { createContext, useContext, useState } from 'react'
 
 interface RegisterContextData {
   register: (data: RegisterBodyDTO) => void
@@ -13,16 +13,23 @@ interface RegisterContextData {
 
 export const RegisterContext = createContext({} as RegisterContextData)
 
-export function RegisterContextProvider({ children }: { children: React.ReactNode }) {
+export function RegisterContextProvider({
+  children,
+}: { children: React.ReactNode }) {
   const [isRegistering, setIsRegistering] = useState(false)
-  const [registerData, setRegisterDataState] = useState<Partial<RegisterBodyDTO>>({})
+  const [registerData, setRegisterDataState] = useState<
+    Partial<RegisterBodyDTO>
+  >({})
 
   function setRegisterData(data: Partial<RegisterBodyDTO>) {
-    setRegisterDataState((prev) => ({ ...prev, ...data }))
+    setRegisterDataState(prev => ({ ...prev, ...data }))
   }
 
-  function setPreferences(favoriteCategories: string[], favoriteWriters: string[]) {
-    setRegisterDataState((prev) => ({
+  function setPreferences(
+    favoriteCategories: string[],
+    favoriteWriters: string[]
+  ) {
+    setRegisterDataState(prev => ({
       ...prev,
       favoriteCategories,
       favoriteWriters,
@@ -32,9 +39,10 @@ export function RegisterContextProvider({ children }: { children: React.ReactNod
   async function register(user: RegisterBodyDTO) {
     try {
       setIsRegistering(true)
-      const {token, refreshToken} = await registerUserService({user})
 
-      await storageAuthTokenSave({token, refreshToken})
+      const { token, refreshToken } = await registerUserService({ user })
+
+      await storageAuthTokenSave({ token, refreshToken })
     } finally {
       setIsRegistering(false)
     }

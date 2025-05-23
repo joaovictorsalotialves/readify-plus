@@ -30,9 +30,9 @@ export function SearchBooksContextProvider({
   const [isLoadingBooks, setIsLoadingBooks] = useState(true)
 
   async function searchBooks(title?: string) {
-    setIsLoadingBooks(true)
-
     try {
+      setIsLoadingBooks(true)
+
       const { token } = await storageAuthTokenGet()
 
       if (token) {

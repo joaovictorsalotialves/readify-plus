@@ -1,12 +1,12 @@
-import { router } from 'expo-router';
-import { useState } from 'react';
-import { Text, View, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router'
+import { useState } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native'
 
-import { Button } from '@/components/button';
-import { KeyboardAwareContainer } from '@/components/keyboard-aware-container';
-import { Header } from '../_components/header';
+import { Button } from '@/components/button'
+import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
+import { Header } from '../_components/header'
 
-import { authStyles } from '../_styles/styles';
+import { authStyles } from '../_styles/styles'
 
 // --- Componente interno de item selecionável ---
 const SelectionItem = ({
@@ -14,9 +14,9 @@ const SelectionItem = ({
   onSelect,
   isSelected,
 }: {
-  label: string;
-  onSelect: (value: string) => void;
-  isSelected: boolean;
+  label: string
+  onSelect: (value: string) => void
+  isSelected: boolean
 }) => (
   <TouchableOpacity
     style={[
@@ -25,11 +25,17 @@ const SelectionItem = ({
     ]}
     onPress={() => onSelect(label)}
   >
-    <Text style={{ color: isSelected ? 'white' : 'blue', fontSize: 16, fontWeight: '500' }}>
+    <Text
+      style={{
+        color: isSelected ? 'white' : 'blue',
+        fontSize: 16,
+        fontWeight: '500',
+      }}
+    >
       {label}
     </Text>
   </TouchableOpacity>
-);
+)
 
 // --- Componente interno de seleção de gênero e escritor ---
 const GenderWriterSelector = ({
@@ -38,19 +44,32 @@ const GenderWriterSelector = ({
   onSelectGenre,
   onSelectWriter,
 }: {
-  selectedGenre: string[];
-  selectedWriter: string[];
-  onSelectGenre: (item: string) => void;
-  onSelectWriter: (item: string) => void;
+  selectedGenre: string[]
+  selectedWriter: string[]
+  onSelectGenre: (item: string) => void
+  onSelectWriter: (item: string) => void
 }) => {
-  const genres = ['Ficção', 'Romance', 'Fantasia', 'Suspense'];
-  const writers = ['Machado de Assis', 'Clarice Lispector', 'J.K. Rowling', 'Stephen King'];
+  const genres = ['Ficção', 'Romance', 'Fantasia', 'Suspense']
+  const writers = [
+    'Machado de Assis',
+    'Clarice Lispector',
+    'J.K. Rowling',
+    'Stephen King',
+  ]
 
   return (
     <View>
-      <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>Gêneros</Text>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {genres.map((genre) => (
+      <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>
+        Gêneros
+      </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}
+      >
+        {genres.map(genre => (
           <SelectionItem
             key={genre}
             label={genre}
@@ -60,9 +79,17 @@ const GenderWriterSelector = ({
         ))}
       </View>
 
-      <Text style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 20 }}>Escritores</Text>
-      <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center' }}>
-        {writers.map((writer) => (
+      <Text style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 20 }}>
+        Escritores
+      </Text>
+      <View
+        style={{
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+        }}
+      >
+        {writers.map(writer => (
           <SelectionItem
             key={writer}
             label={writer}
@@ -72,37 +99,37 @@ const GenderWriterSelector = ({
         ))}
       </View>
     </View>
-  );
-};
+  )
+}
 
 // --- Tela principal ---
 export default function RegisterPreference() {
-  const [selectedGenre, setSelectedGenre] = useState<string[]>([]);
-  const [selectedWriter, setSelectedWriter] = useState<string[]>([]);
+  const [selectedGenre, setSelectedGenre] = useState<string[]>([])
+  const [selectedWriter, setSelectedWriter] = useState<string[]>([])
 
   const handleSelectGenre = (genre: string) => {
-    setSelectedGenre((prev) =>
-      prev.includes(genre) ? prev.filter((g) => g !== genre) : [...prev, genre]
-    );
-  };
+    setSelectedGenre(prev =>
+      prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]
+    )
+  }
 
   const handleSelectWriter = (writer: string) => {
-    setSelectedWriter((prev) =>
-      prev.includes(writer) ? prev.filter((w) => w !== writer) : [...prev, writer]
-    );
-  };
+    setSelectedWriter(prev =>
+      prev.includes(writer) ? prev.filter(w => w !== writer) : [...prev, writer]
+    )
+  }
 
   const handleSubmit = () => {
     if (selectedGenre.length === 0 || selectedWriter.length === 0) {
-      alert('Por favor, selecione pelo menos um gênero e um escritor!');
-      return;
+      alert('Por favor, selecione pelo menos um gênero e um escritor!')
+      return
     }
 
-    console.log('Gêneros:', selectedGenre);
-    console.log('Escritores:', selectedWriter);
+    console.log('Gêneros:', selectedGenre)
+    console.log('Escritores:', selectedWriter)
 
-    router.navigate('/');
-  };
+    router.navigate('/')
+  }
 
   return (
     <KeyboardAwareContainer>
@@ -111,7 +138,9 @@ export default function RegisterPreference() {
 
         <View style={authStyles.body}>
           <Text style={authStyles.title}>Cadastrar-se</Text>
-          <Text style={authStyles.subtitle}>Escolha seus gêneros e escritores favoritos:</Text>
+          <Text style={authStyles.subtitle}>
+            Escolha seus gêneros e escritores favoritos:
+          </Text>
 
           <GenderWriterSelector
             selectedGenre={selectedGenre}
@@ -131,5 +160,5 @@ export default function RegisterPreference() {
         </View>
       </View>
     </KeyboardAwareContainer>
-  );
+  )
 }

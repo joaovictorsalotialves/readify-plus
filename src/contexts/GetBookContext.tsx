@@ -26,14 +26,18 @@ export function GetBookContextProvider({
   const [isLoadingBook, setIsLoadingBook] = useState(true)
 
   async function getBook(bookId: string) {
-    const { token } = await storageAuthTokenGet()
+    try {
+      setIsLoadingBook(true)
 
-    if (token) {
-      const { book } = await getBookService({ bookId, token })
-      setBook(book)
+      const { token } = await storageAuthTokenGet()
+
+      if (token) {
+        const { book } = await getBookService({ bookId, token })
+        setBook(book)
+      }
+    } finally {
+      setIsLoadingBook(false)
     }
-
-    setIsLoadingBook(false)
   }
 
   return (

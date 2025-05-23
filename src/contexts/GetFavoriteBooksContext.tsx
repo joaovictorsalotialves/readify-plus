@@ -25,10 +25,11 @@ export function GetFavoriteBooksContextProvider({
   const [isLoadingFavoriteBooks, setIsLoadingFavoriteBooks] = useState(false)
 
   async function getFavoriteBooks() {
-    const { token } = await storageAuthTokenGet()
-
     try {
       setIsLoadingFavoriteBooks(true)
+
+      const { token } = await storageAuthTokenGet()
+
       const { books } = await getFavoriteBooksService({ token })
       setFavoriteBooks(books)
     } finally {

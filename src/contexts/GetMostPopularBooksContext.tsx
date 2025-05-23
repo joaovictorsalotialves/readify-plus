@@ -28,15 +28,18 @@ export function GetMostPopularBooksContextProvider({
     useState(true)
 
   async function getMostPopularBooks() {
-    const { token } = await storageAuthTokenGet()
+    try {
+      setIsLoadingMostPopularBooks(true)
 
-    setIsLoadingMostPopularBooks(true)
-    if (token) {
-      const { books } = await getMostPopularBooksService({ token })
-      setMostPopularBooks(books)
+      const { token } = await storageAuthTokenGet()
+
+      if (token) {
+        const { books } = await getMostPopularBooksService({ token })
+        setMostPopularBooks(books)
+      }
+    } finally {
+      setIsLoadingMostPopularBooks(false)
     }
-
-    setIsLoadingMostPopularBooks(false)
   }
 
   return (

@@ -43,11 +43,11 @@ export default function Home() {
   }, [])
 
   if (
-    isLoading &&
-    isLoadingBooksIsReading &&
-    isLoadingCountBooksRead &&
-    isLoadingCountBookReview &&
-    isLoadingRecommendBooks &&
+    isLoading ||
+    isLoadingBooksIsReading ||
+    isLoadingCountBooksRead ||
+    isLoadingCountBookReview ||
+    isLoadingRecommendBooks ||
     isLoadingMostPopularBooks
   ) {
     return <Loading />

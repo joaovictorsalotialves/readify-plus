@@ -27,15 +27,18 @@ export function GetRecommendBooksContextProvider({
   const [isLoadingRecommendBooks, setIsLoadingRecommendBooks] = useState(true)
 
   async function getRecommendBooks() {
-    const { token } = await storageAuthTokenGet()
+    try {
+      setIsLoadingRecommendBooks(true)
 
-    setIsLoadingRecommendBooks(true)
-    if (token) {
-      const { books } = await getRecommendBooksService({ token })
-      setRecommendBooks(books)
+      const { token } = await storageAuthTokenGet()
+
+      if (token) {
+        const { books } = await getRecommendBooksService({ token })
+        setRecommendBooks(books)
+      }
+    } finally {
+      setIsLoadingRecommendBooks(false)
     }
-
-    setIsLoadingRecommendBooks(false)
   }
 
   return (

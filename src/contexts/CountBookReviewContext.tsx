@@ -25,14 +25,17 @@ export function CountBookReviewContextProvider({
   const [isLoadingCountBookReview, setIsLoadingCountBookReview] = useState(true)
 
   async function getCountBookReview() {
-    const { token } = await storageAuthTokenGet()
+    try {
+      setIsLoadingCountBookReview(true)
+      const { token } = await storageAuthTokenGet()
 
-    if (token) {
-      const { count } = await countBookReviewService({ token })
-      setCountBookReview(count)
+      if (token) {
+        const { count } = await countBookReviewService({ token })
+        setCountBookReview(count)
+      }
+    } finally {
+      setIsLoadingCountBookReview(false)
     }
-
-    setIsLoadingCountBookReview(false)
   }
 
   return (
