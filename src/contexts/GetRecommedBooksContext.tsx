@@ -1,6 +1,5 @@
 import { type ReactNode, createContext, useState } from 'react'
 
-import { getBooksIsReadingService } from '@/services/getBookIsReadingService'
 import { storageAuthTokenGet } from '@/storage/storageAuthToken'
 
 import type { BooksDTO } from '@/dtos/book-dto'

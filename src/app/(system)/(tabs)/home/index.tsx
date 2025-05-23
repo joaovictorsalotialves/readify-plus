@@ -15,8 +15,8 @@ import { useBooksIsReading } from '@/hooks/useBooksIsReading'
 import { useCountBooksRead } from '@/hooks/useCountBooksRead'
 
 import { useCountBookReview } from '@/hooks/useCountBookReview'
+import { useMostPopularBooks } from '@/hooks/useMostPopularBooks'
 import { useRecommendBooks } from '@/hooks/useRecommendBooks'
-import { books } from '@/utils/mocks/books'
 import { Redirect } from 'expo-router'
 
 export default function Home() {
@@ -25,6 +25,8 @@ export default function Home() {
     useBooksIsReading()
   const { isLoadingRecommendBooks, recommendBooks, getRecommendBooks } =
     useRecommendBooks()
+  const { isLoadingMostPopularBooks, mostPopularBooks, getMostPopularBooks } =
+    useMostPopularBooks()
   const { isLoadingCountBooksRead, countBooksRead, getCountBooksRead } =
     useCountBooksRead()
   const { isLoadingCountBookReview, countBookReview, getCountBookReview } =
@@ -37,6 +39,7 @@ export default function Home() {
     getRecommendBooks()
     getCountBooksRead()
     getCountBookReview()
+    getMostPopularBooks()
   }, [])
 
   if (
@@ -44,7 +47,8 @@ export default function Home() {
     isLoadingBooksIsReading &&
     isLoadingCountBooksRead &&
     isLoadingCountBookReview &&
-    isLoadingRecommendBooks
+    isLoadingRecommendBooks &&
+    isLoadingMostPopularBooks
   ) {
     return <Loading />
   }
@@ -73,6 +77,10 @@ export default function Home() {
           <View style={styles.contextGallery}>
             <FeaturedBooks title="Continuar lendo" data={booksIsReading} />
             <FeaturedBooks title="Sugestões de leitura" data={recommendBooks} />
+            <FeaturedBooks
+              title="Livros mais populares"
+              data={mostPopularBooks}
+            />
           </View>
         </ScrollView>
       </View>
