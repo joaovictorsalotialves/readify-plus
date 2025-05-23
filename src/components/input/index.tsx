@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { MaterialIcons } from '@expo/vector-icons'
-import { TextInput, type TextInputProps, View } from 'react-native'
+import { Text, TextInput, type TextInputProps, View } from 'react-native'
 
 import { colors } from '@/styles/colors'
 import { styles } from './styles'
@@ -44,6 +44,7 @@ export function Input({
           messageError && !isFocused && styles.iconError,
         ]}
       />
+      {messageError && <Text style={styles.messageError}>{messageError}</Text>}
     </View>
   )
 }

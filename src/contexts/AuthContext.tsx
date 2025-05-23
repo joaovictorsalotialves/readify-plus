@@ -10,8 +10,6 @@ import {
   storageAuthTokenSave,
 } from '@/storage/storageAuthToken'
 
-import { router } from 'expo-router'
-
 export type AuthContextDataProps = {
   user: UserDTO | null
   isLoading: boolean

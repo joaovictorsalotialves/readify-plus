@@ -126,10 +126,12 @@ describe('Login Screen', () => {
     expect(getByText('E-mail inválido!')).toBeTruthy()
   })
 
-  it('should show error when inputs are empty', () => {
+  it('should show error when inputs are empty', async () => {
     const { getByText } = renderWithContext()
 
-    fireEvent.press(getByText('Logar'))
+    await act(async () => {
+      fireEvent.press(getByText('Logar'))
+    })
 
     expect(getByText('E-mail obrigatório!')).toBeTruthy()
     expect(getByText('Senha obrigatória!')).toBeTruthy()

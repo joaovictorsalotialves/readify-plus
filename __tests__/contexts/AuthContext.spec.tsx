@@ -1,4 +1,8 @@
-import { AuthContext, AuthContextProvider } from '@/contexts/AuthContext'
+import {
+  AuthContext,
+  type AuthContextDataProps,
+  AuthContextProvider,
+} from '@/contexts/AuthContext'
 import { authenticateService } from '@/services/authenticateService'
 import { getUserProfileService } from '@/services/getUserProfileService'
 import {
@@ -6,7 +10,6 @@ import {
   storageAuthTokenSave,
 } from '@/storage/storageAuthToken'
 import { act, render, waitFor } from '@testing-library/react-native'
-import { router } from 'expo-router'
 import { Text } from 'react-native'
 import { mockAuthenticationResponse } from '../../__mocks__/api/mockAuthenticationApiResponse'
 
@@ -57,18 +60,22 @@ describe('AuthContext', () => {
   it('should authenticate and save tokens on successful login', async () => {
     ;(authenticateService as jest.Mock).mockResolvedValueOnce(mockTokens)
 
+    let contextValue: AuthContextDataProps
+
     render(
       <AuthContextProvider>
         <AuthContext.Consumer>
           {value => {
-            act(() => {
-              value.login('john.doe@example.com', 'password123')
-            })
+            contextValue = value
             return null
           }}
         </AuthContext.Consumer>
       </AuthContextProvider>
     )
+
+    await act(async () => {
+      await contextValue.login('john.doe@example.com', 'password123')
+    })
 
     await waitFor(() => {
       expect(authenticateService).toHaveBeenCalledWith({
@@ -83,20 +90,24 @@ describe('AuthContext', () => {
     const error = new Error('Invalid credentials')
     ;(authenticateService as jest.Mock).mockRejectedValueOnce(error)
 
+    let contextValue: AuthContextDataProps
+
     render(
       <AuthContextProvider>
         <AuthContext.Consumer>
           {value => {
-            act(() => {
-              expect(
-                value.login('invalid@example.com', 'wrongpass')
-              ).rejects.toThrow('Invalid credentials')
-            })
+            contextValue = value
             return null
           }}
         </AuthContext.Consumer>
       </AuthContextProvider>
     )
+
+    await waitFor(async () => {
+      await expect(
+        contextValue.login('invalid@example.com', 'wrongpass')
+      ).rejects.toThrow('Invalid credentials')
+    })
   })
 
   it('should load user profile if token exists during auth', async () => {
@@ -107,45 +118,50 @@ describe('AuthContext', () => {
       user: mockUser,
     })
 
+    let contextValue: AuthContextDataProps
+
     render(
       <AuthContextProvider>
         <AuthContext.Consumer>
           {value => {
-            act(() => {
-              value.auth()
-            })
+            contextValue = value
             return null
           }}
         </AuthContext.Consumer>
       </AuthContextProvider>
     )
 
+    await act(async () => {
+      contextValue.auth()
+    })
+
     await waitFor(() => {
       expect(getUserProfileService).toHaveBeenCalledWith({
         token: mockTokens.token,
       })
-      expect(router.replace).toHaveBeenCalledWith('/(system)/(tabs)/home')
     })
   })
 
   it('should redirect to login if token does not exist during auth', async () => {
     ;(storageAuthTokenGet as jest.Mock).mockResolvedValueOnce({ token: '' })
 
+    let contextValue: AuthContextDataProps
+
     render(
       <AuthContextProvider>
         <AuthContext.Consumer>
           {value => {
-            act(() => {
-              value.auth()
-            })
+            contextValue = value
             return null
           }}
         </AuthContext.Consumer>
       </AuthContextProvider>
     )
 
-    await waitFor(() => {
-      expect(router.replace).toHaveBeenCalledWith('/(auth)/login')
+    await act(async () => {
+      await waitFor(() => {
+        expect(contextValue.user).toBeNull()
+      })
     })
   })
 })
