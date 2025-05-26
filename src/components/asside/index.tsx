@@ -29,7 +29,7 @@ export function ContainerAssideButtons({
 
 export function AssideButton({ icon, onPress }: AssideButtonProps) {
   return (
-    <Pressable style={styles.button} onPress={onPress}>
+    <Pressable style={styles.button} onPress={onPress} testID="asside-button">
       <MaterialIcons name={icon} color={colors.gray[900]} size={32} />
     </Pressable>
   )

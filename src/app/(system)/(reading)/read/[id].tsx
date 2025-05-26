@@ -12,12 +12,12 @@ import {
 } from 'react-native'
 import Pdf from 'react-native-pdf'
 
-import { ResourceHeader } from '../../_components/resource-header'
 import {
   Asside,
   AssideButton,
   ContainerAssideButtons,
-} from '../_components/asside'
+} from '../../../../components/asside'
+import { ResourceHeader } from '../../_components/resource-header'
 
 import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'
