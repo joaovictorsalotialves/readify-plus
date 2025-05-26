@@ -20,6 +20,7 @@ import { StatItem } from '../../_components/stat-item'
 
 import { Loading } from '@/components/loading'
 import { useBook } from '@/hooks/useBook'
+import { urlApi } from '@/lib/axios'
 import { useNavigation } from '@react-navigation/native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { router, useLocalSearchParams } from 'expo-router'
