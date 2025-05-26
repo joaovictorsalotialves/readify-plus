@@ -9,12 +9,14 @@ type GridBooksProps = {
   title: string
   data: BooksDTO[]
   scrollEnabled?: boolean
+  testID?: string
 }
 
 export function GridBooks({
   title,
   data,
   scrollEnabled = false,
+  testID,
 }: GridBooksProps) {
   // Garante múltiplos de 3
   const filledData = [...data]
@@ -44,7 +46,7 @@ export function GridBooks({
   }
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID={testID ?? 'GridBooks'}>
       <Text style={styles.title}>{title}</Text>
       <FlatList
         data={filledData}

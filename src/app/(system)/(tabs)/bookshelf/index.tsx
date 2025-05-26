@@ -95,7 +95,7 @@ export default function Bookshelf() {
     return (
       <>
         {favoriteBooks?.length > 0 && (
-          <GridBooks title="Favoritos" data={favoriteBooks} />
+          <GridBooks title="Favoritos" data={favoriteBooks} testID="favoritos-section"/>
         )}
 
         {isEmpty && (
