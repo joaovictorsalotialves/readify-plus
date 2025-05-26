@@ -2,8 +2,8 @@ import { router } from 'expo-router'
 import { useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 
+import { AuthHeader } from '@/components/auth-header'
 import { Button } from '@/components/button'
-import { Header } from '@/components/header'
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 
 import { authStyles } from '../_styles/styles'
@@ -134,7 +134,7 @@ export default function RegisterPreference() {
   return (
     <KeyboardAwareContainer>
       <View style={authStyles.container}>
-        <Header backRoute="/(auth)/register-user" />
+        <AuthHeader backRoute="/(auth)/register-user" />
 
         <View style={authStyles.body}>
           <Text style={authStyles.title}>Cadastrar-se</Text>

@@ -1,4 +1,4 @@
-import { Header } from '@/components/header'
+import { AuthHeader } from '@/components/auth-header'
 import { fireEvent, render } from '@testing-library/react-native'
 import { router } from 'expo-router'
 import React from 'react'
@@ -28,14 +28,16 @@ describe('Header', () => {
   const mockRoute = '/login'
 
   it('should render the back button and logo text', () => {
-    const { getByText, getByTestId } = render(<Header backRoute={mockRoute} />)
+    const { getByText, getByTestId } = render(
+      <AuthHeader backRoute={mockRoute} />
+    )
 
     expect(getByText('Readify Plus')).toBeTruthy()
     expect(getByTestId('back-button')).toBeTruthy()
   })
 
   it('should navigate to the backRoute when pressed', () => {
-    const { getByTestId } = render(<Header backRoute={mockRoute} />)
+    const { getByTestId } = render(<AuthHeader backRoute={mockRoute} />)
 
     const button = getByTestId('back-button')
     fireEvent.press(button)

@@ -2,8 +2,8 @@ import { router } from 'expo-router'
 import { useState } from 'react'
 import { Keyboard, Text, View } from 'react-native'
 
+import { AuthHeader } from '@/components/auth-header'
 import { Button } from '@/components/button'
-import { Header } from '@/components/header'
 import { Input } from '@/components/input'
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 
@@ -91,7 +91,7 @@ export default function RegisterUser() {
   return (
     <KeyboardAwareContainer>
       <View style={authStyles.container}>
-        <Header backRoute="/login" />
+        <AuthHeader backRoute="/login" />
 
         <View style={authStyles.body}>
           <Text style={authStyles.title}>Cadastrar-se</Text>

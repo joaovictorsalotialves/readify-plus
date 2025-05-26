@@ -5,7 +5,7 @@ import { Alert, Keyboard, Text, View } from 'react-native'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
-import { Header } from '../../../components/header'
+import { AuthHeader } from '../../../components/auth-header'
 
 import { authStyles } from '../_styles/styles'
 
@@ -104,7 +104,7 @@ export default function PasswordReset() {
   return (
     <KeyboardAwareContainer>
       <View style={authStyles.container}>
-        <Header backRoute="/password-recovery" />
+        <AuthHeader backRoute="/password-recovery" />
         <View style={authStyles.body}>
           <Text style={authStyles.title}>Recuperar Senha</Text>
           <Text style={authStyles.subtitle}>Informe uma nova senha:</Text>

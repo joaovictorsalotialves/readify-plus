@@ -5,11 +5,11 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import { colors } from '@/styles/colors'
 import { styles } from './styles'
 
-type HeaderProps = {
+type AuthHeaderProps = {
   backRoute: `/${string}`
 }
 
-export function Header({ backRoute }: HeaderProps) {
+export function AuthHeader({ backRoute }: AuthHeaderProps) {
   return (
     <View style={styles.container}>
       <TouchableOpacity

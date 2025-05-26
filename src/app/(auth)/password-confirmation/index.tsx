@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 import { router } from 'expo-router'
 import { Alert, Keyboard, Text, View } from 'react-native'
 
+import { AuthHeader } from '@/components/auth-header'
 import { Button } from '@/components/button'
-import { Header } from '@/components/header'
 import { Input } from '@/components/input'
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 
@@ -83,7 +83,7 @@ export default function PasswordConfirmation() {
   return (
     <KeyboardAwareContainer>
       <View style={authStyles.container}>
-        <Header backRoute="/password-recovery" />
+        <AuthHeader backRoute="/password-recovery" />
 
         <View style={authStyles.body}>
           <Text style={authStyles.title}>Recuperar Senha</Text>
