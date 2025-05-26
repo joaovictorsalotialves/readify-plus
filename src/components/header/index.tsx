@@ -13,6 +13,7 @@ export function Header({ backRoute }: HeaderProps) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
+        testID="back-button"
         activeOpacity={0.5}
         onPress={() => {
           router.navigate(backRoute as RelativePathString)

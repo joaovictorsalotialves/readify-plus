@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { Alert, Keyboard, Text, View } from 'react-native'
 
 import { Button } from '@/components/button'
+import { Header } from '@/components/header'
 import { Input } from '@/components/input'
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
-import { Header } from '../_components/header'
 
 import { SendEmailToRecoverPasswordService } from '@/services/sendEmailToRecoverPasswordService'
 import { storageRecoveryPasswordTokenSave } from '@/storage/storageRecoveryPasswordToken'

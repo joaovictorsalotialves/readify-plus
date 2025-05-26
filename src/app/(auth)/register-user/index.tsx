@@ -3,15 +3,15 @@ import { useState } from 'react'
 import { Keyboard, Text, View } from 'react-native'
 
 import { Button } from '@/components/button'
+import { Header } from '@/components/header'
 import { Input } from '@/components/input'
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
-import { Header } from '../_components/header'
 
-import { validateEmail } from '@/utils/validators/validate-email'
-import { authStyles } from '../_styles/styles'
 import { useRegister } from '@/hooks/useRegister'
-import validadeNewPassword from '@/utils/validators/validate-newPassword'
 import validadeConfirmationPassword from '@/utils/validators/validate-confirmationPassword'
+import { validateEmail } from '@/utils/validators/validate-email'
+import validadeNewPassword from '@/utils/validators/validate-newPassword'
+import { authStyles } from '../_styles/styles'
 
 export default function RegisterUser() {
   const { setRegisterData } = useRegister()
@@ -46,12 +46,20 @@ export default function RegisterUser() {
   function handlePasswordChange(text: string) {
     setPassword(text)
     validadeNewPassword(password, setPasswordError)
-    validadeConfirmationPassword(confirmPassword, password, setConfirmPasswordError)
+    validadeConfirmationPassword(
+      confirmPassword,
+      password,
+      setConfirmPasswordError
+    )
   }
 
   function handleConfirmPasswordChange(text: string) {
     setConfirmPassword(text)
-    validadeConfirmationPassword(confirmPassword, password, setConfirmPasswordError)
+    validadeConfirmationPassword(
+      confirmPassword,
+      password,
+      setConfirmPasswordError
+    )
   }
 
   function handleSubmit() {
@@ -136,11 +144,7 @@ export default function RegisterUser() {
             />
 
             <View style={authStyles.context}>
-              <Button
-                text='Continuar'
-                type="confirm"
-                onPress={handleSubmit}
-              />
+              <Button text="Continuar" type="confirm" onPress={handleSubmit} />
               <Button
                 text="Já tenho conta"
                 type="redirect"

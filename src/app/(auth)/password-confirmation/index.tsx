@@ -4,9 +4,9 @@ import { router } from 'expo-router'
 import { Alert, Keyboard, Text, View } from 'react-native'
 
 import { Button } from '@/components/button'
+import { Header } from '@/components/header'
 import { Input } from '@/components/input'
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
-import { Header } from '../_components/header'
 
 import { authStyles } from '../_styles/styles'
 

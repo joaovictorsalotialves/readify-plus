@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 
 import { Button } from '@/components/button'
+import { Header } from '@/components/header'
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
-import { Header } from '../_components/header'
 
 import { authStyles } from '../_styles/styles'
 

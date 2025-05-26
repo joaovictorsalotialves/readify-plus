@@ -5,7 +5,7 @@ import { Alert, Keyboard, Text, View } from 'react-native'
 
 import { Button } from '@/components/button'
 import { Input } from '@/components/input'
-import { Header } from '../_components/header'
+import { Header } from '../../../components/header'
 
 import { authStyles } from '../_styles/styles'
 
