@@ -22,6 +22,7 @@ import { Loading } from '@/components/loading'
 import { useBook } from '@/hooks/useBook'
 import { useNavigation } from '@react-navigation/native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { router, useLocalSearchParams } from 'expo-router'
 
 type RootStackParamList = {
   Leitor: { bookId: string }
@@ -36,10 +37,14 @@ export default function BookDetailsScreen() {
   const [isLiked, setIsLiked] = useState(false)
   const reviewsPerPage = 1
 
+  const { id } = useLocalSearchParams()
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    getBook('354980e5-c848-4c8c-b47f-52451b60d144')
-  }, [])
+    if (typeof id === 'string') {
+      getBook(id)
+    }
+  }, [id])
 
   if (isLoadingBook) return <Loading />
 
@@ -63,7 +68,7 @@ export default function BookDetailsScreen() {
   }
 
   const handleReadPress = () => {
-    navigation.navigate('Leitor', { bookId: book.id })
+    router.navigate(`/(system)/(reading)/read/${book.id}`)
   }
 
   const handleLikePress = () => {
@@ -166,7 +171,7 @@ export default function BookDetailsScreen() {
             <Text style={styles.value}>{book.writer.name}</Text>
 
             <Text style={styles.label}>Avaliação</Text>
-            <StarRating rating={4} />
+            <StarRating rating={book.score} />
           </View>
         </View>
 
@@ -177,9 +182,10 @@ export default function BookDetailsScreen() {
         </View>
 
         <View style={styles.statsGrid}>
-          <StatItem label="Nº Leituras" value={100} />
-          <StatItem label="Nº Avaliações" value={100} />
+          <StatItem label="Nº Leituras" value={book.read} />
+          <StatItem label="Nº Avaliações" value={book.assessements} />
           <StatItem label="Nº Visitas" value={book.visits} />
+          <StatItem label="Nº Favoritos" value={book.favorite} />
         </View>
 
         <View style={styles.section}>
@@ -212,7 +218,9 @@ export default function BookDetailsScreen() {
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Avaliações (100)</Text>
+          <Text style={styles.sectionTitle}>
+            Avaliações ({book.assessements})
+          </Text>
           {reviews
             .slice(
               (currentReviewPage - 1) * reviewsPerPage,
@@ -261,7 +269,7 @@ export default function BookDetailsScreen() {
           </View>
         </View>
 
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <View style={styles.contextGallery}>
             <FeaturedBooks
               title="Recomendados para você"
@@ -269,7 +277,7 @@ export default function BookDetailsScreen() {
             />
             <FeaturedBooks title="Títulos Semelhantes" data={books} />
           </View>
-        </View>
+        </View> */}
       </ScrollView>
     </View>
   )

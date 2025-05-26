@@ -1,18 +1,27 @@
-import { Image, Text, View } from 'react-native'
+import { Image, Pressable, Text, View } from 'react-native'
 
+import { router } from 'expo-router'
 import { styles } from './styles'
 
 type BookProps = {
+  id: string
   title: string
+  urlCover: string
 }
 
-export function Book({ title }: BookProps) {
+export function Book({ id, title, urlCover }: BookProps) {
   return (
-    <View style={styles.container}>
-      <Image style={styles.cover} />
-      <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
-        {title}
-      </Text>
-    </View>
+    <Pressable
+      onPress={() => {
+        router.navigate(`/(system)/(tabs)/detailsbook/${id}`)
+      }}
+    >
+      <View style={styles.container}>
+        <Image style={styles.cover} src={urlCover} />
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+          {title}
+        </Text>
+      </View>
+    </Pressable>
   )
 }

@@ -75,11 +75,17 @@ export default function Home() {
 
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.contextGallery}>
-            <FeaturedBooks title="Continuar lendo" data={booksIsReading} />
-            <FeaturedBooks title="Sugestões de leitura" data={recommendBooks} />
+            <FeaturedBooks
+              title="Continuar lendo"
+              data={booksIsReading ?? []}
+            />
+            <FeaturedBooks
+              title="Sugestões de leitura"
+              data={recommendBooks ?? []}
+            />
             <FeaturedBooks
               title="Livros mais populares"
-              data={mostPopularBooks}
+              data={mostPopularBooks ?? []}
             />
           </View>
         </ScrollView>

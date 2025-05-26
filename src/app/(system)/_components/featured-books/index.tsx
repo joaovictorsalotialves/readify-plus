@@ -4,11 +4,11 @@ import { styles } from './styles'
 
 import { Book } from '../book'
 
-import type { BookData } from '@/utils/types/BookData'
+import type { BooksDTO } from '@/dtos/book-dto'
 
 type FeaturedBooksProps = {
   title: string
-  data: BookData[]
+  data: BooksDTO[]
 }
 
 export function FeaturedBooks({ title, data }: FeaturedBooksProps) {
@@ -19,7 +19,9 @@ export function FeaturedBooks({ title, data }: FeaturedBooksProps) {
         <FlatList
           data={data}
           keyExtractor={item => item.id}
-          renderItem={({ item }) => <Book title={item.title} />}
+          renderItem={({ item }) => (
+            <Book id={item.id} title={item.title} urlCover={item.urlCover} />
+          )}
           contentContainerStyle={styles.slider}
           showsHorizontalScrollIndicator={false}
           horizontal

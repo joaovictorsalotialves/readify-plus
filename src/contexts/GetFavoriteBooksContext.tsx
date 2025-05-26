@@ -1,15 +1,10 @@
+import type { BooksDTO } from '@/dtos/book-dto'
 import { getFavoriteBooksService } from '@/services/getFavoriteBooks'
 import { storageAuthTokenGet } from '@/storage/storageAuthToken'
 import { type ReactNode, createContext, useState } from 'react'
 
-interface Book {
-  id: string
-  title: string
-  // Adicione outros campos conforme necessário
-}
-
 interface GetFavoriteBooksContextProps {
-  favoriteBooks: Book[]
+  favoriteBooks: BooksDTO[]
   isLoadingFavoriteBooks: boolean
   getFavoriteBooks: () => Promise<void>
 }
@@ -21,7 +16,7 @@ export const GetFavoriteBooksContext = createContext(
 export function GetFavoriteBooksContextProvider({
   children,
 }: { children: ReactNode }) {
-  const [favoriteBooks, setFavoriteBooks] = useState<Book[]>([])
+  const [favoriteBooks, setFavoriteBooks] = useState<BooksDTO[]>([])
   const [isLoadingFavoriteBooks, setIsLoadingFavoriteBooks] = useState(false)
 
   async function getFavoriteBooks() {

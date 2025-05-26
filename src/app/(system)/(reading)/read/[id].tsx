@@ -24,7 +24,11 @@ import { fonts } from '@/utils/mocks/fonts'
 import { lineSpacing as _lineSpacing } from '@/utils/mocks/lineSpacing'
 import { themes } from '@/utils/mocks/theme'
 
+import { useBook } from '@/hooks/useBook'
+
 export default function Read() {
+  const { book } = useBook()
+
   const [page, setPage] = useState(20)
   const [isVisible, setIsVisible] = useState(true)
 
@@ -56,9 +60,7 @@ export default function Read() {
 
   return (
     <View style={systemStyles.container}>
-      {isVisible && (
-        <ResourceHeader title="Título do Livro" icon="arrow-back" />
-      )}
+      {isVisible && <ResourceHeader title={book.title} icon="arrow-back" />}
 
       <TouchableWithoutFeedback
         onPress={toggleVisibleControls}

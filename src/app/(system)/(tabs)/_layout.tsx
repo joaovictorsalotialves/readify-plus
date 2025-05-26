@@ -26,6 +26,7 @@ export default function Layout() {
           title: 'Home',
         }}
       />
+
       <Tabs.Screen
         name="bookshelf/index"
         options={{
@@ -36,7 +37,12 @@ export default function Layout() {
         }}
       />
 
-      <Tabs.Screen name="detailsbook/index"  />
+      <Tabs.Screen
+        name="detailsbook/[id]"
+        options={{
+          href: null,
+        }}
+      />
 
       <Tabs.Screen
         name="search/index"
