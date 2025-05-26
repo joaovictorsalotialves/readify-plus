@@ -25,13 +25,18 @@ import { styles } from './styles'
 import { lineSpacing as _lineSpacing } from '@/utils/mocks/lineSpacing'
 
 import { useBook } from '@/hooks/useBook'
+import { useReading } from '@/hooks/useReading'
+
+import { Loading } from '@/components/loading'
 import { urlApi } from '@/lib/axios'
 
 export default function Read() {
   const { book } = useBook()
+  const { reading, isLoadingReading, getOrCreateReading } = useReading()
 
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(reading.lastPageRead)
   const [isVisible, setIsVisible] = useState(true)
+  const [pdfUri, setPdfUri] = useState<string | null>(null)
 
   const panResponder = useRef(
     PanResponder.create({
@@ -45,16 +50,14 @@ export default function Read() {
 
         if (dx < -50) {
           // arrastou para a esquerda → próxima página
-          setPage(prev => Math.min(prev + 1, 248))
+          if (page < book.numberPage) setPage(prev => prev + 1)
         } else if (dx > 50) {
           // arrastou para a direita → página anterior
-          setPage(prev => Math.max(prev - 1, 1))
+          if (page > 1) setPage(prev => prev - 1)
         }
       },
     })
   ).current
-
-  const [pdfUri, setPdfUri] = useState<string | null>(null)
 
   useEffect(() => {
     const downloadPdf = async () => {
@@ -78,6 +81,15 @@ export default function Read() {
 
     downloadPdf()
   }, [book.bookPath])
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    getOrCreateReading(book.id)
+  }, [book.id])
+
+  if (isLoadingReading) {
+    return <Loading />
+  }
 
   return (
     <View style={systemStyles.container}>
