@@ -20,6 +20,7 @@ export function Button({
 }: ButtonProps) {
   return (
     <TouchableOpacity
+      accessibilityRole="button"
       style={[
         styles.button,
         type === 'confirm' && styles.confirm,

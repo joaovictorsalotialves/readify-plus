@@ -35,6 +35,7 @@ export function Input({
       />
       {/* Ícone à esquerda do input */}
       <MaterialIcons
+        testID="input-icon"
         name={icon}
         size={20}
         style={[
@@ -44,7 +45,9 @@ export function Input({
           messageError && !isFocused && styles.iconError,
         ]}
       />
-      {messageError && <Text style={styles.messageError}>{messageError}</Text>}
+      {messageError && !isFocused && (
+        <Text style={styles.messageError}>{messageError}</Text>
+      )}
     </View>
   )
 }
