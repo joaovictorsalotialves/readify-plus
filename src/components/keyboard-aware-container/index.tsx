@@ -19,8 +19,14 @@ export function KeyboardAwareContainer({ children }: Props) {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
     >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <ScrollView contentContainerStyle={styles.context} showsVerticalScrollIndicator={false}>
+      <TouchableWithoutFeedback
+        onPress={Keyboard.dismiss}
+        testID="TouchableWithoutFeedback"
+      >
+        <ScrollView
+          contentContainerStyle={styles.context}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.container}>{children}</View>
         </ScrollView>
       </TouchableWithoutFeedback>
