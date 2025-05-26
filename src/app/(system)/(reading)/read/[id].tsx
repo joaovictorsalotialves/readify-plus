@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import * as FileSystem from 'expo-file-system'
 import {
@@ -29,6 +29,7 @@ import { useReading } from '@/hooks/useReading'
 
 import { Loading } from '@/components/loading'
 import { urlApi } from '@/lib/axios'
+import { useFocusEffect } from 'expo-router'
 
 export default function Read() {
   const { book } = useBook()
@@ -82,10 +83,12 @@ export default function Read() {
     downloadPdf()
   }, [book.bookPath])
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    getOrCreateReading(book.id)
-  }, [book.id])
+  useFocusEffect(
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useCallback(() => {
+      getOrCreateReading(book.id)
+    }, [book.id])
+  )
 
   if (isLoadingReading) {
     return <Loading />

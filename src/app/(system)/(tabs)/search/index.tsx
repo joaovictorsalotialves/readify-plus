@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { Image, Text, View } from 'react-native'
 
@@ -13,26 +13,30 @@ import { styles } from './styles'
 import { Loading } from '@/components/loading'
 import { useAuth } from '@/hooks/useAuth'
 import { useSearchBooks } from '@/hooks/useSearchBooks'
+import { Redirect, useFocusEffect } from 'expo-router'
 
 export default function Catalog() {
-  const { isLoading, auth } = useAuth()
+  const { user, isLoading, auth } = useAuth()
   const { isLoadingBooks, books, searchBooks } = useSearchBooks()
 
-  const [title, setTitle] = useState('')
-
   async function handleSearchChange(title: string) {
-    setTitle(title)
     await searchBooks(title)
   }
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    auth()
-    searchBooks()
-  }, [])
+  useFocusEffect(
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useCallback(() => {
+      auth()
+      searchBooks()
+    }, [])
+  )
 
   if (isLoading && isLoadingBooks) {
     return <Loading />
+  }
+
+  if (!user) {
+    return <Redirect href="/(auth)/login" />
   }
 
   return (

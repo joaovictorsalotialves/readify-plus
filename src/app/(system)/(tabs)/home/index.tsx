@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 
 import { ScrollView, View } from 'react-native'
 
@@ -17,7 +17,7 @@ import { useCountBooksRead } from '@/hooks/useCountBooksRead'
 import { useCountBookReview } from '@/hooks/useCountBookReview'
 import { useMostPopularBooks } from '@/hooks/useMostPopularBooks'
 import { useRecommendBooks } from '@/hooks/useRecommendBooks'
-import { Redirect } from 'expo-router'
+import { Redirect, useFocusEffect } from 'expo-router'
 
 export default function Home() {
   const { isLoading, user, auth } = useAuth()
@@ -32,15 +32,17 @@ export default function Home() {
   const { isLoadingCountBookReview, countBookReview, getCountBookReview } =
     useCountBookReview()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    auth()
-    getBooksIsReading()
-    getRecommendBooks()
-    getCountBooksRead()
-    getCountBookReview()
-    getMostPopularBooks()
-  }, [])
+  useFocusEffect(
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useCallback(() => {
+      auth()
+      getBooksIsReading()
+      getRecommendBooks()
+      getCountBooksRead()
+      getCountBookReview()
+      getMostPopularBooks()
+    }, [])
+  )
 
   if (
     isLoading ||

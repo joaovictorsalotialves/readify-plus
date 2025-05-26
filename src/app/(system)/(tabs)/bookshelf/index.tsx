@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Image, Text, View } from 'react-native'
 
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
@@ -11,29 +11,49 @@ import { useBooksFavorites } from '@/hooks/useBooksFavorites'
 import { useBooksIsReading } from '@/hooks/useBooksIsReading'
 import { useBooksReaded } from '@/hooks/useBooksReaded'
 
+import { Loading } from '@/components/loading'
+import { useAuth } from '@/hooks/useAuth'
+import { Redirect, useFocusEffect } from 'expo-router'
 import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'
 
 export default function Bookshelf() {
-  const [selectedCategory, setSelectedCategory] = useState<
-    'lidos' | 'favoritos'
-  >('lidos')
-
+  const { user, isLoading, auth } = useAuth()
   const { booksIsReading, isLoadingBooksIsReading, getBooksIsReading } =
     useBooksIsReading()
   const { booksReaded, isLoadingBooksReaded, getBooksReaded } = useBooksReaded()
   const { favoriteBooks, isLoadingFavoriteBooks, getFavoriteBooks } =
     useBooksFavorites()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    getBooksIsReading()
-    getBooksReaded()
-    getFavoriteBooks()
-  }, [])
+  const [selectedCategory, setSelectedCategory] = useState<
+    'lidos' | 'favoritos'
+  >('lidos')
 
   const handleCategoryPress = (category: 'lidos' | 'favoritos') => {
     setSelectedCategory(category)
+  }
+
+  useFocusEffect(
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useCallback(() => {
+      auth()
+      getBooksIsReading()
+      getBooksReaded()
+      getFavoriteBooks()
+    }, [])
+  )
+
+  if (
+    isLoading ||
+    isLoadingBooksIsReading ||
+    isLoadingBooksReaded ||
+    isLoadingFavoriteBooks
+  ) {
+    return <Loading />
+  }
+
+  if (!user) {
+    return <Redirect href="/(auth)/login" />
   }
 
   function ReadedBooks() {
