@@ -146,7 +146,7 @@ export default function BookDetailsScreen() {
           <MaterialIcons
             name={isLiked ? 'favorite' : 'favorite-border'}
             size={24}
-            color={isLiked ? colors.alert : colors.gray[800]}
+            color={isLiked ? colors.danger : colors.gray[800]}
           />
         </TouchableOpacity>
       </View>
@@ -158,7 +158,7 @@ export default function BookDetailsScreen() {
         <View style={styles.coverContainer}>
           {!!book.urlCover && (
             <Image
-              source={{ uri: book.urlCover }}
+              source={{ uri: `${urlApi}/covers/${book.urlCover}` }}
               style={styles.bookCover}
               resizeMode="cover"
             />
