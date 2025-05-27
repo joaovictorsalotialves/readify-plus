@@ -8,13 +8,14 @@ type GetBookRequest = {
 
 type GetBookResponse = {
   book: BooksDTO
+  isFavorite: boolean
 }
 
 export async function getBookService({
   bookId,
   token,
 }: GetBookRequest): Promise<GetBookResponse> {
-  const { data } = await api.get(`/books/${bookId}`, {
+  const { data } = await api.get<GetBookResponse>(`/books/${bookId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -22,5 +23,6 @@ export async function getBookService({
 
   return {
     book: data.book,
+    isFavorite: data.isFavorite,
   }
 }

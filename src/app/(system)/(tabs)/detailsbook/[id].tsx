@@ -1,9 +1,8 @@
 import { styles } from '@/app/(system)/(tabs)/detailsbook/styles'
 import { colors } from '@/styles/colors'
-import { books } from '@/utils/mocks/books'
 import type { CommentData } from '@/utils/types/CommentData'
 import { MaterialIcons } from '@expo/vector-icons'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   Alert,
   Image,
@@ -23,7 +22,7 @@ import { useBook } from '@/hooks/useBook'
 import { urlApi } from '@/lib/axios'
 import { useNavigation } from '@react-navigation/native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { router, useLocalSearchParams } from 'expo-router'
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router'
 
 type RootStackParamList = {
   Leitor: { bookId: string }
@@ -32,20 +31,23 @@ type RootStackParamList = {
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Leitor'>
 
 export default function BookDetailsScreen() {
-  const { isLoadingBook, book, getBook } = useBook()
-  const navigation = useNavigation<NavigationProp>()
+  const { isLoadingBook, book, isFavorite, getBook, toggleFavorite } = useBook()
+
   const [currentReviewPage, setCurrentReviewPage] = useState(1)
-  const [isLiked, setIsLiked] = useState(false)
+
+  const navigation = useNavigation<NavigationProp>()
   const reviewsPerPage = 1
 
   const { id } = useLocalSearchParams()
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    if (typeof id === 'string') {
-      getBook(id)
-    }
-  }, [id])
+  useFocusEffect(
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useCallback(() => {
+      if (typeof id === 'string') {
+        getBook(id)
+      }
+    }, [])
+  )
 
   if (isLoadingBook) return <Loading />
 
@@ -66,14 +68,6 @@ export default function BookDetailsScreen() {
         </TouchableOpacity>
       </View>
     )
-  }
-
-  const handleReadPress = () => {
-    router.navigate(`/(system)/(reading)/read/${book.id}`)
-  }
-
-  const handleLikePress = () => {
-    setIsLiked(prev => !prev)
   }
 
   const reviews: CommentData[] = [
@@ -140,13 +134,13 @@ export default function BookDetailsScreen() {
         <TouchableOpacity
           testID="favorite-button"
           style={styles.likeButton}
-          onPress={handleLikePress}
+          onPress={toggleFavorite}
           accessibilityLabel="favorite-button"
         >
           <MaterialIcons
-            name={isLiked ? 'favorite' : 'favorite-border'}
+            name={isFavorite ? 'favorite' : 'favorite-border'}
             size={24}
-            color={isLiked ? colors.danger : colors.gray[800]}
+            color={isFavorite ? colors.danger : colors.gray[800]}
           />
         </TouchableOpacity>
       </View>
@@ -177,7 +171,12 @@ export default function BookDetailsScreen() {
         </View>
 
         <View style={styles.readSection}>
-          <TouchableOpacity style={styles.readButton} onPress={handleReadPress}>
+          <TouchableOpacity
+            style={styles.readButton}
+            onPress={() => {
+              router.navigate(`/(system)/(reading)/read/${book.id}`)
+            }}
+          >
             <Text style={styles.readButtonText}>Ler Livro</Text>
           </TouchableOpacity>
         </View>
