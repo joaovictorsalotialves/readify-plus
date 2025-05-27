@@ -3,14 +3,7 @@ import { colors } from '@/styles/colors'
 import type { CommentData } from '@/utils/types/CommentData'
 import { MaterialIcons } from '@expo/vector-icons'
 import React, { useCallback, useState } from 'react'
-import {
-  Alert,
-  Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native'
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { FeaturedBooks } from '../../_components/featured-books'
 import { NavigationHeader } from '../../_components/navigation-header'
 import { ReviewCard } from '../../_components/review-card'
@@ -18,7 +11,10 @@ import { StarRating } from '../../_components/star-rating'
 import { StatItem } from '../../_components/stat-item'
 
 import { Loading } from '@/components/loading'
+import { useAuth } from '@/hooks/useAuth'
 import { useBook } from '@/hooks/useBook'
+import { useRecommendBooks } from '@/hooks/useRecommendBooks'
+import { useSimilarBooks } from '@/hooks/useSimilarBooks'
 import { urlApi } from '@/lib/axios'
 import { useNavigation } from '@react-navigation/native'
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -31,7 +27,12 @@ type RootStackParamList = {
 type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Leitor'>
 
 export default function BookDetailsScreen() {
+  const { isLoading, auth } = useAuth()
   const { isLoadingBook, book, isFavorite, getBook, toggleFavorite } = useBook()
+  const { isLoadingRecommendBooks, recommendBooks, getRecommendBooks } =
+    useRecommendBooks()
+  const { isLoadingSimilarBooks, similarBooks, getSimilarBooks } =
+    useSimilarBooks()
 
   const [currentReviewPage, setCurrentReviewPage] = useState(1)
 
@@ -43,13 +44,23 @@ export default function BookDetailsScreen() {
   useFocusEffect(
     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useCallback(() => {
+      auth()
       if (typeof id === 'string') {
         getBook(id)
+        getSimilarBooks(id)
       }
-    }, [])
+      getRecommendBooks()
+    }, [id])
   )
 
-  if (isLoadingBook) return <Loading />
+  if (
+    isLoading ||
+    isLoadingBook ||
+    isLoadingRecommendBooks ||
+    isLoadingSimilarBooks
+  ) {
+    return <Loading />
+  }
 
   if (!book) {
     return (
@@ -269,15 +280,15 @@ export default function BookDetailsScreen() {
           </View>
         </View>
 
-        {/* <View style={styles.section}>
+        <View style={styles.section}>
           <View style={styles.contextGallery}>
             <FeaturedBooks
               title="Recomendados para você"
-              data={books.slice(0, 3)}
+              data={recommendBooks}
             />
-            <FeaturedBooks title="Títulos Semelhantes" data={books} />
+            <FeaturedBooks title="Títulos Semelhantes" data={similarBooks} />
           </View>
-        </View> */}
+        </View>
       </ScrollView>
     </View>
   )
