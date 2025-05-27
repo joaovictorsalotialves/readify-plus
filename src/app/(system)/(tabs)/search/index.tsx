@@ -1,15 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
-
+import { useCallback } from 'react'
 import { Image, Text, View } from 'react-native'
-
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 import { GridBooks } from '../../_components/grid-books'
 import { NavigationHeader } from '../../_components/navigation-header'
 import { SearchButton } from '../../_components/search-button'
-
 import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'
-
 import { Loading } from '@/components/loading'
 import { useAuth } from '@/hooks/useAuth'
 import { useSearchBooks } from '@/hooks/useSearchBooks'
@@ -43,10 +39,8 @@ export default function Catalog() {
     <KeyboardAwareContainer>
       <View style={systemStyles.container}>
         <NavigationHeader />
-
         <View style={styles.body}>
           <SearchButton onChangeText={handleSearchChange} />
-
           {books.length > 0 ? (
             <GridBooks title="Livros" data={books} />
           ) : (

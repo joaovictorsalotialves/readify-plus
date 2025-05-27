@@ -10,7 +10,12 @@ type SearchButtonProps = TextInputProps
 export function SearchButton({ onChangeText }: SearchButtonProps) {
   return (
     <View style={styles.searchFilterContainer}>
-      <Input icon="search" onChangeText={onChangeText} placeholder="Search" />
+      <Input
+        icon="search"
+        onChangeText={onChangeText}
+        placeholder="Search"
+        testID="search-input"
+      />
       <TouchableOpacity style={styles.filterButton}>
         <MaterialIcons name="filter-list" size={34} color={colors.blue} />
       </TouchableOpacity>
