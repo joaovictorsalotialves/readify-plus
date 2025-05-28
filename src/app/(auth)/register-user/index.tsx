@@ -1,5 +1,5 @@
 import { router } from 'expo-router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Keyboard, Text, View } from 'react-native'
 
 import { AuthHeader } from '@/components/auth-header'
@@ -14,7 +14,7 @@ import validadeNewPassword from '@/utils/validators/validate-newPassword'
 import { authStyles } from '../_styles/styles'
 
 export default function RegisterUser() {
-  const { setRegisterData } = useRegister()
+  const { registerData, setRegisterData } = useRegister()
 
   const [name, setName] = useState('')
   const [username, setUsername] = useState('')
@@ -28,35 +28,35 @@ export default function RegisterUser() {
   const [passwordError, setPasswordError] = useState('')
   const [confirmPasswordError, setConfirmPasswordError] = useState('')
 
-  function handleNameChange(text: string) {
-    setName(text)
-    setNameError(text.trim() === '' ? 'Nome é obrigatório' : '')
+  function handleNameChange(name: string) {
+    setName(name)
+    setNameError(name === '' ? 'Nome é obrigatório' : '')
   }
 
-  function handleUsernameChange(text: string) {
-    setUsername(text)
-    setUsernameError(text.trim() === '' ? 'Sobrenome é obrigatório' : '')
+  function handleUsernameChange(username: string) {
+    setUsername(username)
+    setUsernameError(username === '' ? 'Sobrenome é obrigatório' : '')
   }
 
-  function handleEmailChange(text: string) {
-    setEmail(text)
-    validateEmail(text, setEmailError)
+  function handleEmailChange(email: string) {
+    setEmail(email.trim())
+    validateEmail(email.trim(), setEmailError)
   }
 
-  function handlePasswordChange(text: string) {
-    setPassword(text)
-    validadeNewPassword(password, setPasswordError)
+  function handlePasswordChange(password: string) {
+    setPassword(password.trim())
+    validadeNewPassword(password.trim(), setPasswordError)
     validadeConfirmationPassword(
       confirmPassword,
-      password,
+      password.trim(),
       setConfirmPasswordError
     )
   }
 
-  function handleConfirmPasswordChange(text: string) {
-    setConfirmPassword(text)
+  function handleConfirmationPasswordChange(confirmationPassword: string) {
+    setConfirmPassword(confirmationPassword.trim())
     validadeConfirmationPassword(
-      confirmPassword,
+      confirmationPassword.trim(),
       password,
       setConfirmPasswordError
     )
@@ -69,7 +69,11 @@ export default function RegisterUser() {
     const isNameValid = name.trim() !== ''
     const isUsernameValid = username.trim() !== ''
     const isPasswordValid = validadeNewPassword(password, setPasswordError)
-    const isConfirmPasswordValid = confirmPassword === password
+    const isConfirmPasswordValid = validadeConfirmationPassword(
+      confirmPassword,
+      password,
+      setConfirmPasswordError
+    )
 
     if (
       isValidEmail &&
@@ -85,6 +89,8 @@ export default function RegisterUser() {
         password,
         passwordConfirmation: confirmPassword,
       })
+
+      router.navigate('/(auth)/register-preferences')
     }
   }
 
@@ -102,6 +108,7 @@ export default function RegisterUser() {
               icon="person"
               placeholder="Nome"
               onChangeText={handleNameChange}
+              value={name}
               isFilled={!!name}
               messageError={nameError}
               autoCapitalize="words"
@@ -111,6 +118,7 @@ export default function RegisterUser() {
               icon="person"
               placeholder="Username"
               onChangeText={handleUsernameChange}
+              value={username}
               isFilled={!!username}
               messageError={usernameError}
               autoCapitalize="words"
@@ -120,6 +128,7 @@ export default function RegisterUser() {
               icon="mail"
               placeholder="Email"
               onChangeText={handleEmailChange}
+              value={email}
               isFilled={!!email}
               messageError={emailError}
               autoCapitalize="none"
@@ -129,17 +138,21 @@ export default function RegisterUser() {
               icon="lock"
               placeholder="Senha"
               onChangeText={handlePasswordChange}
+              value={password}
               isFilled={!!password}
               messageError={passwordError}
+              autoCapitalize="none"
               secureTextEntry
             />
 
             <Input
               icon="lock"
               placeholder="Confirmar Senha"
-              onChangeText={handleConfirmPasswordChange}
+              onChangeText={handleConfirmationPasswordChange}
+              value={confirmPassword}
               isFilled={!!confirmPassword}
               messageError={confirmPasswordError}
+              autoCapitalize="none"
               secureTextEntry
             />
 
