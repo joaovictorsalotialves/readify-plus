@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, TextInput } from 'react-native';
+import React, { useState } from 'react'
+import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 
-import { ResourceHeader } from '../../_components/resource-header';
-import { StarRating } from '../../_components/star-rating';
+import { ResourceHeader } from '../../../../components/resource-header'
+import { StarRating } from '../../_components/star-rating'
 
-import { systemStyles } from '../../_styles/styles';
-import { styles } from './styles';
+import { systemStyles } from '../../_styles/styles'
+import { styles } from './styles'
 
 export default function Home() {
-  const [comment, setComment] = useState('');
-  const [rating, setRating] = useState(3); // Estado controlado da avaliação
+  const [comment, setComment] = useState('')
+  const [rating, setRating] = useState(3) // Estado controlado da avaliação
 
   const handleSubmit = () => {
-    console.log('Enviando avaliação...');
-    console.log('Nota:', rating);
-    console.log('Comentário:', comment);
+    console.log('Enviando avaliação...')
+    console.log('Nota:', rating)
+    console.log('Comentário:', comment)
     // Aqui pode enviar para uma API ou outro destino
-  };
+  }
 
   return (
     <View style={systemStyles.container}>
@@ -44,5 +44,5 @@ export default function Home() {
         </TouchableOpacity>
       </View>
     </View>
-  );
+  )
 }

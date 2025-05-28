@@ -16,11 +16,7 @@ jest.mock('@expo/vector-icons', () => {
 
   return {
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    MaterialIcons: (props: any) => (
-      <Text {...props} testID="input-icon">
-        {props.name}
-      </Text>
-    ),
+    MaterialIcons: (props: any) => <Text {...props}>{props.name}</Text>,
   }
 })
 

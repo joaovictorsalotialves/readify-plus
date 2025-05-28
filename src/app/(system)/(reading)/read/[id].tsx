@@ -17,7 +17,7 @@ import {
   AssideButton,
   ContainerAssideButtons,
 } from '../../../../components/asside'
-import { ResourceHeader } from '../../_components/resource-header'
+import { ResourceHeader } from '../../../../components/resource-header'
 
 import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'

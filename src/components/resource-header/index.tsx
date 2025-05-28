@@ -13,7 +13,7 @@ type ResourceHeaderProps = {
 export function ResourceHeader({ title, icon }: ResourceHeaderProps) {
   return (
     <View style={styles.header}>
-      <Pressable onPress={() => router.back()}>
+      <Pressable onPress={() => router.back()} testID="back-button">
         <MaterialIcons name={icon} size={32} color={colors.gray[900]} />
       </Pressable>
       <Text style={styles.title}>{title}</Text>
