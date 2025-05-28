@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 import { ScrollView, View } from 'react-native'
 
 import { Loading } from '@/components/loading'
-import { Card } from '../../_components/card'
+import { Card } from '../../../../components/card'
 import { FeaturedBooks } from '../../_components/featured-books'
 import { NavigationHeader } from '../../_components/navigation-header'
 
