@@ -16,6 +16,7 @@ export function SelectionItem({
 }: SelectionItemProps) {
   return (
     <TouchableOpacity
+      testID={`selection-item-${label}`}
       style={[
         style.context,
         {
