@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 import { Image, Text, View } from 'react-native'
 
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
-import { CategoryButton } from '../../_components/category-button'
+import { CategoryButton } from '../../../../components/category-button'
 import { FeaturedBooks } from '../../_components/featured-books'
 import { GridBooks } from '../../_components/grid-books'
 import { NavigationHeader } from '../../_components/navigation-header'
@@ -95,7 +95,7 @@ export default function Bookshelf() {
     return (
       <>
         {favoriteBooks?.length > 0 && (
-          <GridBooks title="Favoritos" data={favoriteBooks} testID="favoritos-section"/>
+          <GridBooks title="Favoritos" data={favoriteBooks} testID="favoritos-section" />
         )}
 
         {isEmpty && (
