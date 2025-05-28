@@ -3,7 +3,7 @@ import { Image, Text, View } from 'react-native'
 
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 import { CategoryButton } from '../../../../components/category-button'
-import { FeaturedBooks } from '../../_components/featured-books'
+import { FeaturedBooks } from '../../../../components/featured-books'
 import { GridBooks } from '../../_components/grid-books'
 import { NavigationHeader } from '../../_components/navigation-header'
 
