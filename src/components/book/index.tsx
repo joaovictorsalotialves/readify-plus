@@ -13,13 +13,22 @@ type BookProps = {
 export function Book({ id, title, urlCover }: BookProps) {
   return (
     <Pressable
+      testID="book-pressable"
       onPress={() => {
         router.navigate(`/(system)/(tabs)/detailsbook/${id}`)
       }}
     >
       <View style={styles.container}>
-        <Image style={styles.cover} src={`${urlApi}/covers/${urlCover}`} />
-        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+        <Image
+          testID="book-cover"
+          style={styles.cover}
+          src={`${urlApi}/covers/${urlCover}`}
+        />
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="tail"
+          style={styles.title}
+        >
           {title}
         </Text>
       </View>
