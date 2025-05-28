@@ -9,7 +9,11 @@ export function NavigationHeader() {
   return (
     <View style={styles.container}>
       <Text style={styles.logo}>Readify Plus</Text>
-      <Pressable onPress={() => {}}>
+      <Pressable
+        accessibilityRole="button"
+        testID="settings-button"
+        onPress={() => { }}
+      >
         <MaterialIcons
           name="settings"
           size={32}

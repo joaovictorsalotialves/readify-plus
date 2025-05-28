@@ -5,7 +5,7 @@ import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 import { CategoryButton } from '@/components/category-button'
 import { FeaturedBooks } from '@/components/featured-books'
 import { GridBooks } from '@/components/grid-books'
-import { NavigationHeader } from '../../_components/navigation-header'
+import { NavigationHeader } from '../../../../components/navigation-header'
 
 import { useBooksFavorites } from '@/hooks/useBooksFavorites'
 import { useBooksIsReading } from '@/hooks/useBooksIsReading'
