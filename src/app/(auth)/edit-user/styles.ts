@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   },
   avatarContainer: {
     alignItems: 'flex-start',
-    marginTop: 32, // ✅ Adicionamos um espaçamento superior para afastar do header
+    marginTop: 32, 
     marginBottom: 75,
   },
   avatar: {
