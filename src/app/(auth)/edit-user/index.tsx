@@ -3,7 +3,7 @@ import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import { styles } from './styles';
 import { Ionicons } from '@expo/vector-icons';
-import { ResourceHeader } from '@/app/(system)/_components/resource-header';
+import { ResourceHeader } from '@/components/resource-header';
 
 export default function EditUser() {
   const [name, setName] = useState('');
