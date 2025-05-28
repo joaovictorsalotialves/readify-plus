@@ -1,12 +1,18 @@
-import { router } from 'expo-router'
-import { useState } from 'react'
-import { Text, View } from 'react-native'
+import { router, useFocusEffect } from 'expo-router'
+import { useCallback, useState } from 'react'
+import { Alert, Text, View } from 'react-native'
 
 import { AuthHeader } from '@/components/auth-header'
 import { Button } from '@/components/button'
 import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 import { SelectionItem } from '@/components/selection-item'
 
+import { Loading } from '@/components/loading'
+import type { RegisterBodyDTO } from '@/dtos/register-user-dto'
+import { useBookCategories } from '@/hooks/useBookCategories'
+import { useRegister } from '@/hooks/useRegister'
+import { useWriters } from '@/hooks/useWriters'
+import { AxiosError } from 'axios'
 import { authStyles } from '../_styles/styles'
 import { styles } from './styles'
 
@@ -18,6 +24,11 @@ type GenderWriterSelectorProps = {
 }
 
 export default function RegisterPreference() {
+  const { setPreferences, registerData, register } = useRegister()
+  const { isLoadingWriters, writers, getWriters } = useWriters()
+  const { isLoadingBookCategories, bookCategories, getBookCategories } =
+    useBookCategories()
+
   const [selectedGenre, setSelectedGenre] = useState<string[]>([])
   const [selectedWriter, setSelectedWriter] = useState<string[]>([])
 
@@ -25,19 +36,50 @@ export default function RegisterPreference() {
     setSelectedGenre(prev =>
       prev.includes(genre) ? prev.filter(g => g !== genre) : [...prev, genre]
     )
+
+    setPreferences(selectedGenre, selectedWriter)
   }
 
   const handleSelectWriter = (writer: string) => {
     setSelectedWriter(prev =>
       prev.includes(writer) ? prev.filter(w => w !== writer) : [...prev, writer]
     )
+
+    setPreferences(selectedGenre, selectedWriter)
   }
 
-  const handleSubmit = () => {
-    if (selectedGenre.length === 0 || selectedWriter.length === 0) {
-      alert('Por favor, selecione pelo menos um gênero e um escritor!')
+  const handleSubmit = async () => {
+    if (selectedGenre.length < 2 || selectedWriter.length < 2) {
+      alert('Por favor, selecione pelo dois gênero e dois escritor!')
       return
     }
+
+    setPreferences(selectedGenre, selectedWriter)
+
+    try {
+      await register(registerData as RegisterBodyDTO)
+      router.replace('/(system)/(tabs)/home')
+    } catch (err) {
+      const isAppError = err instanceof AxiosError
+      const title =
+        isAppError && err.response?.data.message
+          ? err.response.data.message
+          : 'Não foi possivel cadastrar o usuário. Tente novamente'
+
+      Alert.alert(title)
+    }
+  }
+
+  useFocusEffect(
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useCallback(() => {
+      getWriters()
+      getBookCategories()
+    }, [])
+  )
+
+  if (isLoadingWriters || isLoadingBookCategories) {
+    return <Loading />
   }
 
   function GenderWriterSelector({
@@ -46,24 +88,16 @@ export default function RegisterPreference() {
     onSelectGenre,
     onSelectWriter,
   }: GenderWriterSelectorProps) {
-    const genres = ['Ficção', 'Romance', 'Fantasia', 'Suspense']
-    const writers = [
-      'Machado de Assis',
-      'Clarice Lispector',
-      'J.K. Rowling',
-      'Stephen King',
-    ]
-
     return (
       <View>
         <Text style={styles.subtitle}>Gêneros</Text>
         <View style={styles.context}>
-          {genres.map(genre => (
+          {bookCategories.map(bookCategories => (
             <SelectionItem
-              key={genre}
-              label={genre}
-              onSelect={onSelectGenre}
-              isSelected={selectedGenre.includes(genre)}
+              key={bookCategories.id}
+              label={bookCategories.name}
+              onSelect={() => onSelectGenre(bookCategories.id)}
+              isSelected={selectedGenre.includes(bookCategories.id)}
             />
           ))}
         </View>
@@ -72,10 +106,10 @@ export default function RegisterPreference() {
         <View style={styles.context}>
           {writers.map(writer => (
             <SelectionItem
-              key={writer}
-              label={writer}
-              onSelect={onSelectWriter}
-              isSelected={selectedWriter.includes(writer)}
+              key={writer.id}
+              label={writer.name}
+              onSelect={() => onSelectWriter(writer.id)}
+              isSelected={selectedWriter.includes(writer.id)}
             />
           ))}
         </View>

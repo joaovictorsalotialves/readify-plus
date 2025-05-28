@@ -2,7 +2,7 @@ import type { RegisterBodyDTO } from '@/dtos/register-user-dto'
 import { api } from '@/lib/axios'
 
 type RegisterServiceRequest = {
-    user: RegisterBodyDTO
+  user: RegisterBodyDTO
 }
 
 export type RegisterServiceResponse = {
@@ -11,7 +11,7 @@ export type RegisterServiceResponse = {
 }
 
 export async function registerUserService({
-  user
+  user,
 }: RegisterServiceRequest): Promise<RegisterServiceResponse> {
   const { data } = await api.post('/register', user)
 

@@ -4,11 +4,11 @@ import { storageAuthTokenSave } from '@/storage/storageAuthToken'
 import { createContext, useContext, useState } from 'react'
 
 interface RegisterContextData {
-  register: (data: RegisterBodyDTO) => void
+  register: (data: RegisterBodyDTO) => Promise<void>
   isRegistering: boolean
   registerData: Partial<RegisterBodyDTO>
-  setRegisterData: (data: Partial<RegisterBodyDTO>) => void
-  setPreferences: (genres: string[], writers: string[]) => void
+  setRegisterData: (data: Partial<RegisterBodyDTO>) => Promise<void>
+  setPreferences: (genres: string[], writers: string[]) => Promise<void>
 }
 
 export const RegisterContext = createContext({} as RegisterContextData)
@@ -21,11 +21,11 @@ export function RegisterContextProvider({
     Partial<RegisterBodyDTO>
   >({})
 
-  function setRegisterData(data: Partial<RegisterBodyDTO>) {
+  async function setRegisterData(data: Partial<RegisterBodyDTO>) {
     setRegisterDataState(prev => ({ ...prev, ...data }))
   }
 
-  function setPreferences(
+  async function setPreferences(
     favoriteCategories: string[],
     favoriteWriters: string[]
   ) {
