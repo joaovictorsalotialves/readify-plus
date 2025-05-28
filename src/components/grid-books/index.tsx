@@ -1,6 +1,6 @@
 import { FlatList, Text, View } from 'react-native'
 
-import { Book } from '../../../../components/book'
+import { Book } from '@/components/book'
 import { styles } from './styles'
 
 import type { BooksDTO } from '@/dtos/book-dto'
