@@ -1,23 +1,20 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
-import { styles } from './styles';
-import { StarRating } from '../../_components/star-rating'; // Importando o componente StarRating
-import type { CommentData } from '@/utils/types/CommentData';
+import type { CommentData } from '@/utils/types/CommentData'
+import { MaterialIcons } from '@expo/vector-icons'
+import React from 'react'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { StarRating } from '../../../../components/star-rating' // Importando o componente StarRating
+import { styles } from './styles'
 
 type Props = {
-  review: CommentData;
-};
+  review: CommentData
+}
 
 export function ReviewCard({ review }: Props) {
   return (
     <View style={styles.reviewCard}>
       {/* FOTO + USERNAME */}
       <View style={styles.profileRow}>
-        <Image
-          source={{ uri: review.avatar }}
-          style={styles.profilePicture}
-        />
+        <Image source={{ uri: review.avatar }} style={styles.profilePicture} />
         <View style={styles.userInfo}>
           <Text style={styles.username}>{review.username}</Text>
         </View>
@@ -39,7 +36,6 @@ export function ReviewCard({ review }: Props) {
 
       {/* BOTÃO DE COMPARTILHAR E LIKE */}
       <View style={styles.buttonContainer}>
-
         {/* Botão Like */}
         <TouchableOpacity style={styles.likeButton} activeOpacity={0.7}>
           <MaterialIcons name="thumb-up" size={16} style={styles.likeIcon} />
@@ -47,5 +43,5 @@ export function ReviewCard({ review }: Props) {
         </TouchableOpacity>
       </View>
     </View>
-  );
+  )
 }

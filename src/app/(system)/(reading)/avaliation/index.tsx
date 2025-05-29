@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Text, TextInput, TouchableOpacity, View } from 'react-native'
 
 import { ResourceHeader } from '../../../../components/resource-header'
-import { StarRating } from '../../_components/star-rating'
+import { StarRating } from '../../../../components/star-rating'
 
 import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'
