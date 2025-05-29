@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-
 import * as FileSystem from 'expo-file-system'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import {
+  Alert,
   Dimensions,
   type GestureResponderEvent,
   PanResponder,
@@ -18,26 +18,44 @@ import {
   ContainerAssideButtons,
 } from '../../../../components/asside'
 import { ResourceHeader } from '../../../../components/resource-header'
-
 import { systemStyles } from '../../_styles/styles'
 import { styles } from './styles'
 
-import { lineSpacing as _lineSpacing } from '@/utils/mocks/lineSpacing'
-
+import { Loading } from '@/components/loading'
+import { useAuth } from '@/hooks/useAuth'
 import { useBook } from '@/hooks/useBook'
 import { useReading } from '@/hooks/useReading'
-
-import { Loading } from '@/components/loading'
 import { urlApi } from '@/lib/axios'
-import { useFocusEffect } from 'expo-router'
+import { getOrCreateReadingService } from '@/services/getOrCreateReadingService'
+import {
+  Redirect,
+  router,
+  useFocusEffect,
+  useLocalSearchParams,
+} from 'expo-router'
 
 export default function Read() {
-  const { book } = useBook()
-  const { reading, isLoadingReading, getOrCreateReading } = useReading()
+  const { isLoading, user, auth } = useAuth()
+  const { book, getBook, isLoadingBook } = useBook()
+  const {
+    reading,
+    isLoadingReading,
+    getOrCreateReading,
+    saveProgressReading,
+    page,
+    setPage,
+  } = useReading()
 
-  const [page, setPage] = useState(reading.lastPageRead)
+  const { bookId } = useLocalSearchParams()
+
   const [isVisible, setIsVisible] = useState(true)
   const [pdfUri, setPdfUri] = useState<string | null>(null)
+  const [pdfLoaded, setPdfLoaded] = useState(false)
+
+  const pageRef = useRef(page)
+  const bookRef = useRef(book)
+  const readingRef = useRef(reading)
+  const startTimeRef = useRef<number | null>(null)
 
   const panResponder = useRef(
     PanResponder.create({
@@ -48,20 +66,37 @@ export default function Read() {
         gestureState: PanResponderGestureState
       ) => {
         const { dx } = gestureState
-
         if (dx < -50) {
-          // arrastou para a esquerda → próxima página
-          if (page < book.numberPage) setPage(prev => prev + 1)
+          setPage(p => (p && p < book.numberPage ? p + 1 : p))
         } else if (dx > 50) {
-          // arrastou para a direita → página anterior
-          if (page > 1) setPage(prev => prev - 1)
+          setPage(p => (p && p > 1 ? p - 1 : 1))
         }
       },
     })
   ).current
 
+  useFocusEffect(
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useCallback(() => {
+      auth()
+      if (typeof bookId === 'string') {
+        getBook(bookId)
+        getOrCreateReading(bookId)
+      }
+    }, [bookId])
+  )
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    const downloadPdf = async () => {
+    if (pdfLoaded && reading?.lastPageRead) {
+      setTimeout(() => {
+        setPage(reading.lastPageRead)
+      }, 100)
+    }
+  }, [pdfLoaded, reading?.lastPageRead])
+
+  useEffect(() => {
+    const loadPdf = async () => {
       try {
         const localPath = FileSystem.documentDirectory + book.bookPath
         const fileInfo = await FileSystem.getInfoAsync(localPath)
@@ -76,21 +111,45 @@ export default function Read() {
           setPdfUri(fileInfo.uri)
         }
       } catch (err) {
-        console.error('Erro ao baixar o PDF:', err)
+        Alert.alert('Erro ao exibir livro')
+        router.back()
       }
     }
 
-    downloadPdf()
+    if (book?.bookPath) {
+      loadPdf()
+    }
   }, [book.bookPath])
 
-  useFocusEffect(
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useCallback(() => {
-      getOrCreateReading(book.id)
-    }, [book.id])
-  )
+  useEffect(() => {
+    pageRef.current = page
+  }, [page])
 
-  if (isLoadingReading) {
+  useEffect(() => {
+    bookRef.current = book
+  }, [book])
+
+  useEffect(() => {
+    readingRef.current = reading
+  }, [reading])
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    startTimeRef.current = Date.now()
+
+    return () => {
+      if (startTimeRef.current && reading) {
+        const duration = Math.floor((Date.now() - startTimeRef.current) / 1000)
+        saveProgressReading(readingRef.current.id, duration, pageRef.current)
+      }
+    }
+  }, [])
+
+  if (!user) {
+    return <Redirect href="/(auth)/login" />
+  }
+
+  if (isLoading || isLoadingBook || isLoadingReading) {
     return <Loading />
   }
 
@@ -106,7 +165,13 @@ export default function Read() {
               style={{ flex: 1, width: Dimensions.get('window').width }}
               horizontal
               page={page}
-              onPageChanged={setPage}
+              onPageChanged={newPage => {
+                if (pageRef.current !== newPage) {
+                  setPage(newPage)
+                  pageRef.current = newPage
+                }
+              }}
+              onLoadComplete={() => setPdfLoaded(true)}
             />
 
             {/* Camada invisível para detectar toques */}
@@ -131,12 +196,15 @@ export default function Read() {
           <ContainerAssideButtons>
             <AssideButton
               icon="keyboard-arrow-left"
-              onPress={() => setPage(page - 1)}
+              onPress={() => {
+                setPage(p => (p && p > 1 ? p - 1 : 1))
+              }}
             />
-            <AssideButton icon="play-arrow" />
             <AssideButton
               icon="keyboard-arrow-right"
-              onPress={() => setPage(page + 1)}
+              onPress={() => {
+                setPage(p => (p && p < book.numberPage ? p + 1 : p))
+              }}
             />
           </ContainerAssideButtons>
         </Asside>

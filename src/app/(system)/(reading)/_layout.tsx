@@ -16,7 +16,7 @@ export default function Layout() {
           },
         }}
       >
-        <Stack.Screen name="read/[id]" />
+        <Stack.Screen name="read/[bookId]" />
       </Stack>
     </GestureHandlerRootView>
   )

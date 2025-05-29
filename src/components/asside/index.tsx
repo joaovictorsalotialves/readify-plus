@@ -1,7 +1,7 @@
 import { MaterialIcons } from '@expo/vector-icons'
 import {
-  Pressable,
-  type PressableProps,
+  TouchableOpacity,
+  type TouchableOpacityProps,
   View,
   type ViewProps,
 } from 'react-native'
@@ -13,7 +13,7 @@ type AssideProps = ViewProps
 
 type ContainerAssideButtonsProps = ViewProps
 
-type AssideButtonProps = PressableProps & {
+type AssideButtonProps = TouchableOpacityProps & {
   icon: keyof typeof MaterialIcons.glyphMap
 }
 
@@ -29,8 +29,12 @@ export function ContainerAssideButtons({
 
 export function AssideButton({ icon, onPress }: AssideButtonProps) {
   return (
-    <Pressable style={styles.button} onPress={onPress} testID="asside-button">
+    <TouchableOpacity
+      style={styles.button}
+      onPress={onPress}
+      testID="asside-button"
+    >
       <MaterialIcons name={icon} color={colors.gray[900]} size={32} />
-    </Pressable>
+    </TouchableOpacity>
   )
 }

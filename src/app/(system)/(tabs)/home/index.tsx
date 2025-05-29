@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react'
 
-import { ScrollView, View } from 'react-native'
+import { ScrollView, Text, View } from 'react-native'
 
 import { Loading } from '@/components/loading'
 import { Card } from '../../../../components/card'
@@ -17,6 +17,7 @@ import { useCountBooksRead } from '@/hooks/useCountBooksRead'
 import { useCountBookReview } from '@/hooks/useCountBookReview'
 import { useMostPopularBooks } from '@/hooks/useMostPopularBooks'
 import { useRecommendBooks } from '@/hooks/useRecommendBooks'
+import { fonts } from '@/styles/fonts'
 import { Redirect, useFocusEffect } from 'expo-router'
 
 export default function Home() {
@@ -64,6 +65,13 @@ export default function Home() {
       <NavigationHeader />
 
       <View style={styles.body}>
+        <View>
+          <Text style={{ ...fonts.heading.xl }}>Bem-vindo, {user.name}!</Text>
+          <Text style={{ ...fonts.body.md, marginTop: 8 }}>
+            Explore nosso acervo digital e descubra seu próximo livro favorito.
+          </Text>
+        </View>
+
         <View style={styles.context}>
           <Card
             info={countBooksRead.toString()}

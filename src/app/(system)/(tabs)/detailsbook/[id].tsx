@@ -2,7 +2,7 @@ import { styles } from '@/app/(system)/(tabs)/detailsbook/styles'
 import { colors } from '@/styles/colors'
 import type { CommentData } from '@/utils/types/CommentData'
 import { MaterialIcons } from '@expo/vector-icons'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
 import { FeaturedBooks } from '../../../../components/featured-books'
 import { NavigationHeader } from '../../../../components/navigation-header'
@@ -16,15 +16,8 @@ import { useBook } from '@/hooks/useBook'
 import { useRecommendBooks } from '@/hooks/useRecommendBooks'
 import { useSimilarBooks } from '@/hooks/useSimilarBooks'
 import { urlApi } from '@/lib/axios'
-import { useNavigation } from '@react-navigation/native'
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack'
+
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router'
-
-type RootStackParamList = {
-  Leitor: { bookId: string }
-}
-
-type NavigationProp = NativeStackNavigationProp<RootStackParamList, 'Leitor'>
 
 export default function BookDetailsScreen() {
   const { isLoading, auth } = useAuth()
@@ -36,7 +29,6 @@ export default function BookDetailsScreen() {
 
   const [currentReviewPage, setCurrentReviewPage] = useState(1)
 
-  const navigation = useNavigation<NavigationProp>()
   const reviewsPerPage = 1
 
   const { id } = useLocalSearchParams()
@@ -73,58 +65,13 @@ export default function BookDetailsScreen() {
         <Text style={{ fontSize: 16 }}>Livro não encontrado.</Text>
         <TouchableOpacity
           style={styles.readButton}
-          onPress={() => navigation.goBack()}
+          onPress={() => router.back()}
         >
           <Text style={styles.readButtonText}>Voltar</Text>
         </TouchableOpacity>
       </View>
     )
   }
-
-  const reviews: CommentData[] = [
-    {
-      id: '1',
-      username: 'LeitorAssíduo',
-      date: '27 de novembro 2022',
-      comment: 'Uma obra-prima da literatura mundial!',
-      title: book.title,
-      cover: book.urlCover,
-      rating: 4.5,
-      avatar: 'https://via.placeholder.com/50.png?text=A1',
-    },
-    {
-      id: '2',
-      username: 'CríticoLiterário',
-      date: '15 de janeiro 2023',
-      comment: 'Narrativa rica e personagens inesquecíveis.',
-      title: book.title,
-      cover: book.urlCover,
-      rating: 4.8,
-      avatar: 'https://via.placeholder.com/50.png?text=A2',
-    },
-    {
-      id: '3',
-      username: 'MariaLuz',
-      date: '10 de março 2023',
-      comment: 'Muito interessante, mas um pouco longo pra mim.',
-      title: book.title,
-      cover: book.urlCover,
-      rating: 4.0,
-      avatar: 'https://via.placeholder.com/50.png?text=A3',
-    },
-    {
-      id: '4',
-      username: 'JoãoCultura',
-      date: '21 de abril 2023',
-      comment: 'Simplesmente genial! Leitura obrigatória.',
-      title: book.title,
-      cover: book.urlCover,
-      rating: 5.0,
-      avatar: 'https://via.placeholder.com/50.png?text=A4',
-    },
-  ]
-
-  const maxPages = Math.ceil(reviews.length / reviewsPerPage)
 
   return (
     <View style={styles.container}>
@@ -133,7 +80,7 @@ export default function BookDetailsScreen() {
       <View style={styles.customHeader}>
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => navigation.goBack()}
+          onPress={() => router.back()}
         >
           <MaterialIcons name="arrow-back" size={24} color={colors.gray[800]} />
         </TouchableOpacity>
@@ -228,7 +175,7 @@ export default function BookDetailsScreen() {
           </View>
         </View>
 
-        <View style={styles.section}>
+        {/* <View style={styles.section}>
           <Text style={styles.sectionTitle}>
             Avaliações ({book.assessements})
           </Text>
@@ -278,7 +225,7 @@ export default function BookDetailsScreen() {
               )
             })}
           </View>
-        </View>
+        </View> */}
 
         <View style={styles.section}>
           <View style={styles.contextGallery}>
