@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { colors } from '@/styles/colors';
-import { fonts } from '@/styles/fonts';
+import { colors } from '@/styles/colors'
+import { fonts } from '@/styles/fonts'
+import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
   container: {
@@ -60,8 +60,9 @@ export const styles = StyleSheet.create({
     marginBottom: 12,
   },
   readSection: {
-    marginTop: 24,
+    marginVertical: 24,
     paddingHorizontal: 20,
+    gap: 10,
   },
   readButton: {
     backgroundColor: colors.blue,
@@ -110,5 +111,4 @@ export const styles = StyleSheet.create({
   contextGallery: {
     gap: 24,
   },
-  
-});
+})

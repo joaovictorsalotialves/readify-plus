@@ -26,7 +26,6 @@ import { useAuth } from '@/hooks/useAuth'
 import { useBook } from '@/hooks/useBook'
 import { useReading } from '@/hooks/useReading'
 import { urlApi } from '@/lib/axios'
-import { getOrCreateReadingService } from '@/services/getOrCreateReadingService'
 import {
   Redirect,
   router,

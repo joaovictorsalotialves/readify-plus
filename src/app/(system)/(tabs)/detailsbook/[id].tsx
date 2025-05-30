@@ -17,6 +17,7 @@ import { useRecommendBooks } from '@/hooks/useRecommendBooks'
 import { useSimilarBooks } from '@/hooks/useSimilarBooks'
 import { urlApi } from '@/lib/axios'
 
+import { Button } from '@/components/button'
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router'
 
 export default function BookDetailsScreen() {
@@ -129,14 +130,19 @@ export default function BookDetailsScreen() {
         </View>
 
         <View style={styles.readSection}>
-          <TouchableOpacity
-            style={styles.readButton}
+          <Button
+            text="Ler Livro"
             onPress={() => {
               router.navigate(`/(system)/(reading)/read/${book.id}`)
             }}
-          >
-            <Text style={styles.readButtonText}>Ler Livro</Text>
-          </TouchableOpacity>
+          />
+          <Button
+            text="Fazer avaliação do Livro"
+            type="redirect"
+            onPress={() => {
+              router.navigate(`/(system)/(reading)/avaliation/${book.id}`)
+            }}
+          />
         </View>
 
         <View style={styles.statsGrid}>
