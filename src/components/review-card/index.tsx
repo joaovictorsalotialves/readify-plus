@@ -51,6 +51,7 @@ export function ReviewCard({ review }: Props) {
       {user?.id === review.userId && (
         <View style={styles.icons}>
           <TouchableOpacity
+            testID="delete-button"
             onPress={() => {
               removeBookReview(review.id, user.id)
             }}

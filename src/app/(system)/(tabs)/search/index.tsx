@@ -1,15 +1,15 @@
-import { useCallback } from 'react'
-import { Image, Text, View } from 'react-native'
-import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 import { GridBooks } from '@/components/grid-books'
-import { NavigationHeader } from '../../../../components/navigation-header'
-import { SearchButton } from '../../_components/search-button'
-import { systemStyles } from '../../_styles/styles'
-import { styles } from './styles'
+import { KeyboardAwareContainer } from '@/components/keyboard-aware-container'
 import { Loading } from '@/components/loading'
+import { SearchButton } from '@/components/search-button'
 import { useAuth } from '@/hooks/useAuth'
 import { useSearchBooks } from '@/hooks/useSearchBooks'
 import { Redirect, useFocusEffect } from 'expo-router'
+import { useCallback } from 'react'
+import { Image, Text, View } from 'react-native'
+import { NavigationHeader } from '../../../../components/navigation-header'
+import { systemStyles } from '../../_styles/styles'
+import { styles } from './styles'
 
 export default function Catalog() {
   const { user, isLoading, auth } = useAuth()

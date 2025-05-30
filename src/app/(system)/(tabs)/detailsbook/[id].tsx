@@ -13,9 +13,9 @@ import {
 } from 'react-native'
 import { FeaturedBooks } from '../../../../components/featured-books'
 import { NavigationHeader } from '../../../../components/navigation-header'
+import { ReviewCard } from '../../../../components/review-card'
 import { StarRating } from '../../../../components/star-rating'
 import { StatItem } from '../../../../components/stat-item'
-import { ReviewCard } from '../../_components/review-card'
 
 import { Loading } from '@/components/loading'
 import { useAuth } from '@/hooks/useAuth'
