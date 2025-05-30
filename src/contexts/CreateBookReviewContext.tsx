@@ -1,7 +1,5 @@
 import { type ReactNode, createContext, useState } from 'react'
 
-import type { AssessmentDTO } from '@/dtos/assessement-dto'
-import { countBookReviewService } from '@/services/countBookReviewService'
 import { createBookReviewService } from '@/services/createBookReviewService'
 import { storageAuthTokenGet } from '@/storage/storageAuthToken'
 

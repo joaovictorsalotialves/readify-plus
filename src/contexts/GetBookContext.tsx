@@ -1,9 +1,10 @@
-import { type ReactNode, createContext, useState } from 'react'
+import { type ReactNode, createContext, useEffect, useState } from 'react'
 
 import { storageAuthTokenGet } from '@/storage/storageAuthToken'
 
 import type { BooksDTO } from '@/dtos/book-dto'
 import { addBookFavoriteService } from '@/services/addFavoriteBookService'
+import { removeBookReviewService } from '@/services/deleteBookReviewService'
 import { getBookService } from '@/services/getBookService'
 import { removeBookFavoriteService } from '@/services/removeFavoriteBookService'
 
@@ -13,6 +14,7 @@ export type GetBookContextDataProps = {
   isLoadingBook: boolean
   getBook: (bookId: string) => Promise<void>
   toggleFavorite: () => Promise<void>
+  removeBookReview: (assessementId: string, userId: string) => Promise<void>
 }
 
 type GetBookContextProviderProps = {
@@ -56,13 +58,26 @@ export function GetBookContextProvider({
       await addBookFavoriteService({ bookId: book.id, token })
       setBook({ ...book, favorite: book.favorite + 1 })
     }
+  }
 
-    setIsFavorite(prev => !prev)
+  async function removeBookReview(assessementId: string, userId: string) {
+    await removeBookReviewService({
+      assessementId,
+      userId,
+    })
+    setBook({ ...book, assessements: book.assessements - 1 })
   }
 
   return (
     <GetBookContext.Provider
-      value={{ book, isFavorite, isLoadingBook, getBook, toggleFavorite }}
+      value={{
+        book,
+        isFavorite,
+        isLoadingBook,
+        getBook,
+        toggleFavorite,
+        removeBookReview,
+      }}
     >
       {children}
     </GetBookContext.Provider>

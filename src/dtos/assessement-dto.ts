@@ -3,6 +3,10 @@ export interface AssessmentDTO {
   score: number
   comment: string
   likes: number
+  createdAt: Date
   bookId: string
   userId: string
+  user: {
+    username: string
+  }
 }

@@ -1,8 +1,17 @@
-import { StyleSheet } from 'react-native';
-import { colors } from '@/styles/colors';
-import { fonts } from '@/styles/fonts';
+import { colors } from '@/styles/colors'
+import { fonts } from '@/styles/fonts'
+import { StyleSheet } from 'react-native'
 
 export const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+    alignContent: 'space-between',
+    justifyContent: 'space-between',
+  },
+  icons: {
+    marginTop: 12,
+    flexDirection: 'row',
+  },
   reviewCard: {
     backgroundColor: colors.gray[100],
     padding: 12,
@@ -74,13 +83,13 @@ export const styles = StyleSheet.create({
   },
 
   likeIcon: {
-    color: colors.blue,  // Cor azul para o ícone de like
+    color: colors.blue, // Cor azul para o ícone de like
   },
 
   likeText: {
     fontFamily: fonts.body.xs.fontFamily,
     fontSize: fonts.body.xs.fontSize,
-    color: colors.blue,  // Cor azul para o texto de like
+    color: colors.blue, // Cor azul para o texto de like
   },
 
   header: {
@@ -119,4 +128,4 @@ export const styles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 8,
   },
-});
+})

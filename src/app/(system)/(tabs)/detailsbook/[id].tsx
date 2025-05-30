@@ -3,7 +3,14 @@ import { colors } from '@/styles/colors'
 import type { CommentData } from '@/utils/types/CommentData'
 import { MaterialIcons } from '@expo/vector-icons'
 import React, { useCallback, useEffect, useState } from 'react'
-import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native'
+import {
+  FlatList,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { FeaturedBooks } from '../../../../components/featured-books'
 import { NavigationHeader } from '../../../../components/navigation-header'
 import { StarRating } from '../../../../components/star-rating'
@@ -18,19 +25,27 @@ import { useSimilarBooks } from '@/hooks/useSimilarBooks'
 import { urlApi } from '@/lib/axios'
 
 import { Button } from '@/components/button'
+import { useGetBookReviewsOfBook } from '@/hooks/useGetBookReviewsOfBook'
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router'
 
 export default function BookDetailsScreen() {
   const { isLoading, auth } = useAuth()
-  const { isLoadingBook, book, isFavorite, getBook, toggleFavorite } = useBook()
+  const {
+    isLoadingBook,
+    book,
+    isFavorite,
+    getBook,
+    toggleFavorite,
+    removeBookReview,
+  } = useBook()
   const { isLoadingRecommendBooks, recommendBooks, getRecommendBooks } =
     useRecommendBooks()
   const { isLoadingSimilarBooks, similarBooks, getSimilarBooks } =
     useSimilarBooks()
+  const { assessements, getBookReviewsOfBook } = useGetBookReviewsOfBook()
 
   const [currentReviewPage, setCurrentReviewPage] = useState(1)
-
-  const reviewsPerPage = 1
+  const reviewsPerPage = 3
 
   const { id } = useLocalSearchParams()
 
@@ -41,10 +56,16 @@ export default function BookDetailsScreen() {
       if (typeof id === 'string') {
         getBook(id)
         getSimilarBooks(id)
+        getBookReviewsOfBook(id)
       }
       getRecommendBooks()
     }, [id])
   )
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    getBookReviewsOfBook(book.id)
+  }, [removeBookReview])
 
   if (
     isLoading ||
@@ -181,57 +202,70 @@ export default function BookDetailsScreen() {
           </View>
         </View>
 
-        {/* <View style={styles.section}>
+        <View style={styles.section}>
           <Text style={styles.sectionTitle}>
             Avaliações ({book.assessements})
           </Text>
-          {reviews
-            .slice(
-              (currentReviewPage - 1) * reviewsPerPage,
-              currentReviewPage * reviewsPerPage
-            )
-            .map(review => (
-              <ReviewCard key={review.id} review={review} />
-            ))}
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: 12,
-            }}
-          >
-            {Array.from({ length: maxPages }).map((_, index) => {
-              const pageNumber = index + 1
-              const isActive = currentReviewPage === pageNumber
+          {assessements && (
+            <>
+              <FlatList
+                scrollEnabled={false}
+                data={assessements.slice(
+                  (currentReviewPage - 1) * reviewsPerPage,
+                  currentReviewPage * reviewsPerPage
+                )}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => <ReviewCard review={item} />}
+              />
 
-              return (
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  marginTop: 12,
+                }}
+              >
                 <TouchableOpacity
-                  key={`page-${pageNumber}`}
-                  onPress={() => setCurrentReviewPage(pageNumber)}
-                  style={{
-                    paddingHorizontal: 12,
-                    paddingVertical: 6,
-                    marginHorizontal: 4,
-                    borderRadius: 8,
-                    backgroundColor: isActive
-                      ? colors.orange[500]
-                      : colors.gray[300],
-                  }}
+                  disabled={currentReviewPage === 1}
+                  onPress={() =>
+                    setCurrentReviewPage(prev => Math.max(prev - 1, 1))
+                  }
                 >
                   <Text
                     style={{
-                      color: isActive ? 'black' : colors.gray[800],
-                      fontWeight: 'bold',
+                      color:
+                        currentReviewPage === 1
+                          ? colors.gray[500]
+                          : colors.blue,
                     }}
                   >
-                    {pageNumber}
+                    Página anterior
                   </Text>
                 </TouchableOpacity>
-              )
-            })}
-          </View>
-        </View> */}
+
+                <TouchableOpacity
+                  disabled={
+                    currentReviewPage * reviewsPerPage >= assessements.length
+                  }
+                  onPress={() => setCurrentReviewPage(prev => prev + 1)}
+                >
+                  <Text
+                    style={{
+                      color:
+                        currentReviewPage * reviewsPerPage >=
+                        assessements.length
+                          ? colors.gray[500]
+                          : colors.blue,
+                    }}
+                  >
+                    Próxima página
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+        </View>
 
         <View style={styles.section}>
           <View style={styles.contextGallery}>
