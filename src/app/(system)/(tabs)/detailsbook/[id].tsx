@@ -1,6 +1,5 @@
 import { styles } from '@/app/(system)/(tabs)/detailsbook/styles'
 import { colors } from '@/styles/colors'
-import type { CommentData } from '@/utils/types/CommentData'
 import { MaterialIcons } from '@expo/vector-icons'
 import React, { useCallback, useEffect, useState } from 'react'
 import {
@@ -64,7 +63,9 @@ export default function BookDetailsScreen() {
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    getBookReviewsOfBook(book.id)
+    if (typeof id === 'string') {
+      getBookReviewsOfBook(id)
+    }
   }, [removeBookReview])
 
   if (
@@ -118,6 +119,7 @@ export default function BookDetailsScreen() {
           accessibilityLabel="favorite-button"
         >
           <MaterialIcons
+            testID="favorite-button"
             name={isFavorite ? 'favorite' : 'favorite-border'}
             size={24}
             color={isFavorite ? colors.danger : colors.gray[800]}

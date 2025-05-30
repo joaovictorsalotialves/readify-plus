@@ -190,7 +190,7 @@ describe('Read Screen', () => {
     expect(mockSetPage).toHaveBeenCalledWith(expect.any(Function))
   })
 
-  it.skip('should go to previous and next page using buttons', async () => {
+  it('should go to previous and next page using buttons', async () => {
     const { getByText } = render(<Read />)
 
     fireEvent.press(getByText('keyboard-arrow-left'))
