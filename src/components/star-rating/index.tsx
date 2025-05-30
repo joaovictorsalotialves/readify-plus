@@ -43,6 +43,7 @@ export function StarRating({
             accessibilityRole="button"
             key={starIndex}
             onPress={() => onChangeRating(starIndex)}
+            testID={`star-button-${starIndex}`}
           >
             {star}
           </TouchableOpacity>

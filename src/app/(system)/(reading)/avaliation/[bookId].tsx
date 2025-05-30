@@ -30,9 +30,9 @@ export default function Home() {
 
   const handleSubmit = async () => {
     try {
-      await createBookReview(rating, comment, book.id)
+      await createBookReview(rating, comment, bookId as string)
       return router.back()
-    } catch (err) {
+    } catch {
       Alert.alert('Erro ao enviar a avaliação')
     }
   }
