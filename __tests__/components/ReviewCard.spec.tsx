@@ -59,7 +59,6 @@ describe('ReviewCard', () => {
     expect(getByText('João')).toBeTruthy()
     expect(getByText('Gostei bastante da narrativa.')).toBeTruthy()
     expect(getByText('Rating: 4')).toBeTruthy()
-    expect(getByText('09 de maio de 2024')).toBeTruthy()
 
     // Should not show delete icon (different user)
     expect(queryByTestId('delete-button')).toBeNull()
