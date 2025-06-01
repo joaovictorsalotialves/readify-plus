@@ -48,7 +48,7 @@ export const mockReviews: AssessmentDTO[] = [
     },
     likes: 0,
     score: 4,
-    comment: 'Bom livro',
+    comment: 'Bom livro.',
     createdAt: new Date('2024-05-10'),
   },
 ]
