@@ -50,7 +50,7 @@ export default function RegisterPreference() {
 
   const handleSubmit = async () => {
     if (selectedGenre.length < 2 || selectedWriter.length < 2) {
-      alert('Por favor, selecione pelo dois gênero e dois escritor!')
+      Alert.alert('Por favor, selecione pelo dois gênero e dois escritor!')
       return
     }
 
@@ -136,7 +136,12 @@ export default function RegisterPreference() {
           />
 
           <View style={authStyles.context}>
-            <Button text="Cadastrar-se" type="confirm" onPress={handleSubmit} />
+            <Button
+              testID="button-register"
+              text="Cadastrar-se"
+              type="confirm"
+              onPress={handleSubmit}
+            />
             <Button
               text="Voltar"
               type="redirect"
