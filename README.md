@@ -79,21 +79,23 @@ A Inteligência Artificial no Readify Plus visa:
 ### 🖥️ Backend
 
 ```bash
-- git clone https://github.com/joaovictorsalotialves/api-readify-plus.git
-- npm i
-- cp .env.example .env
-- docker-compose up
-- npm run seed (GERAR DADOS DOS LIVROS NO BANCO DE DADOS)
-- npm run start:dev
+git clone https://github.com/joaovictorsalotialves/api-readify-plus.git
+npm i
+cp .env.example .env
+docker-compose up
+npm run seed (GERAR DADOS DOS LIVROS NO BANCO DE DADOS)
+npm run start:dev
 ```
+
+OBS: Atualizar as variaveis do arquivo `.env`
 
 ### 📱 Mobile
 
 ```
-- git clone https://github.com/joaovictorsalotialves/readify-plus.git
-- npm i
-- npx expo prebuild
-- npx expo start:android ou npx expo start:ios
+git clone https://github.com/joaovictorsalotialves/readify-plus.git
+npm i
+npx expo prebuild
+npx expo start:android ou npx expo start:ios
 ```
 
 OBS: Alterar a constante `urlApi` no arquivo `src/lib/axios/index.ts`. Utilize o comando `ipconfig` para obter o ip da sua máquina ou o local que estiver rodando a api
