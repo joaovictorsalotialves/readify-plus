@@ -58,6 +58,8 @@ export function GetBookContextProvider({
       await addBookFavoriteService({ bookId: book.id, token })
       setBook({ ...book, favorite: book.favorite + 1 })
     }
+
+    setIsFavorite(!isFavorite)
   }
 
   async function removeBookReview(assessementId: string, userId: string) {
